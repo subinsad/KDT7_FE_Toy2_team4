@@ -1,4 +1,4 @@
-import { Badge, Button, Container, FormText, Main } from "../components/GlobalStyles";
+import { Badge, Button, Container, FormText, Grid, GridColumnSpan, GridRowSpan, Main } from "../components/GlobalStyles";
 import { Backpack, Bell, Check, Diagram2, Star } from "react-bootstrap-icons";
 import Heading from "../components/Heading";
 import Alert from "../components/Alert";
@@ -7,8 +7,23 @@ import NavBar from "../components/NavBar";
 import Gnb from "../components/Gnb";
 import Input from "../components/Input";
 import Card from "../components/Card";
+import Select from "../components/Select";
 
 function StyleGuide() {
+  const optionArray = [
+    {
+      value: "select1",
+      text: "선택하세요1",
+    },
+    {
+      value: "select2",
+      text: "선택하세요2",
+    },
+    {
+      value: "select3",
+      text: "선택하세요3",
+    },
+  ];
   return (
     <>
       <Gnb />
@@ -175,18 +190,38 @@ function StyleGuide() {
           <Heading size={"xl"} tag={"h1"}>
             Form Elements
           </Heading>
-          <Card title="Default">
-            <Input type="text" label="default" labelText="Name" />
-            <FormText>10자 이상입력</FormText>
-            <Input type="password" />
-            <FormText $error>비밀번호 입력이 틀렸습니다.</FormText>
-          </Card>
-          <Card title="Form Controls">
-            <Input type="text" label="default" labelText="Name" />
-            <FormText>10자 이상입력</FormText>
-            <Input type="password" />
-            <FormText $error>비밀번호 입력이 틀렸습니다.</FormText>
-          </Card>
+          <Grid $col="2">
+            <Card title="Default">
+              <div className="mb3">
+                <Input type="text" label="default" labelText="Name" />
+                <FormText>10자 이상입력</FormText>
+              </div>
+              <Input type="password" />
+              <FormText $error>비밀번호 입력이 틀렸습니다.</FormText>
+            </Card>
+            <Card title="Form Controls">
+              <div className="mb3">
+                <Input type="text" label="default" labelText="Email Address" />
+              </div>
+              <div className="mb3">
+                <Input type="text" label="default2" labelText="Readonly" readonly="readonly" placeholder="Readonly input here..." />
+              </div>
+              <div className="mb3">
+                <Input type="text" plainText label="default3" labelText="Readonly" readonly="readonly" value="Plain Text" />
+              </div>
+              <div className="mb3">
+                <Select options={optionArray} label="default4" labelText="Example select" />
+              </div>
+            </Card>
+            <GridColumnSpan $span="2">
+              <Card title="Form Controls">
+                <Input type="text" label="default" labelText="Name" />
+                <FormText>10자 이상입력</FormText>
+                <Input type="password" />
+                <FormText $error>비밀번호 입력이 틀렸습니다.</FormText>
+              </Card>
+            </GridColumnSpan>
+          </Grid>
           <Footer />
         </Container>
       </Main>

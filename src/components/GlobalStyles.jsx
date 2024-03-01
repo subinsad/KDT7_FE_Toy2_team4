@@ -43,6 +43,9 @@ const GlobalStyles = createGlobalStyle`
     border:none;
     cursor: pointer;
   }
+  .mb3 {
+    margin-bottom: 1rem;
+  }
 `;
 export default GlobalStyles;
 export const Main = styled.main`
@@ -136,4 +139,16 @@ export const FormText = styled.div`
   margin-top: 0.25rem;
   font-size: 0.8125rem;
   color: ${(props) => (props.$error ? `var(--danger)` : `#a5a3ae`)};
+`;
+
+export const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(${(props) => props.$col}, 1fr);
+  gap: 1.5rem;
+`;
+export const GridColumnSpan = styled.div`
+  grid-column: span ${(props) => props.$span};
+`;
+export const GridRowSpan = styled.div`
+  grid-row: span ${(props) => props.$span};
 `;
