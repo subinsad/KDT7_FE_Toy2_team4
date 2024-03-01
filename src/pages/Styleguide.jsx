@@ -338,5 +338,4 @@ function StyleGuide() {
     </>
   );
 }
-
 export default StyleGuide;
