@@ -8,6 +8,10 @@ import Gnb from "../components/Gnb";
 import Input from "../components/Input";
 import Card from "../components/Card";
 import Select from "../components/Select";
+import Textarea from "../components/Textarea";
+import Checkbox from "../components/Checkbox";
+import Radio from "../components/Radio";
+import Editor from "../components/Editor";
 
 function StyleGuide() {
   const optionArray = [
@@ -212,15 +216,121 @@ function StyleGuide() {
               <div className="mb3">
                 <Select options={optionArray} label="default4" labelText="Example select" />
               </div>
+              <div className="mb3">
+                <Textarea label={"default5"} labelText={"Example Textarea"} rows="3"></Textarea>
+              </div>
             </Card>
-            <GridColumnSpan $span="2">
-              <Card title="Form Controls">
-                <Input type="text" label="default" labelText="Name" />
-                <FormText>10자 이상입력</FormText>
-                <Input type="password" />
-                <FormText $error>비밀번호 입력이 틀렸습니다.</FormText>
-              </Card>
-            </GridColumnSpan>
+            <Card title="Checkbox">
+              <div className="mb3">
+                <Checkbox value="Unchecked" id="id1" color="primary" />
+              </div>
+              <div className="mb3">
+                <Checkbox value="checked" id="id2" color="primary" checked />
+              </div>
+              <div className="mb3">
+                <Checkbox value="disabled" id="id3" color="primary" checked disabled />
+              </div>
+              <div className="mb3">
+                <Checkbox value="disabled" id="id4" color="primary" disabled />
+              </div>
+              <br />
+              <br />
+              <div className="mb3">
+                <Checkbox value="primary" id="id5" color="primary" checked />
+              </div>
+              <div className="mb3">
+                <Checkbox value="secondary" id="id6" color="secondary" checked />
+              </div>
+              <div className="mb3">
+                <Checkbox value="success" id="id7" color="success" checked />
+              </div>
+              <div className="mb3">
+                <Checkbox value="danger" id="id8" color="danger" checked />
+              </div>
+              <div className="mb3">
+                <Checkbox value="warning" id="id9" color="warning" checked />
+              </div>
+              <div className="mb3">
+                <Checkbox value="info" id="id10" color="info" checked />
+              </div>
+              <div className="mb3">
+                <Checkbox value="dark" id="id11" color="dark" checked />
+              </div>
+            </Card>
+            <Card title="RadioButton">
+              <div className="mb3">
+                <Radio value="Unchecked" id="ra1" name="rag1_1" color="primary" />
+              </div>
+              <div className="mb3">
+                <Radio value="checked" id="ra2" name="rag1_1" color="primary" checked />
+              </div>
+              <div className="mb3">
+                <Radio value="disabled" id="ra3" name="rag1" color="primary" checked disabled />
+              </div>
+              <div className="mb3">
+                <Radio value="disabled" id="ra4" name="rag1" color="primary" disabled />
+              </div>
+              <br />
+              <br />
+              <div className="mb3">
+                <Radio value="primary" id="ra5" name="rag2" color="primary" checked />
+              </div>
+              <div className="mb3">
+                <Radio value="secondary" id="ra6" name="rag3" color="secondary" checked />
+              </div>
+              <div className="mb3">
+                <Radio value="success" id="ra7" name="rag4" color="success" checked />
+              </div>
+              <div className="mb3">
+                <Radio value="danger" id="ra8" name="rag5" color="danger" checked />
+              </div>
+              <div className="mb3">
+                <Radio value="warning" id="ra9" name="rag6" color="warning" checked />
+              </div>
+              <div className="mb3">
+                <Radio value="info" id="ra10" name="rag7" color="info" checked />
+              </div>
+              <div className="mb3">
+                <Radio value="dark" id="ra11" name="rag8" color="dark" checked />
+              </div>
+            </Card>
+            <Card title="Inputs">
+              <div className="mb3">
+                <Input type="text" label="text1" labelText="text" />
+              </div>
+              <div className="mb3">
+                <Input type="password" label="password" labelText="password" />
+              </div>
+              <div className="mb3">
+                <Input type="email" label="email" labelText="email" />
+              </div>
+              <div className="mb3">
+                <Input type="url" label="url" labelText="url" />
+              </div>
+              <div className="mb3">
+                <Input type="phone" label="phone" labelText="phone" />
+              </div>
+              <div className="mb3">
+                <Input type="number" label="number" labelText="number" />
+              </div>
+              <div className="mb3">
+                <Input type="color" label="color" labelText="color" />
+              </div>
+            </Card>
+            <Card title="ETC Input">
+              <div className="mb3">
+                <Input type="file" label="file" labelText="file" />
+              </div>
+              <div className="mb3">
+                <Input type="file" label="file" labelText="file disabled" disabled />
+              </div>
+              <div className="mb3">
+                <Input type="password" label="password" labelText="Password" showPassword />
+              </div>
+              <div>
+                <Editor></Editor>
+              </div>
+            </Card>
           </Grid>
           <Footer />
         </Container>

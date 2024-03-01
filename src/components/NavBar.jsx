@@ -80,13 +80,22 @@ const AlramList = styled.div`
     display: grid;
     grid-template-columns: 1fr min-content;
     gap: 0.4rem;
+    align-items: center;
     svg {
+      font-size: 0;
+      width: 1rem;
+      height: 1rem;
       justify-self: end;
+      padding: 0;
     }
     border-top: 1px solid var(--border);
     padding: 1rem;
     &:hover {
       background: rgba(165, 163, 174, 0.1);
+    }
+    button {
+      padding: 0;
+      background-color: transparent;
     }
   }
   strong {
