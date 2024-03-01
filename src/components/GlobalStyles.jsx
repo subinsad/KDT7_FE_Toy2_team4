@@ -21,6 +21,12 @@ const GlobalStyles = createGlobalStyle`
     --infoLabel:#d9f8fc  ;
     --darkLabel:#e4e4e4 ;
     --white:#fff;
+    --heading:#5d596c;
+    --border:#dbdade;
+  }
+  a {
+    color:inherit;
+    text-decoration: none;
   }
   * {
     font-family: "Noto Sans KR", sans-serif;
@@ -31,6 +37,7 @@ const GlobalStyles = createGlobalStyle`
   }
   body {
     font-size: 1rem;
+    background-color: #f8f7fa;
   }
   button {
     border:none;
@@ -38,7 +45,13 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 export default GlobalStyles;
-
+export const Main = styled.main`
+  padding: 78px 0 0 16.25rem;
+`;
+export const Container = styled.div`
+  max-width: 1440px;
+  margin: 0 auto;
+`;
 export const Button = styled.button`
   display: inline-flex;
   align-items: center;
@@ -117,4 +130,10 @@ export const Badge = styled.span`
     font-size: 0.812rem;
     margin-left: 0.25rem;
   }
+`;
+
+export const FormText = styled.div`
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  color: ${(props) => (props.$error ? `var(--danger)` : `#a5a3ae`)};
 `;
