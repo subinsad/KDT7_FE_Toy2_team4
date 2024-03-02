@@ -3,8 +3,6 @@ import reset from "styled-reset";
 
 const GlobalStyles = createGlobalStyle`
   ${reset}
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
-
   :root {
     --primary:#7367f0;
     --secondary:#97999d;
@@ -31,6 +29,8 @@ const GlobalStyles = createGlobalStyle`
   * {
     font-family: "Noto Sans KR", sans-serif;
     box-sizing: border-box;
+    padding: 0;
+    margin: 0;
   }
   html {
     font-size: 100%;
@@ -50,6 +50,19 @@ const GlobalStyles = createGlobalStyle`
   .mb3 {
     margin-bottom: 1rem;
   }
+  .mr2 {
+    margin-right: .5rem;
+  }
+
+  .align {
+    display: flex;
+    &.right {
+      justify-content: flex-end;
+    }
+    &.center {
+      justify-content: center;
+    }
+  }
 `;
 export default GlobalStyles;
 export const Main = styled.main`
@@ -58,6 +71,9 @@ export const Main = styled.main`
 export const Container = styled.div`
   max-width: 1440px;
   margin: 0 auto;
+  @media (max-width: 1800px) {
+    padding: 0 1rem;
+  }
 `;
 export const Button = styled.button`
   display: inline-flex;
@@ -173,12 +189,35 @@ export const Table = styled.table`
   }
   tbody {
     border-top: 1px solid #dbdade;
-    border-bottom: 1px solid #dbdade;
     td {
+      border-bottom: 1px solid #dbdade;
       font-size: 0.9375rem;
       padding: 0.55rem 1.25rem;
       box-sizing: content-box;
       vertical-align: middle;
     }
   }
+`;
+
+export const TablePaging = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+`;
+export const PagingItem = styled(Button)`
+  background-color: ${(props) => (props.$active ? `var(--primary)` : `rgba(75, 70, 92, 0.08)`)};
+  border: none;
+  color: ${(props) => (props.$active ? `#fff` : ` #5d596c`)};
+  box-shadow: none;
+  padding: 0.745rem;
+  min-width: 2.38155rem;
+  line-height: 1;
+  transition: all 0.5s;
+  ${(props) =>
+    !props.$active &&
+    css`
+      &:hover {
+        background: rgba(74, 70, 87, 0.16);
+      }
+    `}
 `;

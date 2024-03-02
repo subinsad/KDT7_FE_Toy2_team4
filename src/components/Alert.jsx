@@ -14,6 +14,8 @@ const Alerts = styled.div`
   font-weight: 700;
   padding: 0.687rem 0.875rem;
   border-radius: 0.375rem;
+  font-size: 0.81em;
+
   &:has(h3) {
     grid-template-columns: 1fr;
     font-weight: 400;
@@ -21,6 +23,7 @@ const Alerts = styled.div`
       color: ${(props) => `var(--${props.$color})`};
       padding: 0 0 0.5rem;
       font-weight: 700;
+      font-size: 1rem;
     }
   }
   &:has(h3 ~ button) {
@@ -51,10 +54,14 @@ const Alerts = styled.div`
 const CloseButton = styled.button`
   background: none;
   color: ${(props) => `var(--${props.$color})`};
-  font-size: 1.3rem;
+  font-size: 0;
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
 `;
 
-function Alert({ color, close, title, children, ...props }) {
+function Alert({ color, close, title, children, openAlert, ...props }) {
   const [isOpen, setIsOpen] = useState(true);
 
   const onClick = () => {

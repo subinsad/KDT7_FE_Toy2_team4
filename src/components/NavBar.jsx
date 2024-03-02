@@ -32,6 +32,11 @@ const NavBarWrap = styled.div`
     padding: 0.5rem 1.5rem;
     background-color: rgba(255, 255, 255, 0.95);
   }
+  @media (max-width: 1800px) {
+    left: 17.25rem;
+    transform: translateX(0);
+    width: calc(100% - 18.25rem);
+  }
 `;
 const Alrams = styled.button`
   position: relative;

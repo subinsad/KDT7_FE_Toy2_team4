@@ -17,6 +17,9 @@ const AvatarWrap = styled.button`
     border-radius: 100%;
     z-index: 2;
   }
+  span {
+    display: none;
+  }
 
   ${({ $size }) =>
     $size === "xl" &&
@@ -68,25 +71,38 @@ export const AvatarGroup = styled.div`
       z-index: 2;
       transform: translateY(-0.5rem);
     }
+    span {
+      display: block;
+      position: absolute;
+      white-space: nowrap;
+      top: -1.5rem;
+      color: #fff;
+      background-color: var(--dark);
+      padding: 0.1rem 0.2rem;
+      border-radius: 0.3rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
 `;
 const onMouseOver = (e) => {
+  const name = e.target.getAttribute("name");
   const span = document.createElement("span");
   span.innerText = "name";
-  e.target.appendChild(span);
+  e.target.after(span);
 };
 const onMouseOut = (e) => {
-  const span = e.target.querySelector("span");
+  const span = e.target.nextElementSibling;
   if (span) {
     span.remove();
   }
 };
 
-function Avatar({ size, src, ...props }) {
+function Avatar({ size, src, name, ...props }) {
   return (
     <>
-      <AvatarWrap $size={size} {...props} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
-        {src && <img src={src} alt="" />}
+      <AvatarWrap $size={size} {...props}>
+        {src && <img src={src} alt="" name={name} onMouseOver={onMouseOver} onMouseOut={onMouseOut} />}
       </AvatarWrap>
     </>
   );

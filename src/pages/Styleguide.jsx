@@ -1,4 +1,4 @@
-import { Badge, Button, Container, FormText, Grid, GridColumnSpan, GridRowSpan, Main, Table } from "../components/GlobalStyles";
+import { Badge, Button, Container, FormText, Grid, GridColumnSpan, Main } from "../components/GlobalStyles";
 import { Backpack, Bell, Check, Diagram2, Star } from "react-bootstrap-icons";
 import Heading from "../components/Heading";
 import Alert from "../components/Alert";
@@ -13,22 +13,42 @@ import Checkbox from "../components/Checkbox";
 import Radio from "../components/Radio";
 import Editor from "../components/Editor";
 import Avatar, { AvatarGroup } from "../components/Avatar";
+import BoardList from "../components/BoardList";
+import Loading from "../components/Loading";
+import { useState } from "react";
+import Dialog from "../components/Dialog";
+import { Link } from "react-router-dom";
+
+const optionArray = [
+  {
+    value: "select1",
+    text: "선택하세요1",
+  },
+  {
+    value: "select2",
+    text: "선택하세요2",
+  },
+  {
+    value: "select3",
+    text: "선택하세요3",
+  },
+];
 
 function StyleGuide() {
-  const optionArray = [
-    {
-      value: "select1",
-      text: "선택하세요1",
-    },
-    {
-      value: "select2",
-      text: "선택하세요2",
-    },
-    {
-      value: "select3",
-      text: "선택하세요3",
-    },
-  ];
+  const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState(false);
+  const showLoading = () => {
+    setLoading(!loading);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  };
+
+  const openAlert = () => {
+    setAlert(true);
+  };
+
   return (
     <>
       <Gnb />
@@ -89,8 +109,11 @@ function StyleGuide() {
           </Button>
           <br />
           <br />
-          아이콘은 Bootstrap Icon으로 삽입하세요. <br />
-          https://icons.getbootstrap.com/
+
+          <Link to="https://icons.getbootstrap.com/" target="_blank">
+            아이콘은 Bootstrap Icon으로 삽입하세요.{" "}
+          </Link>
+          <br />
           <br />
           <Button $color="primary">
             <Star />
@@ -212,9 +235,9 @@ function StyleGuide() {
           <br />
           <br />
           <AvatarGroup>
-            <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
-            <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
-            <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+            <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} name={"ok madam"} />
+            <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} name={"sorry guy"} />
+            <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} name={"i hate work"} />
           </AvatarGroup>
           <br />
           <br />
@@ -253,10 +276,10 @@ function StyleGuide() {
                 <Checkbox value="Unchecked" id="id1" color="primary" />
               </div>
               <div className="mb3">
-                <Checkbox value="checked" id="id2" color="primary" checked />
+                <Checkbox value="checked" id="id2" color="primary" checked={true} />
               </div>
               <div className="mb3">
-                <Checkbox value="disabled" id="id3" color="primary" checked disabled />
+                <Checkbox value="disabled" id="id3" color="primary" checked={true} disabled />
               </div>
               <div className="mb3">
                 <Checkbox value="disabled" id="id4" color="primary" disabled />
@@ -264,25 +287,25 @@ function StyleGuide() {
               <br />
               <br />
               <div className="mb3">
-                <Checkbox value="primary" id="id5" color="primary" checked />
+                <Checkbox value="primary" id="id5" color="primary" checked={true} />
               </div>
               <div className="mb3">
-                <Checkbox value="secondary" id="id6" color="secondary" checked />
+                <Checkbox value="secondary" id="id6" color="secondary" checked={true} />
               </div>
               <div className="mb3">
-                <Checkbox value="success" id="id7" color="success" checked />
+                <Checkbox value="success" id="id7" color="success" checked={true} />
               </div>
               <div className="mb3">
-                <Checkbox value="danger" id="id8" color="danger" checked />
+                <Checkbox value="danger" id="id8" color="danger" checked={true} />
               </div>
               <div className="mb3">
-                <Checkbox value="warning" id="id9" color="warning" checked />
+                <Checkbox value="warning" id="id9" color="warning" checked={true} />
               </div>
               <div className="mb3">
-                <Checkbox value="info" id="id10" color="info" checked />
+                <Checkbox value="info" id="id10" color="info" checked={true} />
               </div>
               <div className="mb3">
-                <Checkbox value="dark" id="id11" color="dark" checked />
+                <Checkbox value="dark" id="id11" color="dark" checked={true} />
               </div>
             </Card>
             <Card title="RadioButton">
@@ -290,10 +313,10 @@ function StyleGuide() {
                 <Radio value="Unchecked" id="ra1" name="rag1_1" color="primary" />
               </div>
               <div className="mb3">
-                <Radio value="checked" id="ra2" name="rag1_1" color="primary" checked />
+                <Radio value="checked" id="ra2" name="rag1_1" color="primary" checked={true} />
               </div>
               <div className="mb3">
-                <Radio value="disabled" id="ra3" name="rag1" color="primary" checked disabled />
+                <Radio value="disabled" id="ra3" name="rag1" color="primary" checked={true} disabled />
               </div>
               <div className="mb3">
                 <Radio value="disabled" id="ra4" name="rag1" color="primary" disabled />
@@ -301,25 +324,25 @@ function StyleGuide() {
               <br />
               <br />
               <div className="mb3">
-                <Radio value="primary" id="ra5" name="rag2" color="primary" checked />
+                <Radio value="primary" id="ra5" name="rag2" color="primary" checked={true} />
               </div>
               <div className="mb3">
-                <Radio value="secondary" id="ra6" name="rag3" color="secondary" checked />
+                <Radio value="secondary" id="ra6" name="rag3" color="secondary" checked={true} />
               </div>
               <div className="mb3">
-                <Radio value="success" id="ra7" name="rag4" color="success" checked />
+                <Radio value="success" id="ra7" name="rag4" color="success" checked={true} />
               </div>
               <div className="mb3">
-                <Radio value="danger" id="ra8" name="rag5" color="danger" checked />
+                <Radio value="danger" id="ra8" name="rag5" color="danger" checked={true} />
               </div>
               <div className="mb3">
-                <Radio value="warning" id="ra9" name="rag6" color="warning" checked />
+                <Radio value="warning" id="ra9" name="rag6" color="warning" checked={true} />
               </div>
               <div className="mb3">
-                <Radio value="info" id="ra10" name="rag7" color="info" checked />
+                <Radio value="info" id="ra10" name="rag7" color="info" checked={true} />
               </div>
               <div className="mb3">
-                <Radio value="dark" id="ra11" name="rag8" color="dark" checked />
+                <Radio value="dark" id="ra11" name="rag8" color="dark" checked={true} />
               </div>
             </Card>
             <Card title="Inputs">
@@ -361,30 +384,31 @@ function StyleGuide() {
             </Card>
             <GridColumnSpan $span="2">
               <Card title="Table">
-                <Table>
-                  <thead>
-                    <tr>
-                      <th>Project</th>
-                      <th>Date</th>
-                      <th>Member</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Hoffman Website</td>
-                      <td>2024.02.20 ~ 2024.03.20</td>
-                      <td>
-                        <AvatarGroup>
-                          <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
-                          <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
-                          <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
-                        </AvatarGroup>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
+                <BoardList />
               </Card>
             </GridColumnSpan>
+            <Card title="Loading">
+              <Button $color="primary" onClick={showLoading}>
+                Loading
+              </Button>
+              {loading && <Loading />}
+            </Card>
+            <Card title="Popup">
+              <Button $color="primary" popovertarget="dialog">
+                Popup
+              </Button>
+              <Dialog id={"dialog"}>
+                팝업내용입력
+                <div>
+                  <Button $color="success" $size="sm" popovertarget="dialog" popovertargetaction="hide" className="mr2">
+                    Submit
+                  </Button>
+                  <Button $color="secondary" $size="sm" popovertarget="dialog" popovertargetaction="hide">
+                    Close
+                  </Button>
+                </div>
+              </Dialog>
+            </Card>
           </Grid>
           <Footer />
         </Container>

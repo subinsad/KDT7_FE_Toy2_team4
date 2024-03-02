@@ -108,7 +108,7 @@ function Editor({ children }) {
           {/* <input type="color" className="color" value="A" />
           <input type="color" className="bg" value="A" /> */}
         </Toolbar>
-        <EditorTable ref={editableRef} contenteditable="true">
+        <EditorTable ref={editableRef} contentEditable="true">
           {children}
         </EditorTable>
       </EditorWrap>

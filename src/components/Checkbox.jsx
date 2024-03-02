@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const CheckboxElement = styled.input`
@@ -38,10 +39,16 @@ const CheckboxElement = styled.input`
 const Label = styled.label`
   cursor: pointer;
 `;
-function Checkbox({ id, value, color, ...props }) {
+function Checkbox({ id, value, color, checked, ...props }) {
+  const [ischecked, setIsChecked] = useState(checked);
+
+  const hadleChange = () => {
+    setIsChecked(!ischecked);
+  };
+
   return (
     <>
-      <CheckboxElement type="checkbox" id={id} $color={color} {...props} />
+      <CheckboxElement type="checkbox" id={id} $color={color} onChange={hadleChange} checked={ischecked} {...props} />
       <Label htmlFor={id}>{value}</Label>
     </>
   );

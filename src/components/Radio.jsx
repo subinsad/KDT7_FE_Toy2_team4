@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const RadioButton = styled.input`
@@ -39,10 +40,16 @@ const RadioButton = styled.input`
 const Label = styled.label`
   cursor: pointer;
 `;
-function Radio({ id, value, name, color, ...props }) {
+function Radio({ id, value, name, color, checked, ...props }) {
+  const [ischecked, setIschecked] = useState(checked);
+
+  const handleChange = () => {
+    setIschecked(!ischecked);
+  };
+
   return (
     <>
-      <RadioButton name={name} type="radio" id={id} $color={color} {...props} />
+      <RadioButton name={name} type="radio" id={id} checked={ischecked} onChange={handleChange} $color={color} {...props} />
       <Label htmlFor={id}>{value}</Label>
     </>
   );

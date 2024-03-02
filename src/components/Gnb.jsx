@@ -34,10 +34,13 @@ const Logo = styled.h1`
   a {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.2rem;
     height: 64px;
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 300;
+    white-space: nowrap;
+    letter-spacing: -0.05rem;
   }
 `;
 const NavItem = styled.li`
@@ -53,8 +56,8 @@ const NavItem = styled.li`
     font-weight: 500;
     line-height: 1.47;
     svg {
-      width: 1.25rem;
-      height: 1.25rem;
+      width: 1.1rem;
+      height: 1.1rem;
     }
     &:hover {
       background-color: #f8f8f8;
@@ -82,7 +85,7 @@ function Gnb() {
               <path opacity="0.06" d="M8.07751 15.9175L13.9419 4.63989L16.5849 7.28475L8.07751 15.9175Z" fill="#161616"></path>
               <path d="M7.77295 16.3566L23.6563 0H32V6.88383C32 6.88383 31.8262 9.17836 30.6591 10.4057L19.7824 22H13.6938L7.77295 16.3566Z" fill="#7367F0"></path>
             </svg>
-            Intranet
+            4U Team Intranet
           </Link>
         </Logo>
         <Heading size={"xs"} tag={"h3"}>
