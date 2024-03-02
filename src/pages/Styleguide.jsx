@@ -1,4 +1,4 @@
-import { Badge, Button, Container, FormText, Grid, GridColumnSpan, GridRowSpan, Main } from "../components/GlobalStyles";
+import { Badge, Button, Container, FormText, Grid, GridColumnSpan, GridRowSpan, Main, Table } from "../components/GlobalStyles";
 import { Backpack, Bell, Check, Diagram2, Star } from "react-bootstrap-icons";
 import Heading from "../components/Heading";
 import Alert from "../components/Alert";
@@ -12,6 +12,7 @@ import Textarea from "../components/Textarea";
 import Checkbox from "../components/Checkbox";
 import Radio from "../components/Radio";
 import Editor from "../components/Editor";
+import Avatar, { AvatarGroup } from "../components/Avatar";
 
 function StyleGuide() {
   const optionArray = [
@@ -192,6 +193,33 @@ function StyleGuide() {
           <br />
           <br />
           <Heading size={"xl"} tag={"h1"}>
+            Avatar
+          </Heading>
+          <Avatar size={"xs"} src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+          <Avatar size={"sm"} src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+          <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+          <Avatar size={"md"} src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+          <Avatar size={"lg"} src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+          <Avatar size={"xl"} src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+          <br />
+          <br />
+          <Avatar size={"xs"} />
+          <Avatar size={"sm"} />
+          <Avatar />
+          <Avatar size={"md"} />
+          <Avatar size={"lg"} />
+          <Avatar size={"xl"} />
+          <br />
+          <br />
+          <AvatarGroup>
+            <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+            <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+            <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+          </AvatarGroup>
+          <br />
+          <br />
+          <br />
+          <Heading size={"xl"} tag={"h1"}>
             Form Elements
           </Heading>
           <Grid $col="2">
@@ -331,6 +359,32 @@ function StyleGuide() {
                 <Editor></Editor>
               </div>
             </Card>
+            <GridColumnSpan $span="2">
+              <Card title="Table">
+                <Table>
+                  <thead>
+                    <tr>
+                      <th>Project</th>
+                      <th>Date</th>
+                      <th>Member</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Hoffman Website</td>
+                      <td>2024.02.20 ~ 2024.03.20</td>
+                      <td>
+                        <AvatarGroup>
+                          <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+                          <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+                          <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+                        </AvatarGroup>
+                      </td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </Card>
+            </GridColumnSpan>
           </Grid>
           <Footer />
         </Container>

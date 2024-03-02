@@ -43,6 +43,10 @@ const GlobalStyles = createGlobalStyle`
     border:none;
     cursor: pointer;
   }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
   .mb3 {
     margin-bottom: 1rem;
   }
@@ -151,4 +155,30 @@ export const GridColumnSpan = styled.div`
 `;
 export const GridRowSpan = styled.div`
   grid-row: span ${(props) => props.$span};
+`;
+
+export const Table = styled.table`
+  color: #5d596c;
+  margin-bottom: 1rem;
+  thead {
+    border-top: 1px solid #dbdade;
+    border-bottom: 1px solid #dbdade;
+    th {
+      text-transform: uppercase;
+      font-size: 0.8125rem;
+      letter-spacing: 1px;
+      padding: 0.88rem 1.25rem;
+      text-align: left;
+    }
+  }
+  tbody {
+    border-top: 1px solid #dbdade;
+    border-bottom: 1px solid #dbdade;
+    td {
+      font-size: 0.9375rem;
+      padding: 0.55rem 1.25rem;
+      box-sizing: content-box;
+      vertical-align: middle;
+    }
+  }
 `;

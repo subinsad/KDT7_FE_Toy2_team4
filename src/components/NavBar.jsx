@@ -1,6 +1,7 @@
-import { ArrowDownLeftSquare, Bell, BoxArrowInLeft, BoxArrowInRight, BoxArrowRight, LightbulbOff, Outlet, Person, PersonBadge, PersonCheck, SignNoLeftTurn, Unlock, X } from "react-bootstrap-icons";
+import { ArrowDownLeftSquare, Bell, BoxArrowInLeft, BoxArrowInRight, BoxArrowRight, LightbulbOff, Outlet, PersonBadge, PersonCheck, SignNoLeftTurn, Unlock, X } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Avatar from "./Avatar";
 
 const NavBarWrap = styled.div`
   position: fixed;
@@ -25,9 +26,10 @@ const NavBarWrap = styled.div`
     display: flex;
     justify-content: end;
     position: relative;
+    gap: 0.5rem;
     z-index: 20;
     height: 100%;
-    padding: 0.5rem;
+    padding: 0.5rem 1.5rem;
     background-color: rgba(255, 255, 255, 0.95);
   }
 `;
@@ -103,32 +105,11 @@ const AlramList = styled.div`
     padding: 1rem;
   }
 `;
-const Avatar = styled.button`
-  width: 3.5rem;
-  height: 3rem;
-  border-radius: 100%;
-  background-color: transparent;
-  img {
-    position: absolute;
-    width: 2.75rem;
-    height: 2.875rem;
-    border-radius: 100%;
-  }
-  svg {
-    position: relative;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    padding: 0.3rem 0.5rem;
-    background-color: var(--darkLabel);
-    border-radius: 100%;
-  }
-`;
 
 const AvatarList = styled.div`
   position: fixed;
-  left: calc(50% + 39rem);
-  top: 5rem;
+  left: calc(50% + 37.5rem);
+  top: 4.5rem;
   overflow: visible;
   inset: none;
   box-shadow: 0 0.25rem 1rem rgba(165, 163, 174, 0.45);
@@ -210,10 +191,7 @@ function NavBar() {
               </li>
             </ul>
           </AlramList>
-          <Avatar popovertarget="avatar">
-            <img src="https://c0.klipartz.com/pngpicture/348/800/gratis-png-hombre-vestido-con-camisa-azul-ilustracion-iconos-de-computadora-avatar-usuario-login-avatar-thumbnail.png" alt="" />
-            <Person />
-          </Avatar>
+          <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} popovertarget="avatar" />
           <AvatarList popover="auto" id="avatar">
             <ul>
               <li>

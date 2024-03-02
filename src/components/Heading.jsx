@@ -15,12 +15,12 @@ const HeadingName = styled.div`
     css`
       font-size: 2rem;
     `}
-      ${({ $size }) =>
+  ${({ $size }) =>
     $size === "sm" &&
     css`
       font-size: 1.375rem;
     `}
-${({ $size }) =>
+  ${({ $size }) =>
     $size === "xs" &&
     css`
       font-size: 1.125rem;
