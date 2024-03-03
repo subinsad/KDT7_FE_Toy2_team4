@@ -1,7 +1,8 @@
-import Avatar, { AvatarGroup } from "./Avatar";
-import { Badge, PagingItem, Table, TablePaging } from "./GlobalStyles";
+import React from "react";
+import { Badge, PagingItem, Table, TablePaging } from "../GlobalStyles";
+import Avatar, { AvatarGroup } from "../Avatar";
 
-const BoardList = ({ ...props }) => {
+const ProjectList = ({ ...props }) => {
   return (
     <>
       <Table {...props}>
@@ -71,4 +72,4 @@ const BoardList = ({ ...props }) => {
   );
 };
 
-export default BoardList;
+export default ProjectList;

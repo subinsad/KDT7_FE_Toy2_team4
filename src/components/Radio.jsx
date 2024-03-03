@@ -39,7 +39,29 @@ const RadioButton = styled.input`
 `;
 const Label = styled.label`
   cursor: pointer;
+  font-size: 0.9rem;
 `;
+export const RadioWrap = styled.div`
+  input ~ input {
+    margin-left: 0.8rem;
+  }
+  .title {
+    margin-bottom: 0.672rem;
+    font-size: 0.8125rem;
+    color: #5d596c;
+  }
+`;
+export function RadioGroup({ title, children }) {
+  return (
+    <>
+      <RadioWrap>
+        <div className="title">{title}</div>
+        {children}
+      </RadioWrap>
+    </>
+  );
+}
+
 function Radio({ id, value, name, color, checked, ...props }) {
   const [ischecked, setIschecked] = useState(checked);
 
@@ -54,4 +76,5 @@ function Radio({ id, value, name, color, checked, ...props }) {
     </>
   );
 }
+
 export default Radio;

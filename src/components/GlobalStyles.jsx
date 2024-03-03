@@ -38,6 +38,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     font-size: 1rem;
     background-color: #f8f7fa;
+    color:#6f6b7d;
   }
   button {
     border:none;
@@ -54,6 +55,12 @@ const GlobalStyles = createGlobalStyle`
     margin-right: .5rem;
   }
 
+  hr{
+    margin:1.5rem 0;
+    border:1px solid #dbdade;
+    border-bottom:none;
+  }
+
   .align {
     display: flex;
     &.right {
@@ -62,11 +69,20 @@ const GlobalStyles = createGlobalStyle`
     &.center {
       justify-content: center;
     }
+    &.both {
+      justify-content: space-between;
+    }
+    &.vm {
+      align-items: center;
+    }
+  }
+  .text-left {
+    text-align: left;
   }
 `;
 export default GlobalStyles;
 export const Main = styled.main`
-  padding: 78px 0 0 16.25rem;
+  padding: 120px 0 0 16.25rem;
 `;
 export const Container = styled.div`
   max-width: 1440px;

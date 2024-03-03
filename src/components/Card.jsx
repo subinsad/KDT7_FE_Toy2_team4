@@ -16,10 +16,10 @@ const CardBody = styled.div`
   padding: 0 1.5rem 1.5rem;
 `;
 
-function Card({ title, children }) {
+function Card({ title, children, ...props }) {
   return (
     <>
-      <CardWrap>
+      <CardWrap {...props}>
         {title && <CardHeader>{title}</CardHeader>}
         <CardBody>{children}</CardBody>
       </CardWrap>

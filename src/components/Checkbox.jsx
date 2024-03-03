@@ -38,6 +38,7 @@ const CheckboxElement = styled.input`
 `;
 const Label = styled.label`
   cursor: pointer;
+  font-size: 0.9rem;
 `;
 function Checkbox({ id, value, color, checked, ...props }) {
   const [ischecked, setIsChecked] = useState(checked);

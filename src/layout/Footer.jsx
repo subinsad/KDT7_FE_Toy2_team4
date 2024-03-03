@@ -41,7 +41,7 @@ function Footer() {
         <nav>
           <FooterNav>
             <FooterNavItem>
-              <Link to={"/"}>About Us</Link>
+              <Link to={"/about"}>About Us</Link>
             </FooterNavItem>
             <FooterNavItem>
               <Link to={"/styleguide"}>StyleGuide</Link>

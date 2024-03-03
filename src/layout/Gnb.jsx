@@ -1,7 +1,7 @@
-import { Gear, Memory, Motherboard, PersonUp, PersonWorkspace, SegmentedNav, Stripe } from "react-bootstrap-icons";
-import { Link } from "react-router-dom";
+import { BoxArrowInRight, Gear, Memory, Motherboard, PersonBoundingBox, PersonUp, PersonWorkspace, SegmentedNav, Stripe, Wallet } from "react-bootstrap-icons";
+import { Link, useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
-import Heading from "./Heading";
+import Heading from "../components/Heading";
 const AsideNav = styled.aside`
   position: fixed;
   left: 0;
@@ -74,6 +74,8 @@ const NavItem = styled.li`
     `}
 `;
 function Gnb() {
+  const location = useLocation();
+
   return (
     <>
       <AsideNav>
@@ -92,19 +94,24 @@ function Gnb() {
           COMPANY
         </Heading>
         <ul>
-          <NavItem $active>
-            <Link to="">
+          <NavItem $active={location.pathname.includes("/home")}>
+            <Link to="home">
               <Motherboard /> Dashboard
             </Link>
           </NavItem>
-          <NavItem>
-            <Link to="">
+          <NavItem $active={location.pathname.includes("/work")}>
+            <Link to="work">
               <PersonWorkspace /> Work Management
             </Link>
           </NavItem>
-          <NavItem>
-            <Link to="">
+          <NavItem $active={location.pathname.includes("/attendance")}>
+            <Link to="attendance">
               <PersonUp /> Attendance
+            </Link>
+          </NavItem>
+          <NavItem $active={location.pathname.includes("/salary")}>
+            <Link to="salary">
+              <Wallet /> Salary
             </Link>
           </NavItem>
         </ul>
@@ -112,9 +119,19 @@ function Gnb() {
           PERSONAL
         </Heading>
         <ul>
-          <NavItem>
-            <Link to="/mypage">
+          <NavItem $active={location.pathname.includes("/mypage")}>
+            <Link to="mypage">
               <Gear /> Mypage
+            </Link>
+          </NavItem>
+          <NavItem $active={location.pathname === "/login"}>
+            <Link to="login">
+              <BoxArrowInRight /> login
+            </Link>
+          </NavItem>
+          <NavItem $active={location.pathname === "/create-account"}>
+            <Link to="create-account">
+              <PersonBoundingBox /> CreateAccount
             </Link>
           </NavItem>
         </ul>
