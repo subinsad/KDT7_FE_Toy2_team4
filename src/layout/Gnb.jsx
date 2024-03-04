@@ -94,8 +94,8 @@ function Gnb() {
           COMPANY
         </Heading>
         <ul>
-          <NavItem $active={location.pathname.includes("/home")}>
-            <Link to="home">
+          <NavItem $active={location.pathname.includes("/main")}>
+            <Link to="/main">
               <Motherboard /> Dashboard
             </Link>
           </NavItem>

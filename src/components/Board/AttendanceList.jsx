@@ -18,7 +18,7 @@ const AttendanceList = ({ ...props }) => {
             <td>휴가입니다.</td>
             <td>2024.02.20 ~ 2024.03.20</td>
             <td>
-              <Badge $color="success">휴가</Badge>
+              <Badge $color="primary">휴가</Badge>
             </td>
             <td>
               <Badge $color="success">승인</Badge>
@@ -39,6 +39,16 @@ const AttendanceList = ({ ...props }) => {
             <td>2024.02.20 ~ 2024.03.20</td>
             <td>
               <Badge $color="danger">경조사</Badge>
+            </td>
+            <td>
+              <Badge $color="danger">반려</Badge>
+            </td>
+          </tr>
+          <tr>
+            <td>신청합니다.</td>
+            <td>2024.02.20 ~ 2024.03.20</td>
+            <td>
+              <Badge $color="secondary">기타</Badge>
             </td>
             <td>
               <Badge $color="danger">반려</Badge>

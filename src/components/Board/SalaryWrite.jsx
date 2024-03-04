@@ -41,9 +41,9 @@ const SalaryWrite = () => {
             <Input type="text" plainText label="job" labelText="Job Position" readOnly="readonly" value="과장" />
           </div>
           <RadioGroup title="Category">
-            <Radio value="급여" checked={true} id="ra1" name="rag2_1" color="primary" />
-            <Radio value="보너스" id="ra2" name="rag2_1" color="primary" />
-            <Radio value="성과급" id="ra3" name="rag2_1" color="primary" />
+            <Radio value="급여" checked={true} id="ra2_1" name="rag2_2" color="primary" />
+            <Radio value="성과급" id="ra2_2" name="rag2_2" color="primary" />
+            <Radio value="특수보너스" id="ra2_3" name="rag2_2" color="primary" />
           </RadioGroup>
           <div>
             <Input type="text" label="cost" labelText="Salary" value="1,000,000" />
@@ -52,9 +52,9 @@ const SalaryWrite = () => {
         <hr />
         <div className="align both">
           <Button $color="secondary" onClick={Back}>
-            List
+            리스트
           </Button>
-          <Button $color="primary">Submit</Button>
+          <Button $color="primary">급여지급</Button>
         </div>
       </Card>
     </div>

@@ -15,6 +15,7 @@ import Loading from "../components/Loading";
 import { useState } from "react";
 import Dialog from "../components/Dialog";
 import { Link } from "react-router-dom";
+import EmailGroup from "../components/EmailGroup";
 
 const optionArray = [
   {
@@ -28,6 +29,20 @@ const optionArray = [
   {
     value: "select3",
     text: "선택하세요3",
+  },
+];
+const optionMail = [
+  {
+    value: "select1",
+    text: "gmail.com",
+  },
+  {
+    value: "select2",
+    text: "kakao.com",
+  },
+  {
+    value: "select3",
+    text: "naver.com",
   },
 ];
 
@@ -262,76 +277,76 @@ function StyleGuide() {
         </Card>
         <Card title="Checkbox">
           <div className="mb3">
-            <Checkbox value="Unchecked" id="id1" color="primary" />
+            <Checkbox value="Unchecked" id="" color="primary" />
           </div>
           <div className="mb3">
-            <Checkbox value="checked" id="id2" color="primary" checked={true} />
+            <Checkbox value="checked" id="" color="primary" checked={true} />
           </div>
           <div className="mb3">
-            <Checkbox value="disabled" id="id3" color="primary" checked={true} disabled />
+            <Checkbox value="disabled" id="" color="primary" checked={true} disabled />
           </div>
           <div className="mb3">
-            <Checkbox value="disabled" id="id4" color="primary" disabled />
+            <Checkbox value="disabled" id="" color="primary" disabled />
           </div>
           <br />
           <br />
           <div className="mb3">
-            <Checkbox value="primary" id="id5" color="primary" checked={true} />
+            <Checkbox value="primary" id="" color="primary" checked={true} />
           </div>
           <div className="mb3">
-            <Checkbox value="secondary" id="id6" color="secondary" checked={true} />
+            <Checkbox value="secondary" id="" color="secondary" checked={true} />
           </div>
           <div className="mb3">
-            <Checkbox value="success" id="id7" color="success" checked={true} />
+            <Checkbox value="success" id="" color="success" checked={true} />
           </div>
           <div className="mb3">
-            <Checkbox value="danger" id="id8" color="danger" checked={true} />
+            <Checkbox value="danger" id="" color="danger" checked={true} />
           </div>
           <div className="mb3">
-            <Checkbox value="warning" id="id9" color="warning" checked={true} />
+            <Checkbox value="warning" id="" color="warning" checked={true} />
           </div>
           <div className="mb3">
-            <Checkbox value="info" id="id10" color="info" checked={true} />
+            <Checkbox value="info" id="" color="info" checked={true} />
           </div>
           <div className="mb3">
-            <Checkbox value="dark" id="id11" color="dark" checked={true} />
+            <Checkbox value="dark" id="" color="dark" checked={true} />
           </div>
         </Card>
         <Card title="RadioButton">
           <div className="mb3">
-            <Radio value="Unchecked" id="ra1" name="rag1_1" color="primary" />
+            <Radio value="Unchecked" id="" name="rag1_1" color="primary" />
           </div>
           <div className="mb3">
-            <Radio value="checked" id="ra2" name="rag1_1" color="primary" checked={true} />
+            <Radio value="checked" id="" name="rag1_1" color="primary" checked={true} />
           </div>
           <div className="mb3">
-            <Radio value="disabled" id="ra3" name="rag1" color="primary" checked={true} disabled />
+            <Radio value="disabled" id="" name="rag1" color="primary" checked={true} disabled />
           </div>
           <div className="mb3">
-            <Radio value="disabled" id="ra4" name="rag1" color="primary" disabled />
+            <Radio value="disabled" id="" name="rag1" color="primary" disabled />
           </div>
           <br />
           <br />
           <div className="mb3">
-            <Radio value="primary" id="ra5" name="rag2" color="primary" checked={true} />
+            <Radio value="primary" id="" name="rag2" color="primary" checked={true} />
           </div>
           <div className="mb3">
-            <Radio value="secondary" id="ra6" name="rag3" color="secondary" checked={true} />
+            <Radio value="secondary" id="" name="rag3" color="secondary" checked={true} />
           </div>
           <div className="mb3">
-            <Radio value="success" id="ra7" name="rag4" color="success" checked={true} />
+            <Radio value="success" id="" name="rag4" color="success" checked={true} />
           </div>
           <div className="mb3">
-            <Radio value="danger" id="ra8" name="rag5" color="danger" checked={true} />
+            <Radio value="danger" id="" name="rag5" color="danger" checked={true} />
           </div>
           <div className="mb3">
-            <Radio value="warning" id="ra9" name="rag6" color="warning" checked={true} />
+            <Radio value="warning" id="" name="rag6" color="warning" checked={true} />
           </div>
           <div className="mb3">
-            <Radio value="info" id="ra10" name="rag7" color="info" checked={true} />
+            <Radio value="info" id="" name="rag7" color="info" checked={true} />
           </div>
           <div className="mb3">
-            <Radio value="dark" id="ra11" name="rag8" color="dark" checked={true} />
+            <Radio value="dark" id="" name="rag8" color="dark" checked={true} />
           </div>
         </Card>
         <Card title="Inputs">
@@ -367,8 +382,14 @@ function StyleGuide() {
           <div className="mb3">
             <Input type="password" label="password" labelText="Password" showPassword />
           </div>
+          <div className="mb3">
+            <Editor title="제목"></Editor>
+          </div>
           <div>
-            <Editor></Editor>
+            <EmailGroup title="email">
+              <Input type="text" />
+              <Select options={optionMail} />
+            </EmailGroup>
           </div>
         </Card>
         <GridColumnSpan $span="2">

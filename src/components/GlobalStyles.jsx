@@ -39,6 +39,7 @@ const GlobalStyles = createGlobalStyle`
     font-size: 1rem;
     background-color: #f8f7fa;
     color:#6f6b7d;
+    -webkit-font-smoothing: antialiased;
   }
   button {
     border:none;

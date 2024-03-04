@@ -116,8 +116,6 @@ const PasswordGroup = styled.div`
   }
 `;
 
-const Maxlength = styled.div``;
-
 function Input({ plainText, label, labelText, showPassword, ...props }) {
   const plain = plainText && { "data-plain": true };
   const [isShow, setIsShow] = useState(false);

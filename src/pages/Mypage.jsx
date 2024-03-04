@@ -64,73 +64,105 @@ const ThisMonthSalary = styled.div`
     padding: 0 0 0 0.2rem;
   }
 `;
+
+const Left = styled.div`
+  display: grid;
+  gap: 1rem;
+`;
+const Right = styled.div`
+  display: grid;
+  gap: 1rem;
+  align-self: start;
+`;
+
 function Mypage() {
   return (
     <>
       <MypageWrap>
-        <Card className="person-info">
-          <Avatar size={"xl"} src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/15.png"} />
-          <p className="person-info__name">Name isHere</p>
-          <Badge $color="secondary">과장</Badge>
-          <hr />
-          <strong className="person-info__title">Details</strong>
-          <PersonalInfoList>
-            <li>
-              <b>Name</b> : <strong> 아무개</strong>
-            </li>
-            <li>
-              <b>직급</b> : <strong> 과장</strong>
-            </li>
-            <li>
-              <b>Email</b> : <strong> 123@123.com</strong>
-            </li>
-            <li>
-              <b>Status</b> :
-              <strong>
-                <Badge $color="success" $size="xs">
-                  출근중
-                </Badge>
-              </strong>
-            </li>
-            <li>
-              <b>Phone</b> : <strong> 000-0000-0000</strong>
-            </li>
-            <li>
-              <b>소속팀</b> :<strong> 개발팀</strong>
-            </li>
-          </PersonalInfoList>
-          <Button $color="primary" $size="sm">
-            회원정보수정
-          </Button>
-        </Card>
-        <Card title={"My Project State"}>
-          <BoardList state={"project"} />
-        </Card>
-        <Card title={"이달의 급여"}>
-          <ThisMonthSalary>
-            ₩4,000,000<span>원</span>
-          </ThisMonthSalary>
-          <PersonalInfoList className="salary">
-            <li>
-              <b>실급여</b> : <strong>1,000,000원</strong>
-            </li>
-            <li>
-              <b>급여삭감</b> : <strong>- 200,000원</strong>
-            </li>
-            <li>
-              <b>예상급여</b> : <strong>1,000,000원</strong>
-            </li>
-            <li>
-              <b>4대보험</b> : <strong>1,000,000원</strong>
-            </li>
-            <li>
-              <b>성과급</b> :<strong>1,000,000원</strong>
-            </li>
-          </PersonalInfoList>
-        </Card>
-        <Card title={"My Attendance State"}>
-          <BoardList state="attendance" />
-        </Card>
+        <Left>
+          <Card className="person-info">
+            <Avatar size={"xl"} src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/15.png"} />
+            <p className="person-info__name">Name isHere</p>
+            <Badge $color="secondary">과장</Badge>
+            <hr />
+            <strong className="person-info__title">Details</strong>
+            <PersonalInfoList>
+              <li>
+                <b>Name</b> : <strong> 아무개</strong>
+              </li>
+              <li>
+                <b>직급</b> : <strong> 과장</strong>
+              </li>
+              <li>
+                <b>Email</b> : <strong> 123@123.com</strong>
+              </li>
+              <li>
+                <b>Status</b> :
+                <strong>
+                  <Badge $color="success" $size="xs">
+                    출근중
+                  </Badge>
+                </strong>
+              </li>
+              <li>
+                <b>Phone</b> : <strong> 000-0000-0000</strong>
+              </li>
+              <li>
+                <b>소속팀</b> :<strong> 개발팀</strong>
+              </li>
+            </PersonalInfoList>
+            <Button $color="primary" $size="sm">
+              회원정보수정
+            </Button>
+          </Card>
+
+          <Card title={"근무일수"}>
+            <PersonalInfoList>
+              <li>
+                <b>이달의 예상 근무일</b> : <strong>20일</strong>
+              </li>
+              <li>
+                <b>이달의 근무일</b> : <strong>15일</strong>
+              </li>
+              <li>
+                <b>총 근무일</b> : <strong> 1,252일</strong>
+              </li>
+              <li>
+                <b>입사 일</b> : <strong> 2020년 2월 23일</strong>
+              </li>
+            </PersonalInfoList>
+          </Card>
+          <Card title={"이달의 급여"}>
+            <ThisMonthSalary>
+              ₩4,000,000<span>원</span>
+            </ThisMonthSalary>
+            <PersonalInfoList className="salary">
+              <li>
+                <b>실급여</b> : <strong>1,000,000원</strong>
+              </li>
+              <li>
+                <b>급여삭감</b> : <strong>- 200,000원</strong>
+              </li>
+              <li>
+                <b>예상급여</b> : <strong>1,000,000원</strong>
+              </li>
+              <li>
+                <b>4대보험</b> : <strong>1,000,000원</strong>
+              </li>
+              <li>
+                <b>성과급</b> :<strong>1,000,000원</strong>
+              </li>
+            </PersonalInfoList>
+          </Card>
+        </Left>
+        <Right>
+          <Card title={"My Project State"}>
+            <BoardList state={"project"} />
+          </Card>
+          <Card title={"My Attendance State"}>
+            <BoardList state="attendance" />
+          </Card>
+        </Right>
       </MypageWrap>
     </>
   );

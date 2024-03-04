@@ -30,6 +30,8 @@ const SalaryList = ({ ...props }) => {
           <tr>
             <th>Name</th>
             <th>Job Position</th>
+            <th>Working Month</th>
+            <th>Salary</th>
             <th>Status</th>
             <th>Category</th>
             <th>Edit</th>
@@ -44,11 +46,13 @@ const SalaryList = ({ ...props }) => {
               </Name>
             </td>
             <td>과장</td>
+            <td>12</td>
+            <td>1,000,000원</td>
             <td>
-              <Badge $color="success">휴가</Badge>
+              <Badge $color="danger">퇴근</Badge>
             </td>
             <td>
-              <Badge $color="success">급여</Badge>
+              <Badge $color="danger">성과급</Badge>
             </td>
             <td>
               <Button $color="primary" $size="xs" popovertarget="modify">
@@ -64,11 +68,13 @@ const SalaryList = ({ ...props }) => {
               </Name>
             </td>
             <td>과장</td>
+            <td>12</td>
+            <td>500,000원</td>
             <td>
-              <Badge $color="success">휴가</Badge>
+              <Badge $color="secondary">휴가</Badge>
             </td>
             <td>
-              <Badge $color="warning">보너스</Badge>
+              <Badge $color="warning">특수보너스</Badge>
             </td>
             <td>
               <Button $color="primary" $size="xs" popovertarget="modify">
@@ -84,11 +90,13 @@ const SalaryList = ({ ...props }) => {
               </Name>
             </td>
             <td>과장</td>
+            <td>10</td>
+            <td>3,200,000원</td>
             <td>
-              <Badge $color="info">근무중</Badge>
+              <Badge $color="success">근무중</Badge>
             </td>
             <td>
-              <Badge $color="success">급여</Badge>
+              <Badge $color="primary">급여</Badge>
             </td>
             <td>
               <Button $color="primary" $size="xs" popovertarget="modify">
@@ -118,9 +126,9 @@ const SalaryList = ({ ...props }) => {
           </div>
           <GridColumnSpan $span="2">
             <RadioGroup title="Category">
-              <Radio value="급여" checked={true} id="ra1" name="rag2_1" color="primary" />
-              <Radio value="보너스" id="ra2" name="rag2_1" color="primary" />
-              <Radio value="성과급" id="ra3" name="rag2_1" color="primary" />
+              <Radio value="급여" checked={true} id="ra3_1" name="rag2_2" color="primary" />
+              <Radio value="성과급" id="ra3_2" name="rag2_2" color="primary" />
+              <Radio value="특수보너스" id="ra3_3" name="rag2_2" color="primary" />
             </RadioGroup>
           </GridColumnSpan>
           <GridColumnSpan $span="2">

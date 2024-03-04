@@ -30,6 +30,7 @@ const EditorTable = styled.div`
   overflow-y: auto;
   height: 100%;
   tab-size: 4;
+  line-height: 1.4;
   box-sizing: border-box;
   display: block;
   outline: none;
@@ -74,7 +75,14 @@ const Toolbar = styled.div`
     height: 2rem;
   }
 `;
-function Editor({ children }) {
+
+const Title = styled.div`
+  margin-bottom: 0.672rem;
+  font-size: 0.8125rem;
+  color: #5d596c;
+`;
+
+function Editor({ title, children, ...props }) {
   const editableRef = useRef(null);
   const makeBold = () => {
     document.execCommand("bold", false, null);
@@ -90,7 +98,8 @@ function Editor({ children }) {
   };
   return (
     <>
-      <EditorWrap>
+      {title && <Title>{title}</Title>}
+      <EditorWrap {...props}>
         <Toolbar>
           <Select options={boldSelect}></Select>
           <button className="bold" onClick={makeBold}>

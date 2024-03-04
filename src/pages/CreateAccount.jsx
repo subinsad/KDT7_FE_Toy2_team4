@@ -8,6 +8,7 @@ import logo from "../assets/logo.svg";
 import { ChatLeftHeart, ChatRightHeart, CheckSquareFill, HouseFill, PeopleFill } from "react-bootstrap-icons";
 import { useState } from "react";
 import Select from "../components/Select";
+import EmailGroup from "../components/EmailGroup";
 
 const SignWrap = styled.div`
   display: grid;
@@ -171,6 +172,20 @@ const optionPosition = [
     text: "부장",
   },
 ];
+const optionMail = [
+  {
+    value: "select1",
+    text: "gmail.com",
+  },
+  {
+    value: "select2",
+    text: "kakao.com",
+  },
+  {
+    value: "select3",
+    text: "naver.com",
+  },
+];
 
 const CreateAccount = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -226,8 +241,10 @@ const CreateAccount = () => {
                 <FormText $error>이름을 입력해 주세요.</FormText>
               </div>
               <div>
-                <Input type="email" label="Email" labelText="Email" />
-                <FormText $error>이메일을 입력해 주세요.</FormText>
+                <EmailGroup title="Email">
+                  <Input type="text" />
+                  <Select options={optionMail} />
+                </EmailGroup>
               </div>
               <div>
                 <Input type="password" label="Password" labelText="Password" showPassword={true} />
