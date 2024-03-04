@@ -40,6 +40,7 @@ const RadioButton = styled.input`
 const Label = styled.label`
   cursor: pointer;
   font-size: 0.9rem;
+  white-space: nowrap;
 `;
 export const RadioWrap = styled.div`
   input ~ input {
