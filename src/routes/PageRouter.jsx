@@ -13,6 +13,7 @@ import Salary from "../pages/Salary";
 import NotFound from "../pages/NotFound";
 import SalaryWrite from "../components/Board/SalaryWrite";
 import AttendanceWrite from "../components/Board/AttendanceWrite";
+import AttendanceRead from "../components/Board/AttendanceRead";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "attendance/write",
         element: <AttendanceWrite />,
+      },
+      {
+        path: "attendance/read",
+        element: <AttendanceRead />,
       },
       {
         path: "styleguide",

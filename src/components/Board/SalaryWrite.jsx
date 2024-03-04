@@ -52,7 +52,7 @@ const SalaryWrite = () => {
         <hr />
         <div className="align both">
           <Button $color="secondary" onClick={Back}>
-            리스트
+            이전
           </Button>
           <Button $color="primary">급여지급</Button>
         </div>

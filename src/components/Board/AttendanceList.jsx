@@ -3,6 +3,7 @@ import { Badge, Button, Grid, GridColumnSpan, PagingItem, Table, TablePaging } f
 import Dialog from "../Dialog";
 import Input from "../Input";
 import Radio, { RadioGroup } from "../Radio";
+import { Link } from "react-router-dom";
 
 const AttendanceList = ({ ...props }) => {
   return (
@@ -26,7 +27,9 @@ const AttendanceList = ({ ...props }) => {
         </thead>
         <tbody>
           <tr>
-            <td>휴가입니다.</td>
+            <td>
+              <Link to="/attendance/read">휴가입니다.</Link>
+            </td>
             <td>2024.02.20 ~ 2024.03.20</td>
             <td>
               <Badge $color="primary">휴가</Badge>
@@ -41,7 +44,9 @@ const AttendanceList = ({ ...props }) => {
             </td>
           </tr>
           <tr>
-            <td>신청합니다.</td>
+            <td>
+              <Link to="/attendance/read">신청합니다.</Link>
+            </td>
             <td>2024.02.20</td>
             <td>
               <Badge $color="warning">조퇴</Badge>
@@ -56,7 +61,9 @@ const AttendanceList = ({ ...props }) => {
             </td>
           </tr>
           <tr>
-            <td>신청합니다.</td>
+            <td>
+              <Link to="/attendance/read">신청합니다.</Link>
+            </td>
             <td>2024.02.20 ~ 2024.03.20</td>
             <td>
               <Badge $color="danger">경조사</Badge>
@@ -71,7 +78,9 @@ const AttendanceList = ({ ...props }) => {
             </td>
           </tr>
           <tr>
-            <td>신청합니다.</td>
+            <td>
+              <Link to="/attendance/read">신청합니다.</Link>
+            </td>
             <td>2024.02.20 ~ 2024.03.20</td>
             <td>
               <Badge $color="secondary">기타</Badge>
