@@ -6,6 +6,8 @@ import { Button } from "../components/GlobalStyles";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/logo.svg";
+import EmailGroup from "../components/EmailGroup";
+import Select from "../components/Select";
 
 const LoginWrap = styled.div`
   display: grid;
@@ -50,7 +52,20 @@ const LoginInner = styled.div`
     margin-bottom: -0.5rem;
   }
 `;
-
+const optionMail = [
+  {
+    value: "select1",
+    text: "gmail.com",
+  },
+  {
+    value: "select2",
+    text: "kakao.com",
+  },
+  {
+    value: "select3",
+    text: "naver.com",
+  },
+];
 const Login = () => {
   return (
     <LoginWrap>
@@ -64,7 +79,10 @@ const Login = () => {
         </Heading>
         <p>계정을 생성하고 4U Team 인트라넷 모험을 떠나보세요!</p>
         <div>
-          <Input type="text" label="Email" labelText="Email" placeholder="name@email.domain" />
+          <EmailGroup title="email">
+            <Input type="text" />
+            <Select options={optionMail} />
+          </EmailGroup>
         </div>
         <div>
           <Input type="password" label="Password" labelText="Password" showPassword />

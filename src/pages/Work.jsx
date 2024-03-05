@@ -6,21 +6,39 @@ import { Calendar } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 
 import date from "../assets/data/date";
+import Dialog from "../components/Dialog";
+import Input from "../components/Input";
 
 const CalendarWrap = styled(Card)`
   overflow: hidden;
   > div {
     padding: 0;
   }
+  .fc-theme-standard .fc-scrollgrid {
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+  .fc-theme-standard tr:last-child td {
+    border-bottom: none;
+  }
+  .fc-theme-standard thead th:last-child,
+  .fc-theme-standard tbody td:last-child {
+    border-right: none;
+  }
+  .fc-theme-standard thead th:first-child,
+  .fc-theme-standard tbody td:first-child {
+    border-left: none;
+  }
   .fc {
-    .fc-theme-standard {
-      th {
-        > div {
-          padding: 5px;
-          font-size: 0.9rem;
-          font-weight: 700;
-        }
-      }
+    .fc-toolbar-title {
+      font-size: 1.125rem;
+      font-weight: 500;
+    }
+    .fc-col-header-cell-cushion {
+      padding: 4px;
+      font-weight: 500;
+      font-size: 0.9rem;
     }
 
     .fc-daygrid-day-frame {
@@ -52,10 +70,8 @@ const CalendarWrap = styled(Card)`
     }
     .fc-button {
       padding: 0;
-      width: 20px;
-      height: 20px;
       .fc-icon {
-        font-size: 0;
+        font-size: 100%;
       }
     }
     .fc-button-primary {
@@ -82,28 +98,64 @@ const CalendarWrap = styled(Card)`
       }
     }
     .fc-daygrid-day.fc-day-today {
-      background-color: #dbdade;
+      background-color: #f1f0f2;
     }
     .fc-today-button {
-      width: auto;
       color: var(--primary);
+      background-color: var(--primaryLabel);
+      padding: 0.3rem 0.8rem;
+      white-space: nowrap;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      margin: 0 0.75rem;
       &:disabled {
-        color: var(--primary);
-        opacity: 0.8;
+        color: var(--secondary);
+        background-color: var(--secondaryLabel);
+        opacity: 0.7;
       }
     }
     .fc-toolbar {
       display: grid;
       grid-template-columns: min-content 1fr min-content;
       align-items: center;
+      padding: 1.5rem;
+      padding-bottom: 0;
+      .fc-toolbar-chunk {
+        &:first-child {
+          display: flex;
+          align-items: center;
+        }
+      }
     }
     .fc-button-group > .fc-button {
       flex: none;
     }
+    .fc-addEventButton-button {
+      display: flex;
+      align-items: center;
+      background-color: #7367f0;
+      color: #fff;
+      font-size: 0.9375rem;
+      white-space: nowrap;
+      padding: 0.3rem 1.25rem;
+      border-radius: 0.375rem;
+      &::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='white' class='bi bi-plus' viewBox='0 0 16 16'%3E%3Cpath d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4'/%3E%3C/svg%3E");
+        transform: translateY(2px);
+      }
+      &:not(:disabled):active {
+        background-color: #7367f0;
+        color: #fff;
+      }
+    }
   }
-
+  .fc-prev-button,
   .fc-next-button {
-    padding: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
   }
   .fc-icon-chevron-left::before {
     content: "";
@@ -123,7 +175,11 @@ const CalendarWrap = styled(Card)`
 
 const Work = () => {
   const calendarRef = useRef(null);
+  const [inputData, setinput] = useState("second");
 
+  const onChange = (e) => {
+    setinput(e.target.value);
+  };
   useEffect(() => {
     const calendarEl = document.querySelector(".calendar");
 
@@ -141,21 +197,23 @@ const Work = () => {
       selectable: true,
       customButtons: {
         addEventButton: {
-          text: "일정삽입",
-          click: function () {
-            var dateStr = prompt("YYYY-MM-DD 형식으로 입력하세요.");
-            var date = new Date(dateStr + "T00:00:00");
+          text: "프로젝트 추가",
 
-            if (!isNaN(date.valueOf())) {
-              calendar.addEvent({
-                title: "일정 삽입",
-                start: date,
-                allDay: true,
-              });
-              alert("Update DB...");
-            } else {
-              alert("Invalid date.");
+          click: function (e) {
+            const btn = e.target;
+            if (!btn.hasAttribute("popovertarget")) {
+              btn.setAttribute("popovertarget", "aa");
             }
+            // var dateStr = prompt("YYYY-MM-DD 형식으로 입력하세요.");
+            // var date = new Date(inputData + "T00:00:00");
+            // if (!isNaN(date.valueOf())) {
+            //   calendar.addEvent({
+            //     title: "일정 삽입",
+            //     start: date,
+            //     allDay: true,
+            //   });
+            //   alert("Update DB...");
+            // }
           },
         },
       },
@@ -164,11 +222,16 @@ const Work = () => {
     return () => {
       calendar.destroy();
     };
-  }, []);
+  }, [inputData]);
   return (
-    <CalendarWrap>
-      <div ref={calendarRef} className="calendar"></div>
-    </CalendarWrap>
+    <>
+      <CalendarWrap>
+        <div ref={calendarRef} className="calendar"></div>
+      </CalendarWrap>
+      <Dialog className="aa" id={"aa"}>
+        <Input value={inputData} onChange={onChange} />
+      </Dialog>
+    </>
   );
 };
 

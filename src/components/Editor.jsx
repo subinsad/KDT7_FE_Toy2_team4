@@ -2,24 +2,6 @@ import styled from "styled-components";
 import Select from "./Select";
 import { useRef } from "react";
 
-const boldSelect = [
-  {
-    value: "normal",
-    text: "normal",
-  },
-  {
-    value: "small",
-    text: "small",
-  },
-  {
-    value: "large",
-    text: "large",
-  },
-  {
-    value: "xlarge",
-    text: "xlarge",
-  },
-];
 const EditorWrap = styled.div`
   border: 1px solid #dbdade;
 `;
@@ -44,6 +26,7 @@ const EditorTable = styled.div`
   }
 `;
 const Toolbar = styled.div`
+  padding: 0.5rem;
   display: flex;
   align-items: center;
   border-bottom: 1px solid #dbdade;
@@ -54,7 +37,27 @@ const Toolbar = styled.div`
   }
   button {
     padding: 0 1rem;
+    height: 2rem;
     background-color: var(--white);
+    border-radius: 0.375rem;
+    &:hover {
+      background-color: var(--secondaryLabel);
+    }
+    &.font1 {
+      font-size: 0.5rem;
+    }
+    &.font2 {
+      font-size: 0.7rem;
+    }
+    &.font3 {
+      font-size: 0.9rem;
+    }
+    &.font4 {
+      font-size: 1.1rem;
+    }
+    &.font5 {
+      font-size: 1.3rem;
+    }
     &.bold {
       font-weight: bold;
     }
@@ -82,26 +85,36 @@ const Title = styled.div`
   color: #5d596c;
 `;
 
+const changeFontSize = (size) => {
+  document.execCommand("fontSize", false, size);
+};
+const makeBold = () => {
+  document.execCommand("bold", false, null);
+};
+const makeItelic = () => {
+  document.execCommand("italic", false, null);
+};
+const makeUnderline = () => {
+  document.execCommand("underline", false, null);
+};
+const makeStrike = () => {
+  document.execCommand("strikethrough", false, null);
+};
+
 function Editor({ title, children, ...props }) {
   const editableRef = useRef(null);
-  const makeBold = () => {
-    document.execCommand("bold", false, null);
-  };
-  const makeItelic = () => {
-    document.execCommand("italic", false, null);
-  };
-  const makeUnderline = () => {
-    document.execCommand("underline", false, null);
-  };
-  const makeStrike = () => {
-    document.execCommand("strikethrough", false, null);
-  };
+  const fontSizeOptions = [1, 2, 3, 4, 5];
+
   return (
     <>
       {title && <Title>{title}</Title>}
       <EditorWrap {...props}>
         <Toolbar>
-          <Select options={boldSelect}></Select>
+          {fontSizeOptions.map((size) => (
+            <button key={size} className={`font${size}`} onClick={() => changeFontSize(size)}>
+              {size}
+            </button>
+          ))}
           <button className="bold" onClick={makeBold}>
             B
           </button>
