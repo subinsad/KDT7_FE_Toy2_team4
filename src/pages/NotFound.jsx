@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "../components/GlobalStyles";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import page404Img from "../assets/picture3.png";
 
 const NotFoundPage = styled.div`
   display: grid;
@@ -44,7 +45,7 @@ const NotFound = () => {
       <Button $color="primary" onClick={gotoHome}>
         첫페이지 바로가기
       </Button>
-      <img src="https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/illustrations/page-misc-error.png" alt="" />
+      <img src={page404Img} alt="" />
     </NotFoundPage>
   );
 };

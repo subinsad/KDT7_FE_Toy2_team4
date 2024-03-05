@@ -6,6 +6,7 @@ import { Button } from "../components/GlobalStyles";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/logo.svg";
+import loginImg from "../assets/picture1.png";
 import EmailGroup from "../components/EmailGroup";
 import Select from "../components/Select";
 
@@ -70,7 +71,7 @@ const Login = () => {
   return (
     <LoginWrap>
       <LoginLeft>
-        <img src="https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/illustrations/auth-login-illustration-light.png" alt="" />
+        <img src={loginImg} alt="" />
       </LoginLeft>
       <LoginInner>
         <img src={logo} alt="" />

@@ -2,15 +2,17 @@ import styled from "styled-components";
 import Card from "../components/Card";
 import Avatar from "../components/Avatar";
 import BoardList from "../components/Board/BoardList";
-import { Badge, Button } from "../components/GlobalStyles";
+import { Badge, Button, Grid } from "../components/GlobalStyles";
+import { useNavigate } from "react-router-dom";
+import { BarChart, Calendar2, CardList, Mailbox, MailboxFlag, People, Person, PersonBadge, PersonWorkspace, Telephone } from "react-bootstrap-icons";
+import bg from "../assets/bg_profile.png";
+import MypageHeader from "./MypageHeader";
 
 const MypageWrap = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 1rem;
   .person-info {
-    text-align: center;
-    padding-top: 1.5rem;
     &__name {
       padding: 0.5rem 0;
       font-size: 1.3rem;
@@ -56,7 +58,6 @@ const ThisMonthSalary = styled.div`
   font-weight: 900;
   font-size: 1.8rem;
   text-align: right;
-  padding: 0 0 1.5rem;
   span {
     color: var(--secondary);
     font-weight: 400;
@@ -79,63 +80,75 @@ function Mypage() {
   return (
     <>
       <MypageWrap>
+        <MypageHeader />
         <Left>
-          <Card className="person-info">
-            <Avatar size={"xl"} src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/15.png"} />
-            <p className="person-info__name">Name isHere</p>
-            <Badge $color="secondary">과장</Badge>
-            <hr />
-            <strong className="person-info__title">Details</strong>
+          <Card className="person-info" title={"Details"}>
+            {/* <strong className="person-info__title">Details</strong> */}
             <PersonalInfoList>
               <li>
-                <b>Name</b> : <strong> 아무개</strong>
+                <b>
+                  <Person /> 이름
+                </b>
+                : <strong> 아무개</strong>
               </li>
               <li>
-                <b>직급</b> : <strong> 과장</strong>
+                <b>
+                  <BarChart /> 직급
+                </b>
+                : <strong> 과장</strong>
               </li>
               <li>
-                <b>Email</b> : <strong> 123@123.com</strong>
+                <b>
+                  <MailboxFlag /> 이메일
+                </b>
+                : <strong> 123@123.com</strong>
               </li>
               <li>
-                <b>Status</b> :
-                <strong>
-                  <Badge $color="success" $size="xs">
-                    출근중
-                  </Badge>
-                </strong>
+                <b>
+                  <Telephone /> 전화번호
+                </b>
+                : <strong> 000-0000-0000</strong>
               </li>
               <li>
-                <b>Phone</b> : <strong> 000-0000-0000</strong>
-              </li>
-              <li>
-                <b>소속팀</b> :<strong> 개발팀</strong>
+                <b>
+                  <People /> 소속팀
+                </b>
+                :<strong> 개발팀</strong>
               </li>
             </PersonalInfoList>
-            <Button $color="primary" $size="sm">
-              회원정보수정
-            </Button>
           </Card>
 
-          <Card title={"근무일수"}>
-            <PersonalInfoList>
-              <li>
-                <b>이달의 예상 근무일</b> : <strong>20일</strong>
-              </li>
-              <li>
-                <b>이달의 근무일</b> : <strong>15일</strong>
-              </li>
-              <li>
-                <b>총 근무일</b> : <strong> 1,252일</strong>
-              </li>
-              <li>
-                <b>입사 일</b> : <strong> 2020년 2월 23일</strong>
-              </li>
-            </PersonalInfoList>
+          <Card title={"근무일 및 휴가"}>
+            <Grid $col="2">
+              <PersonalInfoList>
+                <li>
+                  <b>이달의 예상 근무일</b> : <strong>20일</strong>
+                </li>
+                <li>
+                  <b>이달의 근무일</b> : <strong>15일</strong>
+                </li>
+                <li>
+                  <b>총 근무일</b> : <strong> 1,252일</strong>
+                </li>
+                <li>
+                  <b>입사 일</b> : <strong> 2020년 2월 23일</strong>
+                </li>
+              </PersonalInfoList>
+              <PersonalInfoList>
+                <li>
+                  <b>남은 휴가일</b> : <strong>2일</strong>
+                </li>
+                <li>
+                  <b>전체 휴가일</b> : <strong>10일</strong>
+                </li>
+              </PersonalInfoList>
+            </Grid>
           </Card>
           <Card title={"이달의 급여"}>
             <ThisMonthSalary>
               ₩4,000,000<span>원</span>
             </ThisMonthSalary>
+            <hr />
             <PersonalInfoList className="salary">
               <li>
                 <b>실급여</b> : <strong>1,000,000원</strong>

@@ -9,6 +9,8 @@ import { ChatLeftHeart, ChatRightHeart, CheckSquareFill, HouseFill, PeopleFill }
 import { useState } from "react";
 import Select from "../components/Select";
 import EmailGroup from "../components/EmailGroup";
+import Avatar from "../components/Avatar";
+import accountImg from "../assets/picture2.png";
 
 const SignWrap = styled.div`
   display: grid;
@@ -120,6 +122,18 @@ const DoneJoin = styled.div`
   }
 `;
 
+const SignHeader = styled.div`
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  align-items: center;
+  gap: 0.2rem 0.5rem;
+  button {
+    grid-column: 1/2;
+    grid-row: 1/3;
+    align-self: start;
+  }
+`;
+
 const optionTeam = [
   {
     value: "team0",
@@ -203,7 +217,7 @@ const CreateAccount = () => {
   return (
     <SignWrap>
       <SignLeft>
-        <img src="https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/illustrations/auth-register-illustration-light.png" alt="" />
+        <img src={accountImg} alt="" />
       </SignLeft>
       <SignRight>
         <Step>
@@ -231,10 +245,13 @@ const CreateAccount = () => {
         </Step>
         {activeStep === 0 && (
           <>
-            <Heading size={"sm"} tag={"h2"}>
-              계정정보 입력
-            </Heading>
-            <p className="mb3">회원가입에 필요한 자세한 정보를 입력하세요.</p>
+            <SignHeader>
+              <Avatar $size="md" />
+              <Heading size={"sm"} tag={"h2"}>
+                계정정보 입력
+              </Heading>
+              <p className="mb3">회원가입에 필요한 자세한 정보를 입력하세요.</p>
+            </SignHeader>
             <Grid $col="2" className="mb3">
               <div>
                 <Input type="text" label="username" labelText="Username" />
@@ -259,10 +276,13 @@ const CreateAccount = () => {
         )}
         {activeStep === 1 && (
           <>
-            <Heading size={"sm"} tag={"h2"}>
-              개인정보 입력
-            </Heading>
-            <p className="mb3">회원가입에 필요한 자세한 정보를 입력하세요.</p>
+            <SignHeader>
+              <Avatar $size="md" />
+              <Heading size={"sm"} tag={"h2"}>
+                개인정보 입력
+              </Heading>
+              <p className="mb3">회원가입에 필요한 자세한 정보를 입력하세요.</p>
+            </SignHeader>
             <Grid $col="2" className="mb3">
               <div>
                 <Select options={optionTeam} label="team" labelText="Team" />

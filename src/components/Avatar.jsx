@@ -21,6 +21,15 @@ const AvatarWrap = styled.button`
     display: none;
   }
 
+  .personal-info & {
+    width: 150px;
+    height: 150px;
+    border-radius: 0.375rem;
+    background-size: 3rem;
+    outline: 5px solid #fff;
+    grid-row: span 2;
+  }
+
   ${({ $size }) =>
     $size === "xl" &&
     css`

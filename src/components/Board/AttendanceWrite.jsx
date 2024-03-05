@@ -57,6 +57,11 @@ const AttendanceWrite = () => {
             <Input type="date" label="enddate" labelText="근태 종료일" />
           </div>
           <GridColumnSpan $span="3">
+            <div>
+              <Input type="text" label="title" labelText="제목" />
+            </div>
+          </GridColumnSpan>
+          <GridColumnSpan $span="3">
             <Editor title="근태내용"></Editor>
           </GridColumnSpan>
         </Grid>

@@ -1,11 +1,8 @@
 import React from "react";
 import Card from "../Card";
 import { Button, Grid, GridColumnSpan } from "../GlobalStyles";
-import Select from "../Select";
 import Input from "../Input";
-import Radio, { RadioGroup } from "../Radio";
 import { useNavigate } from "react-router-dom";
-import Editor from "../Editor";
 const optionMember = [
   {
     value: "member1",
@@ -33,7 +30,7 @@ const AttendanceRead = () => {
   return (
     <>
       <Card title={"근태신청"}>
-        <Grid $col="3" className="mb3">
+        <Grid $col="3" className="mb3 attend-read">
           <div>
             <Input type="text" plainText label="job0" labelText="Name" readOnly="readonly" value="아무개" />
           </div>
@@ -52,6 +49,11 @@ const AttendanceRead = () => {
           <div>
             <Input type="text" plainText label="job5" labelText="근태 종료일" readOnly="readonly" value="2024-03-25" />
           </div>
+          <GridColumnSpan $span="3">
+            <div>
+              <Input type="text" plainText label="title" readOnly="readonly" labelText="제목" value="신청합니다." />
+            </div>
+          </GridColumnSpan>
           <GridColumnSpan $span="3">
             <hr />
             근태 내용삽입

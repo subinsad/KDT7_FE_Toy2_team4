@@ -14,6 +14,7 @@ import NotFound from "../pages/NotFound";
 import SalaryWrite from "../components/Board/SalaryWrite";
 import AttendanceWrite from "../components/Board/AttendanceWrite";
 import AttendanceRead from "../components/Board/AttendanceRead";
+import MypageEdit from "../pages/MypageEdit";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "mypage",
         element: <Mypage />,
+      },
+      {
+        path: "mypage/edit",
+        element: <MypageEdit />,
       },
       {
         path: "about",

@@ -200,7 +200,7 @@ function NavBar() {
           <AvatarList popover="auto" id="avatar">
             <ul>
               <li>
-                <Link to={""}>
+                <Link to={"/mypage"}>
                   <PersonCheck /> My Profile
                 </Link>
               </li>
