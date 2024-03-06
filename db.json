@@ -1,0 +1,44 @@
+{
+    "attendance": [
+        {
+            "id": 1,
+            "title": "1.제목",
+            "context": "첫번째글",
+            "attendanceStart": "2024-01-01",
+            "attendanceEnd": "2024-02-03",
+            "category": "휴가",
+            "state": "승인",
+            "authorId": "user1"
+        },
+        {
+            "id": 2,
+            "title": "2.제목",
+            "context": "22째글",
+            "attendanceStart": "2024-02-02",
+            "attendanceEnd": "2024-02-03",
+            "category": "조퇴",
+            "state": "반려",
+            "authorId": "user1"
+        },
+        {
+            "id": 3,
+            "title": "3.제목",
+            "context": "33째글",
+            "attendanceStart": "2024-03-03",
+            "attendanceEnd": "2024-02-03",
+            "category": "경조사",
+            "state": "대기",
+            "authorId": "user2"
+        },
+        {
+            "id": 4,
+            "title": "4.제목",
+            "context": "44째글",
+            "attendanceStart": "2024-04-01",
+            "attendanceEnd": "2024-02-03",
+            "category": "기타",
+            "state": "반려",
+            "authorId": "user2"
+        }
+    ]
+}
