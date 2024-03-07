@@ -1,13 +1,11 @@
-import moment from "momnet";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Card from "../components/Card";
 import { Calendar } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 
-import date from "../assets/data/date";
-import Dialog from "../components/Dialog";
-import Input from "../components/Input";
+import date from "../data/date";
+import WorkWrite from "../components/WorkWrite";
 
 const CalendarWrap = styled(Card)`
   overflow: hidden;
@@ -228,9 +226,7 @@ const Work = () => {
       <CalendarWrap>
         <div ref={calendarRef} className="calendar"></div>
       </CalendarWrap>
-      <Dialog className="aa" id={"aa"}>
-        <Input value={inputData} onChange={onChange} />
-      </Dialog>
+      <WorkWrite className="aa" id={"aa"} />
     </>
   );
 };
