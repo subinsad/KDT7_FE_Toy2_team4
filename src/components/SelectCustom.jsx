@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Avatar from "./Avatar";
-import { Badge } from "./GlobalStyles";
 import Alert from "./Alert";
+import users from "../data/user";
+import SelectUserItem from "./SelectUserItem";
 
 const Label = styled.div`
   margin-bottom: 0.25rem;
@@ -39,7 +40,7 @@ const SelectDetailButton = styled.button`
 const List = styled.ul`
   position: absolute;
   z-index: 10;
-  top: 2.5rem 0 0;
+  top: 2.5rem;
   width: 100%;
   height: auto;
   list-style: none;
@@ -84,7 +85,7 @@ const List = styled.ul`
     }
   }
   &.user {
-    height: 20rem;
+    max-height: 20rem;
     overflow: auto;
     button {
       justify-content: flex-start;
@@ -102,6 +103,10 @@ const List = styled.ul`
       span {
         flex: 1;
       }
+      &.active {
+        color: var(--primary);
+        background-color: var(--white);
+      }
     }
   }
 `;
@@ -109,9 +114,11 @@ const SelectDetailWrap = styled.div`
   position: relative;
 `;
 const MemberTag = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 24rem;
   padding: 0.5rem 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(3rem, auto));
+  gap: 0.3rem 0.4rem;
   .tag {
     display: inline-grid;
     white-space: nowrap;
@@ -124,6 +131,7 @@ const SelectCustom = ({ option, labelText }) => {
   const [isList, setIsList] = useState(false);
   const [isValue, setIsValue] = useState("SelectDetail");
   const [isUser, setIsUser] = useState("멤버선택");
+  const [tagVisible, setTagVisible] = useState([]);
 
   const handleList = () => {
     setIsList(!isList);
@@ -132,9 +140,10 @@ const SelectCustom = ({ option, labelText }) => {
     setIsValue(e.target.textContent);
     setIsList(false);
   };
-  const handleUser = (e) => {
-    setIsValue(e.target.textContent);
+  const handleUserSelection = (value) => {
+    setIsUser(value);
     setIsList(false);
+    setTagVisible([...tagVisible, value]);
   };
 
   return (
@@ -144,7 +153,7 @@ const SelectCustom = ({ option, labelText }) => {
         <SelectDetailButton onClick={handleList}>{option === "state" ? isValue : isUser}</SelectDetailButton>
         {isList &&
           (option === "state" ? (
-            <List cla>
+            <List>
               <li>
                 <button value="pending" onClick={handleText}>
                   대기중
@@ -163,70 +172,21 @@ const SelectCustom = ({ option, labelText }) => {
             </List>
           ) : (
             <>
-              <MemberTag>
-                <Alert color="primary" close className="tag">
-                  아무개
-                </Alert>
-              </MemberTag>
               <List className="user">
-                <li>
-                  <button value="pending" onClick={handleUser}>
-                    <Avatar size={"sm"} src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/7.png"} role="strong" />
-                    <span className="name">Ha</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="progress" onClick={handleUser}>
-                    <Avatar size={"sm"} role="strong" />
-                    <span className="name">Mr. So</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="completed" onClick={handleUser}>
-                    <Avatar size={"sm"} role="strong" />
-                    <span className="name">감무양</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="pending" onClick={handleUser}>
-                    <Avatar size={"sm"} src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/7.png"} role="strong" />
-                    <span className="name">Ha</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="progress" onClick={handleUser}>
-                    <Avatar size={"sm"} role="strong" />
-                    <span className="name">Mr. So</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="completed" onClick={handleUser}>
-                    <Avatar size={"sm"} role="strong" />
-                    <span className="name">감무양</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="pending" onClick={handleUser}>
-                    <Avatar size={"sm"} src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/7.png"} role="strong" />
-                    <span className="name">Ha</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="progress" onClick={handleUser}>
-                    <Avatar size={"sm"} role="strong" />
-                    <span className="name">Mr. So</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="completed" onClick={handleUser}>
-                    <Avatar size={"sm"} role="strong" />
-                    <span className="name">감무양</span>
-                  </button>
-                </li>
+                {users.map((user) => (
+                  <SelectUserItem key={user.id} {...user} onChecked={handleUserSelection} />
+                ))}
               </List>
             </>
           ))}
       </SelectDetailWrap>
+      <MemberTag>
+        {tagVisible.map((user, index) => (
+          <Alert key={index} color="primary" close className="tag">
+            {user}
+          </Alert>
+        ))}
+      </MemberTag>
     </>
   );
 };

@@ -2,6 +2,7 @@ import { ArrowDownLeftSquare, Bell, BoxArrowInLeft, BoxArrowInRight, BoxArrowRig
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "./Avatar";
+import { useRef, useState } from "react";
 
 const NavBarWrap = styled.div`
   position: fixed;
@@ -26,11 +27,15 @@ const NavBarWrap = styled.div`
     display: flex;
     justify-content: end;
     position: relative;
+    right: 0;
     gap: 0.5rem;
     z-index: 20;
     height: 100%;
     padding: 0.5rem 1.5rem;
     background-color: rgba(255, 255, 255, 0.95);
+  }
+  button {
+    background-color: transparent;
   }
   @media (max-width: 1800px) {
     left: 17.25rem;
@@ -60,8 +65,9 @@ const Alrams = styled.button`
 `;
 const AlramList = styled.div`
   position: fixed;
-  left: calc(50% + 34rem);
-  top: 4rem;
+  inset: inherit;
+  left: ${(props) => props.$left && `calc(${props.$left} - 200px)`};
+  top: ${(props) => props.$top && `calc(${props.$top} + 35px)`};
   overflow: visible;
   inset: none;
   box-shadow: 0 0.25rem 1rem rgba(165, 163, 174, 0.45);
@@ -112,11 +118,11 @@ const AlramList = styled.div`
 `;
 
 const AvatarList = styled.div`
-  position: fixed;
-  left: calc(50% + 37.5rem);
-  top: 4.5rem;
+  position: absolute;
+  inset: inherit;
+  left: ${(props) => props.$left && `calc(${props.$left} - 180px)`};
+  top: ${(props) => props.$top && `calc(${props.$top} + 50px)`};
   overflow: visible;
-  inset: none;
   box-shadow: 0 0.25rem 1rem rgba(165, 163, 174, 0.45);
   background-color: var(--white);
   border-radius: 0.375rem;
@@ -141,15 +147,25 @@ const AvatarList = styled.div`
 `;
 
 function NavBar() {
+  const [isrect, setIsRect] = useState([]);
+  const avatarListRef = useRef(null);
+
+  const handleAvatar = (e) => {
+    const rect = e.target.getBoundingClientRect();
+    setIsRect([`${rect.left}px`, `${rect.top}px`]);
+  };
+  const closeAvatarList = () => {
+    setIsRect([]);
+  };
   return (
     <>
       <NavBarWrap>
         <nav className="navbar__wrap">
-          <Alrams popovertarget="alram">
+          <Alrams onClick={handleAvatar} popovertarget="alram">
             <Bell />
             <span>5</span>
           </Alrams>
-          <AlramList popover="auto" id="alram">
+          <AlramList ref={avatarListRef} popover="auto" id="alram" $left={isrect[0]} $top={isrect[1]}>
             <strong>Notification</strong>
             <ul>
               <li>
@@ -196,8 +212,10 @@ function NavBar() {
               </li>
             </ul>
           </AlramList>
-          <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} popovertarget="avatar" />
-          <AvatarList popover="auto" id="avatar">
+          <button onClick={handleAvatar} popovertarget="avatar">
+            <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+          </button>
+          <AvatarList ref={avatarListRef} popover="auto" id="avatar" $left={isrect[0]} $top={isrect[1]}>
             <ul>
               <li>
                 <Link to={"/mypage"}>
