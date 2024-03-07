@@ -1,16 +1,15 @@
 import Heading from "../components/Heading";
 import Input from "../components/Input";
-import Checkbox from "../components/Checkbox";
 import { Button, FormText, Grid, GridColumnSpan } from "../components/GlobalStyles";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import logo from "../assets/logo.svg";
-import { ChatLeftHeart, ChatRightHeart, CheckSquareFill, HouseFill, PeopleFill } from "react-bootstrap-icons";
+import { Camera, ChatLeftHeart, CheckSquareFill, HouseFill, PeopleFill } from "react-bootstrap-icons";
 import { useState } from "react";
 import Select from "../components/Select";
 import EmailGroup from "../components/EmailGroup";
 import Avatar from "../components/Avatar";
 import accountImg from "../assets/picture2.png";
+import mypageHeader from "../assets/bg_profile.png";
 
 const SignWrap = styled.div`
   display: grid;
@@ -43,7 +42,7 @@ const SignRight = styled.div`
 `;
 const Step = styled.ul`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(2rem, 1fr));
   padding: 0 0 3rem;
 `;
 const StepItem = styled.li`
@@ -79,7 +78,7 @@ const StepItem = styled.li`
     &::before {
       content: "";
       position: absolute;
-      left: -32px;
+      left: -28px;
       top: 50%;
       width: 7px;
       height: 7px;
@@ -122,15 +121,40 @@ const DoneJoin = styled.div`
   }
 `;
 
-const SignHeader = styled.div`
-  display: grid;
-  grid-template-columns: min-content 1fr;
-  align-items: center;
-  gap: 0.2rem 0.5rem;
+const SignHeader = styled.div``;
+const SampleMypage = styled.div`
+  position: relative;
+  .skeleton {
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    grid-template-rows: 1fr min-content;
+    gap: 0.5rem 1rem;
+    padding: 0.5rem;
+    margin-top: -2rem;
+    > div {
+      background-color: var(--secondary);
+      opacity: 0.2;
+    }
+    &__name {
+      width: 5rem;
+      height: 1rem;
+      align-self: end;
+    }
+    &__info {
+      width: 10rem;
+      height: 0.5rem;
+    }
+  }
   button {
-    grid-column: 1/2;
-    grid-row: 1/3;
-    align-self: start;
+    grid-row: span 2;
+    border-radius: 0.375rem;
+    width: 5rem;
+    height: 5rem;
+    pointer-events: none;
+    cursor: auto;
+  }
+  img {
+    width: 100%;
   }
 `;
 
@@ -237,6 +261,13 @@ const CreateAccount = () => {
           </StepItem>
           <StepItem $active={activeStep === 2 && `$active`}>
             <span>
+              <Camera />
+            </span>
+            <strong>Personal</strong>
+            <p>사진 업로드</p>
+          </StepItem>
+          <StepItem $active={activeStep === 3 && `$active`}>
+            <span>
               <CheckSquareFill />
             </span>
             <strong>Done</strong>
@@ -246,7 +277,6 @@ const CreateAccount = () => {
         {activeStep === 0 && (
           <>
             <SignHeader>
-              <Avatar $size="md" />
               <Heading size={"sm"} tag={"h2"}>
                 계정정보 입력
               </Heading>
@@ -277,7 +307,6 @@ const CreateAccount = () => {
         {activeStep === 1 && (
           <>
             <SignHeader>
-              <Avatar $size="md" />
               <Heading size={"sm"} tag={"h2"}>
                 개인정보 입력
               </Heading>
@@ -300,6 +329,28 @@ const CreateAccount = () => {
                 <Input type="text" label="shortInfo" labelText="Short Words" placeholder="프로필 한줄 소개" />
                 <FormText $error>프로필 한줄글을 입력해주세요.</FormText>
               </div>
+            </Grid>
+          </>
+        )}
+        {activeStep === 2 && (
+          <>
+            <SignHeader>
+              <Heading size={"sm"} tag={"h2"}>
+                사진 업로드
+              </Heading>
+              <p className="mb3">본인 인증을 위한 사진을 업로드하세요.</p>
+            </SignHeader>
+            <Grid $col="2" className="mb3">
+              <GridColumnSpan $span="2">
+                <SampleMypage>
+                  <img src={mypageHeader} alt="" />
+                  <div className="skeleton">
+                    <Avatar $size="md" />
+                    <div className="skeleton__name"></div>
+                    <div className="skeleton__info"></div>
+                  </div>
+                </SampleMypage>
+              </GridColumnSpan>
               <div>
                 <Input type="file" label="file1" labelText="Profile Image" />
                 <FormText $error>프로필 사진을 올려주세요.</FormText>
@@ -311,7 +362,8 @@ const CreateAccount = () => {
             </Grid>
           </>
         )}
-        {activeStep === 2 && (
+
+        {activeStep === 3 && (
           <>
             <Heading size={"sm"} tag={"h2"}>
               회원가입 완료
@@ -330,7 +382,7 @@ const CreateAccount = () => {
             </DoneJoin>
           </>
         )}
-        {activeStep !== 2 && (
+        {activeStep !== 3 && (
           <div className="align both">
             <Button $color="secondary" disabled={activeStep === 0 && `disabled`} onClick={prevPage}>
               이전
