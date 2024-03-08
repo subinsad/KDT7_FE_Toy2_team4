@@ -10,9 +10,6 @@ import { useEffect } from "react";
 import { addUserInfo2 } from "../../store/signInfo.slice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { auth } from "../../firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { fetchUserInfo } from "../../store/user.slice";
 
 const SignHeader = styled.div`
   display: grid;
@@ -78,7 +75,7 @@ const optionPosition = [
 
 const JoinSecond = ({ setActiveStep }) => {
     const dispatch = useDispatch()
-    const { name, email, password, team, position, phone, shortInfo } = useSelector((state) => state.signInfoSlice.signInfo)
+    const { team, position, phone, shortInfo } = useSelector((state) => state.signInfoSlice.signInfo)
 
     const [formData, setFormData] = useState({
         team: team || "",

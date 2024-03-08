@@ -44,6 +44,7 @@ const JoinComplete = () => {
   const gotoLogin = () => {
     navigate("/main");
   };
+
   useEffect(() => {
     dispatch(clearUserInfo())
   }, [])
