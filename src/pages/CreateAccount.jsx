@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { CheckSquareFill, HouseFill, PeopleFill } from "react-bootstrap-icons";
+import { Camera, CheckSquareFill, HouseFill, PeopleFill } from "react-bootstrap-icons";
 import { useState } from "react";
 import accountImg from "../assets/picture2.png";
 import JoinFirst from "../components/signComponents/JoinFirst";
 import JoinSecond from "../components/signComponents/JoinSecond";
+import JoinComplete from "../components/signComponents/JoinComplete";
 import JoinThird from "../components/signComponents/JoinThird";
 
 const SignWrap = styled.div`
@@ -88,7 +89,7 @@ const StepItem = styled.li`
 
 const CreateAccount = () => {
   const [activeStep, setActiveStep] = useState(0);
-  
+
   return (
     <SignWrap>
       <SignLeft>
@@ -112,6 +113,13 @@ const CreateAccount = () => {
           </StepItem>
           <StepItem $active={activeStep === 2 && `$active`}>
             <span>
+              <Camera />
+            </span>
+            <strong>Personal</strong>
+            <p>사진 업로드</p>
+          </StepItem>
+          <StepItem $active={activeStep === 3 && `$active`}>
+            <span>
               <CheckSquareFill />
             </span>
             <strong>Done</strong>
@@ -125,7 +133,10 @@ const CreateAccount = () => {
           <JoinSecond setActiveStep={setActiveStep} />
         )}
         {activeStep === 2 && (
-          <JoinThird />
+          <JoinThird setActiveStep={setActiveStep} />
+        )}
+        {activeStep === 3 && (
+          <JoinComplete />
         )}
       </SignRight>
     </SignWrap>

@@ -260,7 +260,7 @@ const JoinSecond = ({ setActiveStep }) => {
                     이전
                 </Button>
                 <Button $color="primary" onClick={handleSubmit}>
-                    완료
+                    다음
                 </Button>
             </div>
         </>
