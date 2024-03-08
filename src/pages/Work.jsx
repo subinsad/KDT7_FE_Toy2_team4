@@ -173,10 +173,12 @@ const CalendarWrap = styled(Card)`
 
 const Work = () => {
   const calendarRef = useRef(null);
-  const [inputData, setinput] = useState("second");
+  const [inputData, setinput] = useState({});
 
-  const onChange = (e) => {
-    setinput(e.target.value);
+  const handleData = (value) => {
+    setinput(value);
+
+    // console.log(value);
   };
   useEffect(() => {
     const calendarEl = document.querySelector(".calendar");
@@ -202,6 +204,13 @@ const Work = () => {
             if (!btn.hasAttribute("popovertarget")) {
               btn.setAttribute("popovertarget", "aa");
             }
+            // calendar.addEvent({
+            //   title: inputData.title,
+            //   start: inputData.start,
+            //   end: inputData.end,
+            //   allDay: true,
+            // });
+
             // var dateStr = prompt("YYYY-MM-DD 형식으로 입력하세요.");
             // var date = new Date(inputData + "T00:00:00");
             // if (!isNaN(date.valueOf())) {
@@ -226,7 +235,7 @@ const Work = () => {
       <CalendarWrap>
         <div ref={calendarRef} className="calendar"></div>
       </CalendarWrap>
-      <WorkWrite className="aa" id={"aa"} />
+      <WorkWrite className="aa" id={"aa"} getData={handleData} />
     </>
   );
 };

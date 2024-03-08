@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Heading from "../components/Heading";
 import { X } from "react-bootstrap-icons";
 import styled from "styled-components";
@@ -77,7 +77,29 @@ const optionProject = [
   },
 ];
 
-const WorkWrite = ({ id }) => {
+const WorkWrite = ({ id, getData }) => {
+  const [info, setInfo] = useState({});
+  const handleProject = () => {
+    // getData(info);
+    console.log(info);
+  };
+
+  const onTitle = (e) => {
+    setInfo({ ...info, title: e.target.value });
+  };
+  const onStart = (e) => {
+    setInfo({ ...info, start: e.target.value });
+  };
+  const onEnd = (e) => {
+    setInfo({ ...info, end: e.target.value });
+  };
+  const onSelect = (e) => {
+    setInfo({ ...info, end: e.target.value });
+  };
+  const onDetail = (e) => {
+    setInfo({ ...info, detail: e.target.querySelector("[contentEditable]") });
+  };
+
   return (
     <Popup popover="auto" id={id}>
       <PopupHeader>
@@ -88,28 +110,28 @@ const WorkWrite = ({ id }) => {
       </PopupHeader>
       <PopupContent>
         <div className="mb2">
-          <Input type="text" label="project1" labelText="프로젝트명" />
+          <Input type="text" label="project1" labelText="프로젝트명" onChange={onTitle} />
         </div>
         <div className="mb2">
-          <Input type="date" label="project2" labelText="프로젝트 시작일" />
+          <Input type="date" label="project2" labelText="프로젝트 시작일" onChange={onStart} />
         </div>
         <div className="mb2">
-          <Input type="date" label="project3" labelText="프로젝트 종료일" />
+          <Input type="date" label="project3" labelText="프로젝트 종료일" onChange={onEnd} />
         </div>
         <div className="mb2">
           <SelectDetail options="user" label="project4" labelText="프로젝트 참여 멤버" />
         </div>
         <div className="mb2">
-          <SelectDetail option="state" labelText="프로젝트 현황" />
+          <SelectDetail option="state" labelText="프로젝트 현황" onSelected={onSelect} />
         </div>
         {/* <div className="mb2">
           <Select options={optionProject} label="project5" labelText="프로젝트 진행 현황" />
         </div> */}
         <div>
-          <Editor title="프로젝트 상세정보"></Editor>
+          <Editor title="프로젝트 상세정보" onChange={onDetail}></Editor>
         </div>
         <div>
-          <Button $color="primary" className="mr2">
+          <Button $color="primary" className="mr2" onClick={handleProject} popovertarget={id} popovertargetaction="hide">
             Add
           </Button>
           <Button $color="secondary">Cancel</Button>

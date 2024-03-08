@@ -127,7 +127,7 @@ const MemberTag = styled.div`
   }
 `;
 
-const SelectCustom = ({ option, labelText }) => {
+const SelectCustom = ({ option, labelText, onSelected }) => {
   const [isList, setIsList] = useState(false);
   const [isValue, setIsValue] = useState("SelectDetail");
   const [isUser, setIsUser] = useState("멤버선택");
@@ -139,6 +139,8 @@ const SelectCustom = ({ option, labelText }) => {
   const handleText = (e) => {
     setIsValue(e.target.textContent);
     setIsList(false);
+    // console.log(e.target.value);
+    onSelected(e.target.value);
   };
   const handleUserSelection = (value) => {
     setIsUser(value);
