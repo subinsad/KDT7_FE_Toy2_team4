@@ -1,16 +1,14 @@
-import Heading from "../components/Heading";
-import Input from "../components/Input";
-import Checkbox from "../components/Checkbox";
-import { Button, FormText, Grid, GridColumnSpan } from "../components/GlobalStyles";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
-import logo from "../assets/logo.svg";
-import { ChatLeftHeart, ChatRightHeart, CheckSquareFill, HouseFill, PeopleFill } from "react-bootstrap-icons";
+import styled from "styled-components";
+import { Camera, CheckSquareFill, HouseFill, PeopleFill } from "react-bootstrap-icons";
 import { useState } from "react";
-import Select from "../components/Select";
-import EmailGroup from "../components/EmailGroup";
-import Avatar from "../components/Avatar";
 import accountImg from "../assets/picture2.png";
+import JoinFirst from "../components/signComponents/JoinFirst";
+import JoinSecond from "../components/signComponents/JoinSecond";
+import JoinComplete from "../components/signComponents/JoinComplete";
+import JoinThird from "../components/signComponents/JoinThird";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignWrap = styled.div`
   display: grid;
@@ -43,7 +41,7 @@ const SignRight = styled.div`
 `;
 const Step = styled.ul`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(2rem, 1fr));
   padding: 0 0 3rem;
 `;
 const StepItem = styled.li`
@@ -79,7 +77,7 @@ const StepItem = styled.li`
     &::before {
       content: "";
       position: absolute;
-      left: -32px;
+      left: -28px;
       top: 50%;
       width: 7px;
       height: 7px;
@@ -91,129 +89,19 @@ const StepItem = styled.li`
   }
 `;
 
-const rotate = keyframes`
-  0% {
-    transform: rotateY(0);
-  }
-  80% {
-    transform: rotateY(360deg);
-  }
-  100% {
-    transform: rotateY(360deg);
-  }
-`;
-
-const DoneJoin = styled.div`
-  line-height: 1.4;
-  text-align: left;
-  svg {
-    display: block;
-    margin: 0.5rem 0;
-    font-size: 3rem;
-    color: var(--danger);
-    path:last-child {
-      animation: ${rotate} infinite 1s;
-      transform-box: fill-box;
-      transform-origin: center;
-    }
-  }
-  button {
-    margin-top: 1rem;
-  }
-`;
-
-const SignHeader = styled.div`
-  display: grid;
-  grid-template-columns: min-content 1fr;
-  align-items: center;
-  gap: 0.2rem 0.5rem;
-  button {
-    grid-column: 1/2;
-    grid-row: 1/3;
-    align-self: start;
-  }
-`;
-
-const optionTeam = [
-  {
-    value: "team0",
-    text: "기획팀",
-  },
-  {
-    value: "team1",
-    text: "개발팀",
-  },
-  {
-    value: "team2",
-    text: "디자인팀",
-  },
-  {
-    value: "team3",
-    text: "운영팀",
-  },
-  {
-    value: "team4",
-    text: "회계팀",
-  },
-];
-const optionPosition = [
-  {
-    value: "position1",
-    text: "인턴",
-  },
-  {
-    value: "position2",
-    text: "사원",
-  },
-  {
-    value: "position3",
-    text: "대리",
-  },
-  {
-    value: "position4",
-    text: "과장",
-  },
-  {
-    value: "position5",
-    text: "팀장",
-  },
-  {
-    value: "position6",
-    text: "차장",
-  },
-  {
-    value: "position7",
-    text: "부장",
-  },
-];
-const optionMail = [
-  {
-    value: "select1",
-    text: "gmail.com",
-  },
-  {
-    value: "select2",
-    text: "kakao.com",
-  },
-  {
-    value: "select3",
-    text: "naver.com",
-  },
-];
 
 const CreateAccount = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const { userInfo } = useSelector((state) => state.userSlice)
   const navigate = useNavigate();
 
-  const nextPage = () => {
-    setActiveStep(activeStep + 1);
-  };
-  const prevPage = () => {
-    setActiveStep(activeStep - 1);
-  };
-  const gotoLogin = () => {
-    navigate("/login");
-  };
+  useEffect(() => {
+    if (!userInfo.name) {
+      return;
+    }
+    navigate("/");
+  }, [])
+
   return (
     <SignWrap>
       <SignLeft>
@@ -237,6 +125,13 @@ const CreateAccount = () => {
           </StepItem>
           <StepItem $active={activeStep === 2 && `$active`}>
             <span>
+              <Camera />
+            </span>
+            <strong>Personal</strong>
+            <p>사진 업로드</p>
+          </StepItem>
+          <StepItem $active={activeStep === 3 && `$active`}>
+            <span>
               <CheckSquareFill />
             </span>
             <strong>Done</strong>
@@ -244,101 +139,16 @@ const CreateAccount = () => {
           </StepItem>
         </Step>
         {activeStep === 0 && (
-          <>
-            <SignHeader>
-              <Avatar $size="md" />
-              <Heading size={"sm"} tag={"h2"}>
-                계정정보 입력
-              </Heading>
-              <p className="mb3">회원가입에 필요한 자세한 정보를 입력하세요.</p>
-            </SignHeader>
-            <Grid $col="2" className="mb3">
-              <div>
-                <Input type="text" label="username" labelText="Username" />
-                <FormText $error>이름을 입력해 주세요.</FormText>
-              </div>
-              <div>
-                <EmailGroup title="Email">
-                  <Input type="text" />
-                  <Select options={optionMail} />
-                </EmailGroup>
-              </div>
-              <div>
-                <Input type="password" label="Password" labelText="Password" showPassword={true} />
-                <FormText $error>비밀번호를 입력해주세요.</FormText>
-              </div>
-              <div>
-                <Input type="password" label="Password2" labelText="Confirm Password" showPassword={true} />
-                <FormText $error>비밀번호가 맞지 않습니다.</FormText>
-              </div>
-            </Grid>
-          </>
+          <JoinFirst setActiveStep={setActiveStep} />
         )}
         {activeStep === 1 && (
-          <>
-            <SignHeader>
-              <Avatar $size="md" />
-              <Heading size={"sm"} tag={"h2"}>
-                개인정보 입력
-              </Heading>
-              <p className="mb3">회원가입에 필요한 자세한 정보를 입력하세요.</p>
-            </SignHeader>
-            <Grid $col="2" className="mb3">
-              <div>
-                <Select options={optionTeam} label="team" labelText="Team" />
-                <FormText $error>소속을 선택해 주세요.</FormText>
-              </div>
-              <div>
-                <Select options={optionPosition} label="team" labelText="Job Position" />
-                <FormText $error>직급을 입력해주세요.</FormText>
-              </div>
-              <div>
-                <Input type="tel" label="tel" labelText="Phone" placeholder="000-0000-0000" />
-                <FormText $error>휴대폰번호를 입력해 주세요.</FormText>
-              </div>
-              <div>
-                <Input type="text" label="shortInfo" labelText="Short Words" placeholder="프로필 한줄 소개" />
-                <FormText $error>프로필 한줄글을 입력해주세요.</FormText>
-              </div>
-              <div>
-                <Input type="file" label="file1" labelText="Profile Image" />
-                <FormText $error>프로필 사진을 올려주세요.</FormText>
-              </div>
-              <div>
-                <Input type="file" label="file2" labelText="Mypage Background Image" />
-                <FormText $error>마이페이지 배경이미지를 올려주세요.</FormText>
-              </div>
-            </Grid>
-          </>
+          <JoinSecond setActiveStep={setActiveStep} />
         )}
         {activeStep === 2 && (
-          <>
-            <Heading size={"sm"} tag={"h2"}>
-              회원가입 완료
-            </Heading>
-            <DoneJoin className="mb3">
-              <ChatLeftHeart />
-              4U Team의 일원이 되신것을 환영합니다.
-              <br />
-              함께 성장하고 꿈을 이뤄봅시다.
-              <br />
-              로그인하고 꿈을 펼처보세요.
-              <br />
-              <Button $color="primary" onClick={gotoLogin}>
-                로그인
-              </Button>
-            </DoneJoin>
-          </>
+          <JoinThird setActiveStep={setActiveStep} />
         )}
-        {activeStep !== 2 && (
-          <div className="align both">
-            <Button $color="secondary" disabled={activeStep === 0 && `disabled`} onClick={prevPage}>
-              이전
-            </Button>
-            <Button $color="primary" onClick={nextPage}>
-              다음
-            </Button>
-          </div>
+        {activeStep === 3 && (
+          <JoinComplete />
         )}
       </SignRight>
     </SignWrap>

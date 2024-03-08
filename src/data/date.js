@@ -23,5 +23,6 @@ export default [
     title: "프로젝트3 발표",
     start: "2024-03-28",
     color: "#eae8fd ",
+    textColor: "red",
   },
 ];

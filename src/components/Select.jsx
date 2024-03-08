@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const SelectBox = styled.select`
+export const SelectBox = styled.select`
   --bs-form-select-bg-img: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%236f6b7d' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='white' stroke-opacity='0.2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   display: block;
   width: 100%;
@@ -18,6 +18,12 @@ const SelectBox = styled.select`
   border: 1px solid #dbdade;
   border-radius: 0.375rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  &:focus {
+    border-color: var(--primary);
+    background-color: #fff;
+    outline: 0;
+    box-shadow: 0 0.125rem 0.25rem rgba(165, 163, 174, 0.3);
+  }
 `;
 const Label = styled.label`
   display: inline-block;

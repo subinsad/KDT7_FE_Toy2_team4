@@ -1,15 +1,15 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getStorage } from 'firebase/storage';
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: 'AIzaSyCxE2Wf5DsUnqtvEPkDcuiXe0sOHiBkq6A',
-    authDomain: 'intranet-41b26.firebaseapp.com',
-    projectId: 'intranet-41b26',
-    storageBucket: 'intranet-41b26.appspot.com',
-    messagingSenderId: '910163893952',
-    appId: '1:910163893952:web:bbb6dc9cc7228b9f541725',
+    apiKey: "AIzaSyCMivqQXMZa_J_oZdxHnzaW8EQrLa09qSw",
+    authDomain: "salaryapp-aca78.firebaseapp.com",
+    projectId: "salaryapp-aca78",
+    storageBucket: "salaryapp-aca78.appspot.com",
+    messagingSenderId: "993302317562",
+    appId: "1:993302317562:web:7233a6560e361b6825fc43"
 };
 
 const app = initializeApp(firebaseConfig);
