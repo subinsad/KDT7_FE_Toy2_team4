@@ -1,7 +1,7 @@
 {
     "attendance": [
         {
-            "id": 1,
+            "attendanceId": 1,
             "title": "1.제목",
             "context": "첫번째글",
             "attendanceStart": "2024-01-01",
@@ -11,7 +11,7 @@
             "authorId": "user1"
         },
         {
-            "id": 2,
+            "attendanceId": 2,
             "title": "2.제목",
             "context": "22째글",
             "attendanceStart": "2024-02-02",
@@ -21,7 +21,7 @@
             "authorId": "user1"
         },
         {
-            "id": 3,
+            "attendanceId": 3,
             "title": "3.제목",
             "context": "33째글",
             "attendanceStart": "2024-03-03",
@@ -31,7 +31,7 @@
             "authorId": "user2"
         },
         {
-            "id": 4,
+            "attendanceId": 4,
             "title": "4.제목",
             "context": "44째글",
             "attendanceStart": "2024-04-01",
@@ -39,6 +39,29 @@
             "category": "기타",
             "state": "반려",
             "authorId": "user2"
+        }
+    ],
+    "user": [
+        {
+            "userId": "userid",
+            "userPosition": "과장",
+            "userName": "유저1이름",
+            "userNumber": "010-0000-0000",
+            "userTeam": "개발팀"
+        },
+        {
+            "userId": "userid",
+            "userPosition": "과장",
+            "userName": "유저2이름",
+            "userNumber": "010-0000-0000",
+            "userTeam": "개발팀"
+        },
+        {
+            "userId": "userid",
+            "userPosition": "과장",
+            "userName": "유저3이름",
+            "userNumber": "010-0000-0000",
+            "userTeam": "개발팀"
         }
     ]
 }

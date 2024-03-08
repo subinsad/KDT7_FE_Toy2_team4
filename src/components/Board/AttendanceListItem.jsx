@@ -1,34 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { Badge, Button } from '../GlobalStyles';
 
-import { Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 const AttendanceListItem = ({ item }) => {
     const [attendances, setAttendances] = useState([]); // json
     const [isAdmin, setIsAdmin] = useState(false);
     const [currentUser, setCurrentUser] = useState({ id: 'user1' }); // 로그인한 사용자 정보
 
+    const { attendanceId } = useParams();
+
     //카테고리 색상
     const categoryColor = (category) => {
-        if (category === '휴가') {
-            return 'primary';
-        } else if (category === '조퇴') {
-            return 'warning';
-        } else if (category === '경조사') {
-            return 'danger';
-        } else if (category === '기타') {
-            return 'secondary';
+        switch (category) {
+            case '휴가':
+                return 'primary';
+            case '조퇴':
+                return 'warning';
+            case '경조사':
+                return 'danger';
+            case '기타':
+                return 'secondary';
+            default:
+                return 'primary';
         }
     };
 
     //상태 색상
     const stateColor = (state) => {
-        if (state === '승인') {
-            return 'success';
-        } else if (state === '반려') {
-            return 'danger';
-        } else if (state === '대기') {
-            return 'primary';
+        switch (state) {
+            case '승인':
+                return 'success';
+            case '반려':
+                return 'danger';
+            case '대기':
+                return 'primary';
+            default:
+                return 'primary';
         }
     };
 
@@ -52,7 +60,11 @@ const AttendanceListItem = ({ item }) => {
     return (
         <>
             <td>
-                <Link to="/attendance/read">{item.title}</Link>
+                <Link
+                    to={`/attendance/read/${item.attendanceId}`}
+                    state={{ attendanceId: attendanceId }}>
+                    {item.title}
+                </Link>
             </td>
             <td>
                 {item.attendanceStart} ~ {item.attendanceEnd}
