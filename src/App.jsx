@@ -4,7 +4,6 @@ import router from "./routes/PageRouter";
 import { auth } from "./firebase";
 
 function App() {
-
   return (
     <>
       <GlobalStyles />

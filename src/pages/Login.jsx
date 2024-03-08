@@ -17,6 +17,7 @@ import Loading from "../components/Loading";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { fetchUserInfo } from "../store/user.slice";
+import { useSelector } from "react-redux";
 
 const LoginWrap = styled.div`
   display: grid;
@@ -83,7 +84,7 @@ const optionMail = [
 const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate();
-
+  const { userInfo } = useSelector((state) => state.userSlice)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -94,8 +95,12 @@ const Login = () => {
   })
 
   const handlePassword = (e) => {
-    const { value } = e.target
-    setPassword(value)
+    if (e.key === 'Enter') {
+      onSubmit();
+    } else {
+      const { value } = e.target;
+      setPassword(value);
+    }
   }
   const handleEmail = (e) => {
     const { value } = e.target
@@ -146,7 +151,11 @@ const Login = () => {
   };
 
   useEffect(() => {
-    dispatch(clearUserInfo())
+    if (!userInfo.name) {
+      dispatch(clearUserInfo());
+      return;
+    }
+    navigate("/main");
   }, [])
 
   useEffect(() => {

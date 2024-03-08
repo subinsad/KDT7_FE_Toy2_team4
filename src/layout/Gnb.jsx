@@ -2,6 +2,7 @@ import { BoxArrowInRight, Gear, Memory, Motherboard, PersonBoundingBox, PersonUp
 import { Link, useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
 import Heading from "../components/Heading";
+import { useSelector } from "react-redux";
 const AsideNav = styled.aside`
   position: fixed;
   left: 0;
@@ -75,6 +76,7 @@ const NavItem = styled.li`
 `;
 function Gnb() {
   const location = useLocation();
+  const { name } = useSelector((state) => state.userSlice.userInfo)
 
   return (
     <>
@@ -119,21 +121,29 @@ function Gnb() {
           PERSONAL
         </Heading>
         <ul>
+
           <NavItem $active={location.pathname.includes("/mypage")}>
             <Link to="mypage">
               <Gear /> Mypage
             </Link>
           </NavItem>
-          <NavItem $active={location.pathname === "/login"}>
-            <Link to="login">
-              <BoxArrowInRight /> login
-            </Link>
-          </NavItem>
-          <NavItem $active={location.pathname === "/create-account"}>
-            <Link to="create-account">
-              <PersonBoundingBox /> CreateAccount
-            </Link>
-          </NavItem>
+
+          {/* {!name && (
+            <NavItem $active={location.pathname === "/login"}>
+              <Link to="login">
+                <BoxArrowInRight /> login
+              </Link>
+            </NavItem>
+          )}
+
+          {!name && (
+            <NavItem $active={location.pathname === "/create-account"}>
+              <Link to="create-account">
+                <PersonBoundingBox /> CreateAccount
+              </Link>
+            </NavItem>
+          )} */}
+
         </ul>
       </AsideNav>
     </>

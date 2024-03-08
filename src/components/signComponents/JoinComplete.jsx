@@ -46,7 +46,6 @@ const JoinComplete = () => {
   };
   useEffect(() => {
     dispatch(clearUserInfo())
-
   }, [])
 
   return (

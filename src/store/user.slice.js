@@ -53,6 +53,14 @@ export const fetchUserInfo = createAsyncThunk(
 
 const initialState = {
     userInfo: {
+        name: "",
+        email: "",
+        userImg: "",
+        userBg: "",
+        phone: "",
+        position: "",
+        team: "",
+        shortInfo: ""
     }
 }
 
@@ -72,6 +80,18 @@ export const userSlice = createSlice({
                 userBg: action.payload
             }
         },
+        clearUser: (state) => {
+            state.userInfo = {
+                name: "",
+                email: "",
+                userImg: "",
+                userBg: "",
+                phone: "",
+                position: "",
+                team: "",
+                shortInfo: ""
+            }
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -91,5 +111,5 @@ export const userSlice = createSlice({
     }
 })
 
-export const { editUserImg, editUserBg } = userSlice.actions
+export const { editUserImg, editUserBg, clearUser } = userSlice.actions
 export default userSlice.reducer

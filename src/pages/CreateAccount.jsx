@@ -6,6 +6,9 @@ import JoinFirst from "../components/signComponents/JoinFirst";
 import JoinSecond from "../components/signComponents/JoinSecond";
 import JoinComplete from "../components/signComponents/JoinComplete";
 import JoinThird from "../components/signComponents/JoinThird";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignWrap = styled.div`
   display: grid;
@@ -89,6 +92,15 @@ const StepItem = styled.li`
 
 const CreateAccount = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const { userInfo } = useSelector((state) => state.userSlice)
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo.name) {
+      return;
+    }
+    navigate("/");
+  }, [])
 
   return (
     <SignWrap>
