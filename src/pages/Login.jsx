@@ -16,7 +16,7 @@ import { useState } from "react";
 import Loading from "../components/Loading";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { fetchUserInfo } from "../store/user.slice";
+import { clearUser, fetchUserInfo } from "../store/user.slice";
 import { useSelector } from "react-redux";
 
 const LoginWrap = styled.div`
@@ -151,11 +151,12 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (!userInfo.name) {
+    if (!userInfo.name) { // 유저 상태가 없으면 = 비어있으면 = 로그인 안되어 있으면
       dispatch(clearUserInfo());
-      return;
+      dispatch(clearUser())
+      return; //통과
     }
-    navigate("/main");
+    navigate("/main"); //유저 상태가 있으면  = 로그인 되어 있으면
   }, [dispatch])
 
   useEffect(() => {
