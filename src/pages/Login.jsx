@@ -156,7 +156,7 @@ const Login = () => {
       return;
     }
     navigate("/main");
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     const timer = setTimeout(() => {
