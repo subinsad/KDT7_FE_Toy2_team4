@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { auth, db } from '../../firebase';
-import {
-    collection,
-    limit,
-    onSnapshot,
-    orderBy,
-    query,
-} from 'firebase/firestore';
 
 import { Button, PagingItem, Table, TablePaging } from '../GlobalStyles';
 import Dialog from '../Dialog';
 import Radio, { RadioGroup } from '../Radio';
 import AttendanceListItem from './AttendanceListItem';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAttendance } from '../../store/attendance.slice';
+
 const AttendanceList = ({ ...props }) => {
-    const [attendances, setAttendances] = useState([]); // json
     const [user, setUser] = useState(null); // 사용자 상태
     const [isAdmin, setIsAdmin] = useState(false);
+
+    const dispatch = useDispatch();
+    const { attendance } = useSelector((state) => state.attendanceSlice);
 
     useEffect(() => {
         // 사용자의 인증 상태를 감시하고 변경되면 setUser를 호출하여 사용자를 업데이트
@@ -28,51 +26,11 @@ const AttendanceList = ({ ...props }) => {
     }, []);
 
     useEffect(() => {
-        const fetchAttend = async () => {
-            // 사용자가 로그인되어 있을 경우에만 실행
-            if (user) {
-                const attendQuery = query(
-                    collection(db, 'users', user.uid, 'attendance'),
-                    orderBy('createdAt', 'desc'),
-                    limit(10)
-                );
-
-                const unsubscribe = await onSnapshot(
-                    attendQuery,
-                    (snapshot) => {
-                        const attends = snapshot.docs.map((doc) => {
-                            const {
-                                content,
-                                createdAt,
-                                attendanceStart,
-                                attendanceEnd,
-                                category,
-                                title,
-                                attendanceContext,
-                                userId,
-                                username,
-                            } = doc.data();
-                            return {
-                                content,
-                                createdAt,
-                                attendanceStart,
-                                attendanceEnd,
-                                attendanceContext,
-                                category,
-                                title,
-                                userId,
-                                username,
-                                id: doc.id,
-                            };
-                        });
-                        setAttendances(attends);
-                    }
-                );
-                return () => unsubscribe();
-            }
-        };
-        fetchAttend();
-    }, [user]); // user 상태가 변경될 때마다 실행
+        // 사용자가 로그인되어 있을 경우에만 fetchAttendance 액션을 디스패치
+        if (user) {
+            dispatch(fetchAttendance(user));
+        }
+    }, [dispatch, user]); // user 상태가 변경될 때마다 실행
 
     return (
         <>
@@ -95,20 +53,23 @@ const AttendanceList = ({ ...props }) => {
                 </thead>
                 <tbody>
                     {/* 아이템 map으로 배열 */}
-                    {attendances.map((item) => {
-                        if (item.userId === user?.uid || isAdmin) {
-                            return (
-                                <tr key={item.id}>
-                                    <AttendanceListItem
-                                        item={item}
-                                        attendanceId={item.id}
-                                    />
-                                </tr>
-                            );
-                        } else {
-                            return null;
-                        }
-                    })}
+                    {attendance &&
+                        attendance.length > 0 &&
+                        attendance.map((item) => {
+                            if (item.userId === user?.uid || isAdmin) {
+                                return (
+                                    <tr key={item.id}>
+                                        <AttendanceListItem
+                                            item={item}
+                                            attendanceId={item.id}
+                                            attendance={attendance}
+                                        />
+                                    </tr>
+                                );
+                            } else {
+                                return null;
+                            }
+                        })}
                 </tbody>
             </Table>
             <TablePaging>
