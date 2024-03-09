@@ -6,6 +6,7 @@ import { useParams, Link } from 'react-router-dom';
 const AttendanceListItem = ({ item }) => {
     const [attendances, setAttendances] = useState([]); // json
     const [isAdmin, setIsAdmin] = useState(false);
+
     const [currentUser, setCurrentUser] = useState({ id: 'user1' }); // 로그인한 사용자 정보
 
     const { attendanceId } = useParams();
@@ -40,28 +41,13 @@ const AttendanceListItem = ({ item }) => {
         }
     };
 
-    useEffect(() => {
-        fetch('http://localhost:3000/attendance')
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                setAttendances(data || []);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-
-        setIsAdmin(false); //임시로 관리자는 안보이게
-
-        setCurrentUser({ id: 'user1' }); // 현재사용자정보
-    }, []);
+    useEffect(() => {}, []);
 
     return (
         <>
             <td>
                 <Link
-                    to={`/attendance/read/${item.attendanceId}`}
+                    to={`/attendance/read/${item.id}`}
                     state={{ attendanceId: attendanceId }}>
                     {item.title}
                 </Link>

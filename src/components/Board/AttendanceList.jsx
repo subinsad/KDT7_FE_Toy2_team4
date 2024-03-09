@@ -1,4 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { auth, db } from '../../firebase';
+import {
+    collection,
+    limit,
+    onSnapshot,
+    orderBy,
+    query,
+} from 'firebase/firestore';
+
 import { Button, PagingItem, Table, TablePaging } from '../GlobalStyles';
 import Dialog from '../Dialog';
 import Radio, { RadioGroup } from '../Radio';
@@ -6,25 +15,65 @@ import AttendanceListItem from './AttendanceListItem';
 
 const AttendanceList = ({ ...props }) => {
     const [attendances, setAttendances] = useState([]); // json
+    const [user, setUser] = useState(null); // 사용자 상태
     const [isAdmin, setIsAdmin] = useState(false);
-    const [currentUser, setCurrentUser] = useState({ id: 'user1' }); // 로그인한 사용자 정보
 
     useEffect(() => {
-        fetch('http://localhost:3000/attendance')
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                setAttendances(data || []);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
+        // 사용자의 인증 상태를 감시하고 변경되면 setUser를 호출하여 사용자를 업데이트
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            setUser(user);
+        });
 
-        setIsAdmin(false); //임시로 관리자는 안보이게
-
-        setCurrentUser({ id: 'user1' }); // 현재사용자정보
+        return () => unsubscribe(); // cleanup 함수에서 구독을 해제
     }, []);
+
+    useEffect(() => {
+        const fetchAttend = async () => {
+            // 사용자가 로그인되어 있을 경우에만 실행
+            if (user) {
+                const attendQuery = query(
+                    collection(db, 'users', user.uid, 'attendance'),
+                    orderBy('createdAt', 'desc'),
+                    limit(10)
+                );
+
+                const unsubscribe = await onSnapshot(
+                    attendQuery,
+                    (snapshot) => {
+                        const attends = snapshot.docs.map((doc) => {
+                            const {
+                                content,
+                                createdAt,
+                                attendanceStart,
+                                attendanceEnd,
+                                category,
+                                title,
+                                attendanceContext,
+                                userId,
+                                username,
+                            } = doc.data();
+                            return {
+                                content,
+                                createdAt,
+                                attendanceStart,
+                                attendanceEnd,
+                                attendanceContext,
+                                category,
+                                title,
+                                userId,
+                                username,
+                                id: doc.id,
+                            };
+                        });
+                        setAttendances(attends);
+                    }
+                );
+                return () => unsubscribe();
+            }
+        };
+        fetchAttend();
+    }, [user]); // user 상태가 변경될 때마다 실행
+
     return (
         <>
             <Table {...props}>
@@ -47,10 +96,13 @@ const AttendanceList = ({ ...props }) => {
                 <tbody>
                     {/* 아이템 map으로 배열 */}
                     {attendances.map((item) => {
-                        if (item.authorId === currentUser?.id || isAdmin) {
+                        if (item.userId === user?.uid || isAdmin) {
                             return (
                                 <tr key={item.id}>
-                                    <AttendanceListItem item={item} />
+                                    <AttendanceListItem
+                                        item={item}
+                                        attendanceId={item.id}
+                                    />
                                 </tr>
                             );
                         } else {

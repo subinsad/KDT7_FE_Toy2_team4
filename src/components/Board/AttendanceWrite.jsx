@@ -10,67 +10,82 @@ import { attendaceCategory } from '../../data/selectOption';
 
 import useInput from '../../Hooks/useInput';
 
+import { auth, db } from '../../firebase';
+import { addDoc, collection, getDoc, doc } from '@firebase/firestore';
+
 const AttendanceWrite = () => {
     const navigate = useNavigate();
     const Back = () => {
         navigate('/attendance');
     };
 
-    const [users, setUsers] = useState([]); // json
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [currentUser, setCurrentUser] = useState({ id: 'user1' }); // 로그인한 사용자 정보
+    //const title = useInput(''); // input창 입력값 가져오기
+    //const attendanceContext = useInput('');
 
-    const title = useInput(''); // input창 입력값 가져오기
-    const [name, setName] = useState();
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const attendanceContext = useInput('');
+    const [title, setTitle] = useState('');
+    const [attendanceContext, setAttendanceContext] = useState('');
+    const [category, setCategory] = useState('');
+    const [attendanceStart, setAttendanceStart] = useState('');
+    const [attendanceEnd, setAttendanceEnd] = useState('');
 
-    const handleChange = (e) => {};
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const attendanceData = {
-            title: title.value,
-            name,
-            email,
-            phone,
-            attendanceContext: attendanceContext.value,
-        };
-
-        fetch('http://localhost:3000/attendance', {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify(attendanceData),
-        })
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                console.log(data); // 성공적으로 데이터가 전송되었을 때의 동작
-            })
-            .catch((err) => {
-                console.error(err);
-            });
+    const handleChange = (e) => {
+        // 변경된 부분
+        const { name, value } = e.target;
+        if (name === 'title') {
+            setTitle(value);
+        } else if (name === 'attendanceContext') {
+            setAttendanceContext(value);
+        }
+        console.log(value); // 선택된 값을 확인하기 위한 로그
     };
 
-    useEffect(() => {
-        setIsAdmin(false);
-        setCurrentUser({ id: 'user1' });
-    }, []);
+    //라디오체크박스
+    const handleRadio = (value) => {
+        setCategory(value);
+        console.log('radio', value);
+    };
 
-    useEffect(() => {
-        fetch('http://localhost:3000/user')
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                setUsers(data || []);
-            })
-            .catch((err) => {
-                console.error(err);
+    // 날짜입력
+    const handleDate = (name, selectedDate) => {
+        if (name === 'attendanceStart') {
+            setAttendanceStart(selectedDate);
+        } else if (name === 'attendanceEnd') {
+            setAttendanceEnd(selectedDate);
+        }
+        console.log(selectedDate); // 선택된 날짜 확인
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const user = auth.currentUser;
+        if (
+            !user ||
+            title === '' ||
+            attendanceContext === '' ||
+            category === '' ||
+            attendanceStart === '' ||
+            attendanceEnd === ''
+        )
+            return; //빈값전송방지
+        console.log(user);
+
+        try {
+            await addDoc(collection(db, 'users', user.uid, 'attendance'), {
+                title,
+                attendanceContext,
+                category,
+                attendanceStart,
+                attendanceEnd,
+                createdAt: Date.now(),
+                username: user.displayName,
+                userId: user.uid,
             });
-    }, []);
+        } catch (error) {
+            console.log('onSubmit Error : ', error);
+        } finally {
+            navigate('/Attendance');
+        }
+    };
 
     return (
         <>
@@ -84,9 +99,7 @@ const AttendanceWrite = () => {
                                 label="Name"
                                 labelText="Name"
                                 readOnly="readonly"
-                                value={
-                                    users.length > 0 ? users[0].userName : ''
-                                }
+                                value={'user.name'}
                             />
                         </div>
                         <div>
@@ -96,11 +109,7 @@ const AttendanceWrite = () => {
                                 label="job"
                                 labelText="Job Position"
                                 readOnly="readonly"
-                                value={
-                                    users.length > 0
-                                        ? users[0].userPosition
-                                        : ''
-                                }
+                                value={'user'}
                             />
                         </div>
                         <div>
@@ -122,6 +131,8 @@ const AttendanceWrite = () => {
                                         id={item.id}
                                         name={item.name}
                                         color={item.color}
+                                        label="category"
+                                        onChange={() => handleRadio(item.value)}
                                     />
                                 );
                             })}
@@ -131,6 +142,14 @@ const AttendanceWrite = () => {
                                 type="date"
                                 label="startdate"
                                 labelText="근태 시작일"
+                                name="attendanceStart"
+                                value={attendanceStart}
+                                onChange={(e) =>
+                                    handleDate(
+                                        'attendanceStart',
+                                        e.target.value
+                                    )
+                                }
                             />
                         </div>
                         <div>
@@ -138,6 +157,11 @@ const AttendanceWrite = () => {
                                 type="date"
                                 label="enddate"
                                 labelText="근태 종료일"
+                                name="attendanceEnd"
+                                value={attendanceEnd}
+                                onChange={(e) =>
+                                    handleDate('attendanceEnd', e.target.value)
+                                }
                             />
                         </div>
                         <GridColumnSpan $span="3">
@@ -146,24 +170,35 @@ const AttendanceWrite = () => {
                                     type="text"
                                     label="title"
                                     labelText="제목"
-                                    value={title.value}
-                                    onChange={title.onChange}
+                                    onChange={handleChange}
+                                    name="title"
+                                />
+                                {/* 이부분은됨 */}
+                                <input onChange={handleChange} name="title" />
+                                <input
+                                    onChange={handleChange}
+                                    name="attendanceContext"
                                 />
                             </div>
                         </GridColumnSpan>
                         <GridColumnSpan $span="3">
-                            <Editor title="근태내용"></Editor>
+                            <Editor
+                                title="근태내용"
+                                label="attendanceContext"
+                                onChange={handleChange}></Editor>
                         </GridColumnSpan>
                     </Grid>
-                </form>
 
-                <hr />
-                <div className="align both">
-                    <Button $color="secondary" onClick={Back}>
-                        리스트
-                    </Button>
-                    <Button $color="primary">근태신청</Button>
-                </div>
+                    <hr />
+                    <div className="align both">
+                        <Button $color="secondary" onClick={Back}>
+                            리스트
+                        </Button>
+                        <Button type="submit" $color="primary">
+                            근태신청
+                        </Button>
+                    </div>
+                </form>
             </Card>
         </>
     );
