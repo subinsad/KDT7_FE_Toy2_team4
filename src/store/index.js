@@ -5,11 +5,13 @@ import persistStore from "redux-persist/es/persistStore";
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from "redux-persist/es/constants";
 import signInfoSlice from "./signInfo.slice";
 import userSlice from "./user.slice";
+import salaryAdminSlice from "./salaryAdmin.slice";
 
 
 const rootReducer = combineReducers({
     signInfoSlice: signInfoSlice,
-    userSlice: userSlice
+    userSlice: userSlice,
+    salaryAdminSlice: salaryAdminSlice
 })
 
 const persistConfig = {

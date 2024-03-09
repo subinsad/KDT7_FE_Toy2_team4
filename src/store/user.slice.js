@@ -51,6 +51,25 @@ export const fetchUserInfo = createAsyncThunk(
     }
 )
 
+export const userIsAdmin = createAsyncThunk(
+    "user/isAdmin",
+    async (user) => {
+        if (user) {
+            const userDocRef = doc(db, "users", user.uid, "userInfo", "data");
+            const userDocSnap = await getDoc(userDocRef);
+            if (userDocSnap.exists()) {
+                const userData = userDocSnap.data();
+                const role = userData.role;
+                if (role === "admin") {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+)
+
 const initialState = {
     userInfo: {
         name: "",
@@ -61,7 +80,9 @@ const initialState = {
         position: "",
         team: "",
         shortInfo: ""
-    }
+    },
+    isAdmin: false,
+    isAdminLoading: false
 }
 
 export const userSlice = createSlice({
@@ -90,7 +111,8 @@ export const userSlice = createSlice({
                 position: "",
                 team: "",
                 shortInfo: ""
-            }
+            },
+                state.isAdmin = false
         }
     },
     extraReducers: (builder) => {
@@ -107,6 +129,13 @@ export const userSlice = createSlice({
                     team: action.payload.team,
                     shortInfo: action.payload.shortInfo
                 };
+            })
+            .addCase(userIsAdmin.pending, (state) => {
+                state.isAdminLoading = true;
+            })
+            .addCase(userIsAdmin.fulfilled, (state, action) => {
+                state.isAdmin = action.payload;
+                state.isAdminLoading = false;
             })
     }
 })

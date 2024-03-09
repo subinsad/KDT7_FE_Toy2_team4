@@ -5,6 +5,7 @@ import { Button, Grid, GridColumnSpan } from "../GlobalStyles";
 import Radio, { RadioGroup } from "../Radio";
 import Select from "../Select";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const optionMember = [
   {
@@ -26,9 +27,15 @@ const optionMember = [
 ];
 
 const SalaryWrite = () => {
+  const { isAdmin } = useSelector((state) => state.userSlice)
   const navigate = useNavigate();
   const Back = () => {
-    navigate("/salary");
+    if(isAdmin){
+      navigate("/salaryAdmin");
+    }
+    else{
+      navigate("/salary");
+    }
   };
   return (
     <div>

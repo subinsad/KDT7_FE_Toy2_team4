@@ -13,9 +13,10 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { editUserBg, editUserImg, fetchUserInfo } from "../../store/user.slice";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { doc, setDoc } from "firebase/firestore";
+import { arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
 import Loading from "../Loading";
 import { clearUserInfo } from "../../store/signInfo.slice";
+
 
 const SignHeader = styled.div``;
 const SampleMypage = styled.div`
@@ -56,7 +57,7 @@ const SampleMypage = styled.div`
 
 const JoinThird = ({ setActiveStep }) => {
     const dispatch = useDispatch()
-    const { name, email, password } = useSelector((state) => state.signInfoSlice.signInfo)
+    const { name, email, password, team, position, phone, shortInfo } = useSelector((state) => state.signInfoSlice.signInfo)
     const [loading, setLoading] = useState(false)
 
     const [formData, setFormData] = useState({
@@ -110,36 +111,51 @@ const JoinThird = ({ setActiveStep }) => {
                 setLoading(true)
                 const { user } = await createUserWithEmailAndPassword(auth, email, password);
                 dispatch(fetchUserInfo(user))
-                if (formData.userImg) {
-                    const userDocRef = doc(db, "users", user.uid, "userInfo", "data")
-                    const locationRef = ref(storage, `UserImage/${name}`);
-                    const result = await uploadBytes(locationRef, formData.userImg);
-                    const userImgUrl = await getDownloadURL(result.ref);
-                    await setDoc(
-                        userDocRef,
-                        {
-                            userImg: userImgUrl,
-                        },
-                        { merge: true }
-                    );
-                    dispatch(editUserImg(userImgUrl));
-                }
-                if (formData.userBg) {
-                    const userDocRef = doc(db, "users", user.uid, "userInfo", "data")
-                    const locationRef = ref(storage, `UserBg/${name}`);
-                    const result = await uploadBytes(locationRef, formData.userBg);
-                    const userBgUrl = await getDownloadURL(result.ref);
-                    await setDoc(
-                        userDocRef,
-                        {
-                            userBg: userBgUrl,
-                        },
-                        { merge: true }
-                    );
-                    dispatch(editUserBg(userBgUrl));
-                    const userEmailRef = ref(storage, `UserEmail/${email}`);
-                    await uploadBytes(userEmailRef, new Uint8Array(0));
-                }
+                const userDocRef = doc(db, "users", user.uid, "userInfo", "data")
+
+                //img추가
+                const imgLocationRef = ref(storage, `UserImage/${name}`);
+                const imgResult = await uploadBytes(imgLocationRef, formData.userImg);
+                const userImgUrl = await getDownloadURL(imgResult.ref);
+                await setDoc(
+                    userDocRef,
+                    {
+                        userImg: userImgUrl,
+                    },
+                    { merge: true }
+                );
+                dispatch(editUserImg(userImgUrl));
+
+                //bg추가
+                const bgLocationRef = ref(storage, `UserBg/${name}`);
+                const bgResult = await uploadBytes(bgLocationRef, formData.userBg);
+                const userBgUrl = await getDownloadURL(bgResult.ref);
+                await setDoc(
+                    userDocRef,
+                    {
+                        userBg: userBgUrl,
+                    },
+                    { merge: true }
+                );
+                dispatch(editUserBg(userBgUrl));
+                const userEmailRef = ref(storage, `UserEmail/${email}`);
+                await uploadBytes(userEmailRef, new Uint8Array(0));
+
+                //여기서부터 추가
+                const salaryDocRef = doc(db, "users", "6S0MGsUl3BaqV33ATQ3tU0enGVo1", "salary", "data")
+                await updateDoc(salaryDocRef, {
+                    allUserInfo: arrayUnion({
+                        name,
+                        email,
+                        userImg: userImgUrl,
+                        userBg: userBgUrl,
+                        phone,
+                        position,
+                        team,
+                        shortInfo,
+                        uid: user.uid
+                    })
+                });
 
             } catch (error) {
                 console.error(error)

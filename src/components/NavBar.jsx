@@ -5,6 +5,7 @@ import Avatar from "./Avatar";
 import { useDispatch } from "react-redux";
 import { auth } from "../firebase";
 import { clearUser } from "../store/user.slice";
+import { clearSalaryInfo } from "../store/salaryAdmin.slice";
 
 const NavBarWrap = styled.div`
   position: fixed;
@@ -152,6 +153,7 @@ function NavBar() {
     try {
       await auth.signOut();
       dispatch(clearUser())
+      dispatch(clearSalaryInfo())
       navigate('/login')
     } catch (error) {
       console.log("logout error : ", error);

@@ -5,7 +5,7 @@ const initialState = {
 }
 
 export const signInfoSlice = createSlice({
-    name: 'user',
+    name: 'sign',
     initialState,
     reducers: {
         clearUserInfo: (state) => { //로그인 화면 시 넣기

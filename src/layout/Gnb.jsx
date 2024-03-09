@@ -76,7 +76,8 @@ const NavItem = styled.li`
 `;
 function Gnb() {
   const location = useLocation();
-  const { name } = useSelector((state) => state.userSlice.userInfo)
+  const { isAdmin } = useSelector((state) => state.userSlice)
+
 
   return (
     <>
@@ -111,11 +112,20 @@ function Gnb() {
               <PersonUp /> Attendance
             </Link>
           </NavItem>
-          <NavItem $active={location.pathname.includes("/salary")}>
-            <Link to="salary">
-              <Wallet /> Salary
-            </Link>
-          </NavItem>
+
+          {isAdmin ?
+            (<NavItem $active={location.pathname.includes("/salary")}>
+              <Link to="/salaryAdmin">
+                <Wallet /> Salary
+              </Link>
+            </NavItem>) :
+
+            <NavItem $active={location.pathname.includes("/salary")}>
+              <Link to="/salary">
+                <Wallet /> Salary
+              </Link>
+            </NavItem>}
+
         </ul>
         <Heading size={"xs"} tag={"h3"}>
           PERSONAL
@@ -127,22 +137,6 @@ function Gnb() {
               <Gear /> Mypage
             </Link>
           </NavItem>
-
-          {/* {!name && (
-            <NavItem $active={location.pathname === "/login"}>
-              <Link to="login">
-                <BoxArrowInRight /> login
-              </Link>
-            </NavItem>
-          )}
-
-          {!name && (
-            <NavItem $active={location.pathname === "/create-account"}>
-              <Link to="create-account">
-                <PersonBoundingBox /> CreateAccount
-              </Link>
-            </NavItem>
-          )} */}
 
         </ul>
       </AsideNav>
