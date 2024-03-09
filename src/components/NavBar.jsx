@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { auth } from "../firebase";
 import { clearUser } from "../store/user.slice";
 import { clearSalaryInfo } from "../store/salaryAdmin.slice";
+import { useSelector } from "react-redux";
 
 const NavBarWrap = styled.div`
   position: fixed;
@@ -146,7 +147,7 @@ const AvatarList = styled.div`
 `;
 
 function NavBar() {
-
+  const { userImg } = useSelector((state) => state.userSlice.userInfo)
   const dispatch = useDispatch()
   const navigate = useNavigation()
   const logout = async () => {
@@ -215,7 +216,7 @@ function NavBar() {
               </li>
             </ul>
           </AlramList>
-          <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} popovertarget="avatar" />
+          <Avatar src={userImg} popovertarget="avatar" />
           <AvatarList popover="auto" id="avatar">
             <ul>
               <li>

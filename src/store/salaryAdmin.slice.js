@@ -9,13 +9,11 @@ export const fetchUserInfo = createAsyncThunk(
             const userDocRef = doc(db, "users", user.uid, "salary", "data")
             const userDoc = await getDoc(userDocRef)
             const userData = userDoc.data()
-            const allUserInfo = userData.allUserInfo || [];
+            const allUserInfo = userData.allUserInfo;
             return { allUserInfo };
         }
     }
 )
-
-
 const initialState = {
     userInfo: [
     ],

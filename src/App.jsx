@@ -22,7 +22,7 @@ function App() {
     return () => {
       unsubscribe();
     };
-  }, [dispatch]);
+  }, []);
 
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function App() {
     if (isAdmin) {
       dispatch(fetchUserInfo(user))
     }
-  }, [isAdmin]);
+  }, [isAdmin,dispatch]);
 
   return (
     <>

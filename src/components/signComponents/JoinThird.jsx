@@ -153,7 +153,7 @@ const JoinThird = ({ setActiveStep }) => {
                         position,
                         team,
                         shortInfo,
-                        uid: user.uid
+                        uid: user.uid,
                     })
                 });
 
