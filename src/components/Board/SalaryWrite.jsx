@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../Card";
 import Input from "../Input";
 import { Button, FormText, Grid } from "../GlobalStyles";
@@ -6,17 +6,17 @@ import Radio, { RadioGroup } from "../Radio";
 import Select from "../Select";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useState } from "react";
-import { useEffect } from "react";
 import Loading from "../Loading";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
-import Dialog from "../Dialog";
 import Alert from "../Alert";
 import { Check } from "react-bootstrap-icons";
+import { fetchSalaryInfo } from "../../store/salaryAdmin.slice";
+import { useDispatch } from "react-redux";
 
 const SalaryWrite = () => {
-  const { userInfo } = useSelector((state) => state.salaryAdminSlice);
+  const { allUserInfo } = useSelector((state) => state.salaryAdminSlice);
+  const { allSalaryInfo } = useSelector((state) => state.salaryAdminSlice);
   const [selectUser, setSelectUser] = useState("");
   const [salary, setSalary] = useState("");
   const [type, setType] = useState("");
@@ -27,10 +27,12 @@ const SalaryWrite = () => {
   });
   const [loading, setLoading] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
+  const [typeValid, setTypeValid] = useState(false)
+  const dispatch = useDispatch()
 
   const optionMember = [
     { value: "default", text: "선택하세요" },
-    ...userInfo.map((user) => ({ value: user.uid, text: user.name })),
+    ...allUserInfo.map((user) => ({ value: user.uid, text: user.name })),
   ];
 
   const navigate = useNavigate();
@@ -62,18 +64,34 @@ const SalaryWrite = () => {
       }));
       isValid = false;
     }
+
     return isValid;
+  };
+
+  const checkIsValid = (uid) => {
+    const selectedUser = allSalaryInfo?.find((user) => user.uid === uid);
+    if (selectedUser && selectedUser.type === type) {
+      setTypeValid(true)
+      return false;
+    }
+    return true;
   };
 
   const onSubmit = async () => {
     const isValidForm = checkForm();
+    const user = getSelectedUser() //현재 선택한 유저
+
+    if (!checkIsValid(user.uid)) {
+      return;
+    }
+
     if (isValidForm) {
       try {
         setLoading(true);
         const userSalaryDocRef = doc(
           db,
           "users",
-          getSelectedUser().uid,
+          user.uid,
           "salary",
           "data"
         );
@@ -84,6 +102,11 @@ const SalaryWrite = () => {
           },
           { merge: true }
         );
+        dispatch(fetchSalaryInfo({
+          user,
+          salary,
+          type
+        }))
         setShowDialog(true);
         setSelectUser("default");
         setSalary("");
@@ -118,8 +141,16 @@ const SalaryWrite = () => {
     return () => clearTimeout(timer);
   }, [showDialog]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTypeValid(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [typeValid]);
+
   const getSelectedUser = () => {
-    return userInfo.find((user) => user.uid === selectUser) || {};
+    return allUserInfo.find((user) => user.uid === selectUser) || {};
   };
 
 
@@ -127,6 +158,11 @@ const SalaryWrite = () => {
     <div>
       {showDialog && (
         <Alert color="success" close title="급여 지급이 완료되었습니다">
+          <Check />
+        </Alert>
+      )}
+      {typeValid && (
+        <Alert color="danger" close title="이미 해당 유형의 급여가 지급되었습니다">
           <Check />
         </Alert>
       )}

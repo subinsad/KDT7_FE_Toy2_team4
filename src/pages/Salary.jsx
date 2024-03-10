@@ -4,6 +4,7 @@ import Card from "../components/Card";
 import { Grid } from "../components/GlobalStyles";
 import { ArrowRightSquare, Coin, PersonAdd, TicketPerforated } from "react-bootstrap-icons";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 export const Member = styled.div`
   strong {
@@ -52,12 +53,16 @@ export const Member = styled.div`
 `;
 
 const Salary = () => {
+  const { allSalaryInfo, allUserInfo } = useSelector((state) => state.salaryAdminSlice)
+  const totalSalary = allSalaryInfo?.reduce((a, currentItem) => {
+    return a + parseInt(currentItem.salary, 10);
+  }, 0);
   return (
     <div>
       <Grid $col="4" className="mb3">
         <Card title={"Members"}>
           <Member>
-            <strong>12</strong>
+            <strong>{allUserInfo.length}</strong>
             <div>총 직원수</div>
             <div className="icon primary">
               <PersonAdd />
@@ -66,8 +71,8 @@ const Salary = () => {
         </Card>
         <Card title={"Expenditure Salary"}>
           <Member>
-            <strong>12,100,000</strong>
-            <div>지출 급여</div>
+            {totalSalary ? <strong>{totalSalary.toLocaleString()}원</strong> : <strong>0원</strong>}
+            <div>이번 달 지출 급여</div>
             <div className="icon warning">
               <Coin />
             </div>

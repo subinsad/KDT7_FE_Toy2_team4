@@ -8,7 +8,7 @@ import AdminRouter from "./routes/AdminRouter";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Loading from "./components/Loading";
-import { userIsAdmin } from "./store/user.slice";
+import { clearUser, userIsAdmin } from "./store/user.slice";
 import { fetchUserInfo } from "./store/salaryAdmin.slice";
 
 function App() {
@@ -17,20 +17,23 @@ function App() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      dispatch(userIsAdmin(user))
+      if (user === null) {
+        dispatch(clearUser());
+      } else {
+        dispatch(userIsAdmin(user));
+      }
     });
     return () => {
       unsubscribe();
     };
-  }, []);
-
+  }, [dispatch]);
 
   useEffect(() => {
     const user = auth.currentUser
-    if (isAdmin) {
+    if (user !== null && isAdmin) {
       dispatch(fetchUserInfo(user))
     }
-  }, [isAdmin,dispatch]);
+  }, [isAdmin, dispatch]);
 
   return (
     <>
