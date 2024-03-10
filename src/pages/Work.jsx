@@ -177,8 +177,6 @@ const Work = () => {
 
   const handleData = (value) => {
     setinput(value);
-
-    // console.log(value);
   };
   useEffect(() => {
     const calendarEl = document.querySelector(".calendar");
