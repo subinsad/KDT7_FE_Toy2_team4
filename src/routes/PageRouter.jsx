@@ -15,14 +15,17 @@ import SalaryWrite from "../components/Board/SalaryWrite";
 import AttendanceWrite from "../components/Board/AttendanceWrite";
 import AttendanceRead from "../components/Board/AttendanceRead";
 import MypageEdit from "../pages/MypageEdit";
+import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <ProtectedRoute>
+      <Layout />
+    </ProtectedRoute>,
     children: [
       {
-        path: "/main",
+        path: "main",
         element: <Main />,
       },
       {

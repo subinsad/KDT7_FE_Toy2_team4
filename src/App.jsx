@@ -6,7 +6,6 @@ function App() {
   return (
     <>
       <GlobalStyles />
-
       <RouterProvider router={router} />
     </>
   );

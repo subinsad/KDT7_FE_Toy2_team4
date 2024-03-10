@@ -1,8 +1,10 @@
 import { ArrowDownLeftSquare, Bell, BoxArrowInLeft, BoxArrowInRight, BoxArrowRight, LightbulbOff, Outlet, PersonBadge, PersonCheck, SignNoLeftTurn, Unlock, X } from "react-bootstrap-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigation } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "./Avatar";
-import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { auth } from "../firebase";
+import { clearUser } from "../store/user.slice";
 
 const NavBarWrap = styled.div`
   position: fixed;
@@ -131,6 +133,7 @@ const AvatarList = styled.div`
     min-width: 14rem;
   }
   a {
+    cursor: pointer;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -147,16 +150,18 @@ const AvatarList = styled.div`
 `;
 
 function NavBar() {
-  const [isrect, setIsRect] = useState([]);
-  const avatarListRef = useRef(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigation();
+  const logout = async () => {
+    try {
+      await auth.signOut();
+      dispatch(clearUser());
+      navigate("/login");
+    } catch (error) {
+      console.log("logout error : ", error);
+    }
+  };
 
-  const handleAvatar = (e) => {
-    const rect = e.target.getBoundingClientRect();
-    setIsRect([`${rect.left}px`, `${rect.top}px`]);
-  };
-  const closeAvatarList = () => {
-    setIsRect([]);
-  };
   return (
     <>
       <NavBarWrap>
@@ -223,9 +228,9 @@ function NavBar() {
                 </Link>
               </li>
               <li>
-                <Link to={""}>
+                <a onClick={logout}>
                   <BoxArrowRight /> Log Out
-                </Link>
+                </a>
               </li>
             </ul>
           </AvatarList>
