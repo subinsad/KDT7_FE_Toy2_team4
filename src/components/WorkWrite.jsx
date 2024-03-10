@@ -3,7 +3,6 @@ import Heading from "../components/Heading";
 import { X } from "react-bootstrap-icons";
 import styled from "styled-components";
 import Input from "./Input";
-import Select from "./Select";
 import Editor from "./Editor";
 import { Button } from "./GlobalStyles";
 import SelectDetail from "./SelectCustom";
@@ -48,41 +47,10 @@ const PopupContent = styled.div`
   padding-top: 0;
 `;
 
-const optionUser = [
-  {
-    value: "select1",
-    text: "사용자1",
-  },
-  {
-    value: "select2",
-    text: "사용자2",
-  },
-  {
-    value: "select3",
-    text: "사용자3",
-  },
-];
-const optionProject = [
-  {
-    value: "select1",
-    text: "",
-  },
-  {
-    value: "select2",
-    text: "완료",
-  },
-  {
-    value: "select3",
-    text: "대기중",
-  },
-];
-
 const WorkWrite = ({ id, getData }) => {
   const [info, setInfo] = useState({});
-  const handleProject = () => {
-    // getData(info);
-    console.log(info);
-  };
+  const [member, setMember] = useState([]);
+  const [childNodes, setChildNodes] = useState([]);
 
   const onTitle = (e) => {
     setInfo({ ...info, title: e.target.value });
@@ -93,11 +61,27 @@ const WorkWrite = ({ id, getData }) => {
   const onEnd = (e) => {
     setInfo({ ...info, end: e.target.value });
   };
-  const onSelect = (e) => {
-    setInfo({ ...info, end: e.target.value });
+  const onSelect = (value) => {
+    if (value === "pending") {
+      setInfo({ ...info, color: "#eae8fd", textColor: "#7367f0" });
+    } else if (value === "progress") {
+      setInfo({ ...info, color: "#dff7e9", textColor: "#28c76f" });
+    } else if (value === "completed") {
+      setInfo({ ...info, color: "#fce5e6", textColor: "#ea5455" });
+    }
   };
-  const onDetail = (e) => {
-    setInfo({ ...info, detail: e.target.querySelector("[contentEditable]") });
+  const onDetail = (childNode) => {
+    setChildNodes(childNode);
+  };
+
+  const onMember = (members) => {
+    setMember(members);
+  };
+
+  const handleProject = () => {
+    getData(info);
+    console.log(childNodes);
+    setInfo({});
   };
 
   return (
@@ -119,7 +103,7 @@ const WorkWrite = ({ id, getData }) => {
           <Input type="date" label="project3" labelText="프로젝트 종료일" onChange={onEnd} />
         </div>
         <div className="mb2">
-          <SelectDetail options="user" label="project4" labelText="프로젝트 참여 멤버" />
+          <SelectDetail options="user" label="project4" labelText="프로젝트 참여 멤버" onMemberTagChange={onMember} />
         </div>
         <div className="mb2">
           <SelectDetail option="state" labelText="프로젝트 현황" onSelected={onSelect} />
@@ -134,7 +118,9 @@ const WorkWrite = ({ id, getData }) => {
           <Button $color="primary" className="mr2" onClick={handleProject} popovertarget={id} popovertargetaction="hide">
             Add
           </Button>
-          <Button $color="secondary">Cancel</Button>
+          <Button $color="secondary" popovertarget={id} popovertargetaction="hide" childNodes={childNodes}>
+            Cancel
+          </Button>
         </div>
       </PopupContent>
     </Popup>

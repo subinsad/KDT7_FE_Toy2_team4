@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Avatar from "./Avatar";
 import Alert from "./Alert";
@@ -119,6 +119,9 @@ const MemberTag = styled.div`
   max-width: 24rem;
   padding: 0.5rem 0;
   gap: 0.3rem 0.4rem;
+  &:empty {
+    padding: 0;
+  }
   .tag {
     display: inline-grid;
     white-space: nowrap;
@@ -127,25 +130,26 @@ const MemberTag = styled.div`
   }
 `;
 
-const SelectCustom = ({ option, labelText, onSelected }) => {
+const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
   const [isList, setIsList] = useState(false);
-  const [isValue, setIsValue] = useState("SelectDetail");
-  const [isUser, setIsUser] = useState("멤버선택");
+  const [isValue, setIsValue] = useState("진행현황 선택");
+  const [isUser, setIsUser] = useState("멤버 선택");
   const [tagVisible, setTagVisible] = useState([]);
 
   const handleList = () => {
     setIsList(!isList);
   };
   const handleText = (e) => {
+    const isValue = e.target.value;
     setIsValue(e.target.textContent);
     setIsList(false);
-    // console.log(e.target.value);
-    onSelected(e.target.value);
+    onSelected(isValue);
   };
   const handleUserSelection = (value) => {
     setIsUser(value);
     setIsList(false);
     setTagVisible([...tagVisible, value]);
+    onMemberTagChange([...tagVisible, value]);
   };
 
   return (

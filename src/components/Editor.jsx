@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Select from "./Select";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const EditorWrap = styled.div`
   border: 1px solid #dbdade;
@@ -101,7 +101,7 @@ const makeStrike = () => {
   document.execCommand("strikethrough", false, null);
 };
 
-function Editor({ title, children, ...props }) {
+function Editor({ title, onChange, childNodes, children, ...props }) {
   const editableRef = useRef(null);
   const fontSizeOptions = [1, 2, 3, 4, 5];
 
@@ -130,7 +130,7 @@ function Editor({ title, children, ...props }) {
           {/* <input type="color" className="color" value="A" />
           <input type="color" className="bg" value="A" /> */}
         </Toolbar>
-        <EditorTable ref={editableRef} contentEditable="true">
+        <EditorTable ref={editableRef} contentEditable="true" onChange={onChange} childNodes={childNodes}>
           {children}
         </EditorTable>
       </EditorWrap>

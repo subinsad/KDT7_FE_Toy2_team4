@@ -182,7 +182,7 @@ const Work = () => {
   };
   useEffect(() => {
     const calendarEl = document.querySelector(".calendar");
-
+    console.log(inputData);
     const calendar = new Calendar(calendarEl, {
       headerToolbar: {
         left: "prev,next today",
@@ -204,12 +204,6 @@ const Work = () => {
             if (!btn.hasAttribute("popovertarget")) {
               btn.setAttribute("popovertarget", "aa");
             }
-            // calendar.addEvent({
-            //   title: inputData.title,
-            //   start: inputData.start,
-            //   end: inputData.end,
-            //   allDay: true,
-            // });
 
             // var dateStr = prompt("YYYY-MM-DD 형식으로 입력하세요.");
             // var date = new Date(inputData + "T00:00:00");
@@ -224,6 +218,14 @@ const Work = () => {
           },
         },
       },
+    });
+    calendar.addEvent({
+      title: inputData.title,
+      start: inputData.start,
+      end: inputData.end,
+      color: inputData.color,
+      textColor: inputData.textColor,
+      allDay: true,
     });
     calendar.render();
     return () => {
