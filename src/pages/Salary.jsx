@@ -5,6 +5,10 @@ import { Grid } from "../components/GlobalStyles";
 import { ArrowRightSquare, Coin, PersonAdd, TicketPerforated } from "react-bootstrap-icons";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useEffect } from "react";
+import Alert from "../components/Alert";
+import { Check } from "react-bootstrap-icons";
 
 export const Member = styled.div`
   strong {
@@ -54,9 +58,18 @@ export const Member = styled.div`
 
 const Salary = () => {
   const { allSalaryInfo, allUserInfo } = useSelector((state) => state.salaryAdminSlice)
+  const [showDialog, setShowDialog] = useState(false);
   const totalSalary = allSalaryInfo?.reduce((a, currentItem) => {
     return a + parseInt(currentItem.salary, 10);
   }, 0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowDialog(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [showDialog]);
   return (
     <div>
       <Grid $col="4" className="mb3">
@@ -97,8 +110,13 @@ const Salary = () => {
           </Member>
         </Card>
       </Grid>
+      {showDialog && (
+        <Alert color="success" close title="급여 수정이 완료되었습니다">
+          <Check />
+        </Alert>
+      )}
       <Card title={"Member Salary List"}>
-        <BoardList state={"salary"} />
+        <BoardList state={"salary"} setShowDialog={setShowDialog} />
       </Card>
     </div>
   );

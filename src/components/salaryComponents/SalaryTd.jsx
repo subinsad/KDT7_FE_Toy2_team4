@@ -18,7 +18,7 @@ const Name = styled.div`
   font-size: 0.8rem;
 `;
 
-const SalaryTd = ({ name, userImg, position, salary, type, uid, tdId }) => {
+const SalaryTd = ({ name, userImg, position, salary, type, uid, tdId, setShowDialog }) => {
     const { userInfo } = useSelector((state) => state.userSlice);
     const [userSalary, setUserSalary] = useState(salary);
     const dispatch = useDispatch()
@@ -49,10 +49,12 @@ const SalaryTd = ({ name, userImg, position, salary, type, uid, tdId }) => {
             await setDoc(adminDocRef, { ...userData, allSalaryInfo: updatedAllSalaryInfo });
             dispatch(fetchUserInfo(userInfo));
             setUserSalary("");
+            setShowDialog(true);
         } catch (error) {
             console.error(error);
         }
     }
+
     return (
         <>
             <tr>

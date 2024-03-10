@@ -6,7 +6,7 @@ import SalaryTd from "../salaryComponents/SalaryTd";
 import { v4 as uuidv4 } from 'uuid';
 
 
-const SalaryList = ({ ...props }) => {
+const SalaryList = ({ setShowDialog, ...props }) => {
   const { allSalaryInfo } = useSelector((state) => state.salaryAdminSlice)
   const navigate = useNavigate();
   const gotoWrite = () => {
@@ -44,6 +44,7 @@ const SalaryList = ({ ...props }) => {
                 type={item.type}
                 uid={item.uid}
                 tdId={uuidv4()}
+                setShowDialog={setShowDialog}
               />
             )
           })}
