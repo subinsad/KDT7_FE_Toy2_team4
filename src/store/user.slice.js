@@ -67,6 +67,7 @@ export const fetchUserInfo = createAsyncThunk(
     }
 )
 
+
 export const userIsAdmin = createAsyncThunk(
     "user/isAdmin",
     async (user) => {
@@ -118,10 +119,33 @@ export const userSlice = createSlice({
                 position: "",
                 team: "",
                 shortInfo: "",
-
+                uid: "",
+                joinYear: "",
+                joinMonth: ""
             },
                 state.isAdmin = false
-        }
+        },
+        editUserInfo: (state, action) => {
+            state.userInfo = {
+                ...state.userInfo,
+                phone: action.payload.phone,
+                position: action.payload.position,
+                team: action.payload.team,
+                shortInfo: action.payload.shortInfo
+            }
+        },
+        editUserImg: (state, action) => {
+            state.userInfo = {
+                ...state.userInfo,
+                userImg: action.payload
+            }
+        },
+        editUserBg: (state, action) => {
+            state.userInfo = {
+                ...state.userInfo,
+                userBg: action.payload
+            }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -151,5 +175,5 @@ export const userSlice = createSlice({
     }
 })
 
-export const { clearUser } = userSlice.actions
+export const { clearUser, editUserInfo, editUserImg, editUserBg } = userSlice.actions
 export default userSlice.reducer
