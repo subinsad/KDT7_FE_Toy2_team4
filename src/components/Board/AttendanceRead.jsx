@@ -6,13 +6,8 @@ import Card from '../Card';
 import { Button, Grid, GridColumnSpan } from '../GlobalStyles';
 import Input from '../Input';
 
-import { auth, db } from '../../firebase';
-import { getDoc, doc } from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    fetchAttendanceById,
-    attendanceDetailSlice,
-} from '../../store/attendanceDetail.slice';
+import { fetchAttendanceById } from '../../store/attendanceDetail.slice';
 
 const AttendanceRead = (props) => {
     const [attendances, setAttendances] = useState({}); // json
@@ -23,27 +18,6 @@ const AttendanceRead = (props) => {
 
     const { attendanceId } = useParams();
     const { userInfo } = useSelector((state) => state.userSlice);
-
-    const [user, setUser] = useState(null); // 사용자 상태
-
-    // useEffect(() => {
-    //     const fetchAttendance = async () => {
-    //         try {
-    //             const attendanceDoc = await getDoc(
-    //                 doc(db, 'users', user.uid, 'attendance', attendanceId)
-    //             ); // 해당 attendanceId에 대한 문서 가져오기
-    //             if (attendanceDoc.exists()) {
-    //                 // 문서가 존재할 경우 해당 데이터로 상태 업데이트
-    //                 setAttendances(attendanceDoc.data());
-    //             } else {
-    //                 console.log('No such document!');
-    //             }
-    //         } catch (error) {
-    //             console.error('Error fetching attendance:', error);
-    //         }
-    //     };
-    //     fetchAttendance(); // fetchAttendance 함수 호출
-    // }, [attendanceId]); // attendanceId가 변경될 때마다 useEffect 실행
 
     const dispatch = useDispatch();
     const { attendanceDetail } = useSelector(

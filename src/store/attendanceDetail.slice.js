@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { db } from '../firebase';
 import { getDoc, doc } from 'firebase/firestore';
-import { useParams } from 'react-router-dom';
 
 export const fetchAttendanceById = createAsyncThunk(
     'user/fetchAttendanceById',
