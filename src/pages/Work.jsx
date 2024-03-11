@@ -4,8 +4,10 @@ import Card from "../components/Card";
 import { Calendar } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 
-import date from "../data/date";
+// import date from "../data/date";
 import WorkWrite from "../components/WorkWrite";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { db } from "../firebase";
 
 const CalendarWrap = styled(Card)`
   overflow: hidden;
@@ -45,7 +47,7 @@ const CalendarWrap = styled(Card)`
     .fc-h-event {
       padding: 0.216rem 0.5rem;
       font-size: 0.8125rem;
-      &[style*="255, 241, 227"] {
+      /* &[style*="255, 241, 227"] {
         div {
           color: var(--warning) !important;
         }
@@ -64,7 +66,7 @@ const CalendarWrap = styled(Card)`
         div {
           color: var(--primary) !important;
         }
-      }
+      } */
     }
     .fc-button {
       padding: 0;
@@ -174,13 +176,36 @@ const CalendarWrap = styled(Card)`
 const Work = () => {
   const calendarRef = useRef(null);
   const [inputData, setinput] = useState({});
+  const [ovfhidden, setOvfhidden] = useState(false);
+  const [isprojects, setIsProjects] = useState([]);
 
   const handleData = (value) => {
     setinput(value);
   };
+
+  const handleOverflow = () => {
+    const body = document.body;
+    if (!ovfhidden) {
+      body.style.overflow = "hidden";
+    }
+  };
+
   useEffect(() => {
+    const fetchProject = async () => {
+      const projectQuery = query(collection(db, `project`));
+      const unsubscribe = await onSnapshot(projectQuery, (snapshot) => {
+        const projects = snapshot.docs.map((doc) => {
+          const { title, start, end, state, color, textColor } = doc.data();
+          return { title, start, end, state, color, textColor };
+        });
+        setIsProjects(projects);
+      });
+      return () => unsubscribe();
+    };
+    fetchProject();
+
     const calendarEl = document.querySelector(".calendar");
-    console.log(inputData);
+
     const calendar = new Calendar(calendarEl, {
       headerToolbar: {
         left: "prev,next today",
@@ -190,7 +215,7 @@ const Work = () => {
       plugins: [dayGridPlugin],
       initialView: "dayGridMonth",
       locale: "ko",
-      events: date,
+      events: isprojects,
       editable: true,
       selectable: true,
       customButtons: {
@@ -202,34 +227,26 @@ const Work = () => {
             if (!btn.hasAttribute("popovertarget")) {
               btn.setAttribute("popovertarget", "aa");
             }
-
-            // var dateStr = prompt("YYYY-MM-DD 형식으로 입력하세요.");
-            // var date = new Date(inputData + "T00:00:00");
-            // if (!isNaN(date.valueOf())) {
-            //   calendar.addEvent({
-            //     title: "일정 삽입",
-            //     start: date,
-            //     allDay: true,
-            //   });
-            //   alert("Update DB...");
-            // }
+            handleOverflow();
           },
         },
       },
     });
-    calendar.addEvent({
-      title: inputData.title,
-      start: inputData.start,
-      end: inputData.end,
-      color: inputData.color,
-      textColor: inputData.textColor,
-      allDay: true,
-    });
+    // isprojects.forEach((project) => {
+    //   calendar.addEvent({
+    //     title: project.title,
+    //     start: project.start,
+    //     end: project.end,
+    //     color: project.color,
+    //     textColor: project.textColor,
+    //     allDay: true,
+    //   });
+    // });
     calendar.render();
     return () => {
       calendar.destroy();
     };
-  }, [inputData]);
+  }, []);
   return (
     <>
       <CalendarWrap>

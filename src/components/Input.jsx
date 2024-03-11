@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
 import styled from "styled-components";
-import { Badge } from "./GlobalStyles";
+import calendar from "../assets/ico_calendar.svg";
 
 const InputElement = styled.input`
   display: block;
@@ -86,6 +86,31 @@ const InputElement = styled.input`
     &:disabled {
       background-color: rgba(75, 70, 92, 0.08);
       opacity: 1;
+    }
+  }
+  &[type="date"] {
+    position: relative;
+    background: url(${calendar}) no-repeat right 0.875rem center;
+    &::-webkit-clear-button,
+    &::-webkit-inner-spin-button {
+      display: none;
+    }
+    &::-webkit-calendar-picker-indicator {
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: transparent;
+      color: transparent;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    &::before {
+      content: attr(data-placeholder);
+      width: 100%;
+    }
+    &:valid::before {
+      display: none;
     }
   }
 `;

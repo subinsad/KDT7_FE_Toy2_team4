@@ -131,6 +131,7 @@ const MemberTag = styled.div`
 `;
 
 const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
+  const memberRef = useRef(null);
   const [isList, setIsList] = useState(false);
   const [isValue, setIsValue] = useState("진행현황 선택");
   const [isUser, setIsUser] = useState("멤버 선택");
@@ -149,7 +150,10 @@ const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
     setIsUser(value);
     setIsList(false);
     setTagVisible([...tagVisible, value]);
-    onMemberTagChange([...tagVisible, value]);
+  };
+
+  const handleOnInput = () => {
+    onMemberTagChange(memberRef.current.innerText);
   };
 
   return (
@@ -186,7 +190,7 @@ const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
             </>
           ))}
       </SelectDetailWrap>
-      <MemberTag>
+      <MemberTag onInput={handleOnInput} ref={memberRef}>
         {tagVisible.map((user, index) => (
           <Alert key={index} color="primary" close className="tag">
             {user}

@@ -5,6 +5,7 @@ import Avatar from "./Avatar";
 import { useDispatch } from "react-redux";
 import { auth } from "../firebase";
 import { clearUser } from "../store/user.slice";
+import { useRef, useState } from "react";
 
 const NavBarWrap = styled.div`
   position: fixed;
@@ -160,6 +161,17 @@ function NavBar() {
     } catch (error) {
       console.log("logout error : ", error);
     }
+  };
+
+  const [isrect, setIsRect] = useState([]);
+  const avatarListRef = useRef(null);
+
+  const handleAvatar = (e) => {
+    const rect = e.target.getBoundingClientRect();
+    setIsRect([`${rect.left}px`, `${rect.top}px`]);
+  };
+  const closeAvatarList = () => {
+    setIsRect([]);
   };
 
   return (
