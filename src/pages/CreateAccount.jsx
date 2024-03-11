@@ -89,18 +89,18 @@ const StepItem = styled.li`
   }
 `;
 
-
 const CreateAccount = () => {
   const [activeStep, setActiveStep] = useState(0); //단계별로 회원가입 페이지를 구성
-  const { userInfo } = useSelector((state) => state.userSlice)
+  const { userInfo } = useSelector((state) => state.userSlice);
   const navigate = useNavigate();
 
-  useEffect(() => { // 1. 회원가입 페이지가 처음 로드 될 때 userInfo 즉 user 전역상태가 존재하면 홈화면으로 보낸다
+  useEffect(() => {
+    // 1. 회원가입 페이지가 처음 로드 될 때 userInfo 즉 user 전역상태가 존재하면 홈화면으로 보낸다
     if (!userInfo.name) {
       return;
     }
     navigate("/main");
-  }, [])
+  }, []);
 
   return (
     <SignWrap>
@@ -138,18 +138,10 @@ const CreateAccount = () => {
             <p>회원가입완료</p>
           </StepItem>
         </Step>
-        {activeStep === 0 && (
-          <JoinFirst setActiveStep={setActiveStep} />
-        )}
-        {activeStep === 1 && (
-          <JoinSecond setActiveStep={setActiveStep} />
-        )}
-        {activeStep === 2 && (
-          <JoinThird setActiveStep={setActiveStep} />
-        )}
-        {activeStep === 3 && (
-          <JoinComplete />
-        )}
+        {activeStep === 0 && <JoinFirst setActiveStep={setActiveStep} />}
+        {activeStep === 1 && <JoinSecond setActiveStep={setActiveStep} />}
+        {activeStep === 2 && <JoinThird setActiveStep={setActiveStep} />}
+        {activeStep === 3 && <JoinComplete />}
       </SignRight>
     </SignWrap>
   );

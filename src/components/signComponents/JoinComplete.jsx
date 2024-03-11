@@ -39,15 +39,15 @@ const DoneJoin = styled.div`
 `;
 
 const JoinComplete = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const gotoLogin = () => {
     navigate("/main");
   };
 
   useEffect(() => {
-    dispatch(clearUserInfo())
-  }, [])
+    dispatch(clearUserInfo());
+  }, []);
 
   return (
     <>
@@ -65,7 +65,7 @@ const JoinComplete = () => {
         </Button>
       </DoneJoin>
     </>
-  )
-}
+  );
+};
 
-export default JoinComplete
+export default JoinComplete;

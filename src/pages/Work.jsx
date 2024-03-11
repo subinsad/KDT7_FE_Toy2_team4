@@ -195,8 +195,9 @@ const Work = () => {
       const projectQuery = query(collection(db, `project`));
       const unsubscribe = await onSnapshot(projectQuery, (snapshot) => {
         const projects = snapshot.docs.map((doc) => {
+          const url = `work/${doc.id}`; //페이지 정보
           const { title, start, end, state, color, textColor } = doc.data();
-          return { title, start, end, state, color, textColor };
+          return { url, title, start, end, state, color, textColor };
         });
         setIsProjects(projects);
       });

@@ -153,7 +153,7 @@ const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
   };
 
   const handleOnInput = () => {
-    onMemberTagChange(memberRef.current.innerText);
+    onMemberTagChange(memberRef.current.innerHTML);
   };
 
   return (

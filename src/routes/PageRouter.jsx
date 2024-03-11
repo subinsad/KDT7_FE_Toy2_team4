@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../layout/Layout";
 import Main from "../pages/Main";
@@ -16,13 +16,16 @@ import AttendanceWrite from "../components/Board/AttendanceWrite";
 import AttendanceRead from "../components/Board/AttendanceRead";
 import MypageEdit from "../pages/MypageEdit";
 import ProtectedRoute from "./ProtectedRoute";
+import WorkRead from "../pages/WorkRead";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ProtectedRoute>
-      <Layout />
-    </ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "main",
@@ -31,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "work",
         element: <Work />,
+      },
+      {
+        path: "work/qbJmALKztAJNVMa5KRKd",
+        element: <WorkRead />,
       },
       {
         path: "salary",

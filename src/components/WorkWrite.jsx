@@ -138,6 +138,14 @@ const WorkWrite = ({ id, getData }) => {
     body.style.overflow = "visible";
   };
 
+  const backDropClose = () => {
+    const backdrop = document.querySelector(`#${id}:backdrop`);
+    backdrop.addEventListener("click", () => {
+      handleClose();
+    });
+  };
+  // backDropClose();
+
   return (
     <Popup popover="auto" id={id}>
       <PopupHeader>
