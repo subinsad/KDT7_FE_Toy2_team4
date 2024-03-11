@@ -9,27 +9,50 @@ import Input from '../Input';
 import { auth, db } from '../../firebase';
 import { getDoc, doc } from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAttendance } from '../../store/attendance.slice';
+import {
+    fetchAttendanceById,
+    attendanceDetailSlice,
+} from '../../store/attendanceDetail.slice';
 
 const AttendanceRead = (props) => {
+    const [attendances, setAttendances] = useState({}); // json
     const navigate = useNavigate();
     const Back = () => {
         navigate('/attendance');
     };
 
     const { attendanceId } = useParams();
-    const user = auth.currentUser;
+    const { userInfo } = useSelector((state) => state.userSlice);
+
+    const [user, setUser] = useState(null); // 사용자 상태
+
+    // useEffect(() => {
+    //     const fetchAttendance = async () => {
+    //         try {
+    //             const attendanceDoc = await getDoc(
+    //                 doc(db, 'users', user.uid, 'attendance', attendanceId)
+    //             ); // 해당 attendanceId에 대한 문서 가져오기
+    //             if (attendanceDoc.exists()) {
+    //                 // 문서가 존재할 경우 해당 데이터로 상태 업데이트
+    //                 setAttendances(attendanceDoc.data());
+    //             } else {
+    //                 console.log('No such document!');
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching attendance:', error);
+    //         }
+    //     };
+    //     fetchAttendance(); // fetchAttendance 함수 호출
+    // }, [attendanceId]); // attendanceId가 변경될 때마다 useEffect 실행
 
     const dispatch = useDispatch();
-    const { attendance } = useSelector((state) => state.attendanceSlice);
+    const { attendanceDetail } = useSelector(
+        (state) => state.attendanceDetailSlice
+    );
 
     useEffect(() => {
-        if (attendanceId) {
-            // 컴포넌트가 마운트될 때 API로부터 근태 정보를 가져옵니다.
-            dispatch(fetchAttendance(attendanceId));
-        }
-        console.log(attendanceId);
-    }, [attendanceId, dispatch]);
+        dispatch(fetchAttendanceById({ attendanceId, user: userInfo }));
+    }, [attendanceId, userInfo, dispatch]);
 
     return (
         <>
@@ -42,7 +65,7 @@ const AttendanceRead = (props) => {
                             label="job0"
                             labelText="Name"
                             readOnly="readonly"
-                            value={auth.currentUser.displayName}
+                            value={userInfo.name}
                         />
                     </div>
                     <div>
@@ -52,7 +75,7 @@ const AttendanceRead = (props) => {
                             label="job1"
                             labelText="Job Position"
                             readOnly="readonly"
-                            value="과장"
+                            value={userInfo.position}
                         />
                     </div>
                     <div>
@@ -72,7 +95,7 @@ const AttendanceRead = (props) => {
                             label="job3"
                             labelText="근태종류"
                             readOnly="readonly"
-                            value={attendance.category}
+                            value={attendanceDetail.category}
                         />
                     </div>
                     <div>
@@ -82,7 +105,7 @@ const AttendanceRead = (props) => {
                             label="job4"
                             labelText="근태 시작일"
                             readOnly="readonly"
-                            value={attendance.attendanceStart}
+                            value={attendanceDetail.attendanceStart}
                         />
                     </div>
                     <div>
@@ -92,7 +115,7 @@ const AttendanceRead = (props) => {
                             label="job5"
                             labelText="근태 종료일"
                             readOnly="readonly"
-                            value={attendance.attendanceEnd}
+                            value={attendanceDetail.attendanceEnd}
                         />
                     </div>
                     <GridColumnSpan $span="3">
@@ -103,14 +126,14 @@ const AttendanceRead = (props) => {
                                 label="title"
                                 readOnly="readonly"
                                 labelText="제목"
-                                value={attendance.title}
+                                value={attendanceDetail.title}
                             />
                         </div>
                     </GridColumnSpan>
                     <GridColumnSpan $span="3">
                         <hr />
 
-                        {attendance.attendanceContext}
+                        {attendanceDetail.attendanceContext}
                     </GridColumnSpan>
                 </Grid>
                 <hr />

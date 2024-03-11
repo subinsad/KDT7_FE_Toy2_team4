@@ -13,8 +13,8 @@ import useInput from '../../Hooks/useInput';
 import { auth, db } from '../../firebase';
 import { addDoc, collection, getDoc, doc } from '@firebase/firestore';
 import { fetchUserInfo } from '../../store/user.slice';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
 import { addAttendance } from '../../store/attendance.slice';
 
 const AttendanceWrite = () => {
@@ -89,8 +89,8 @@ const AttendanceWrite = () => {
                 attendanceStart: attendanceData.attendanceStart,
                 attendanceEnd: attendanceData.attendanceEnd,
                 createdAt: new Date().toLocaleString(),
-                name: user.displayName,
-                userId: user.uid,
+                name: userInfo.name,
+                userId: userInfo.uid,
             });
             dispatch(
                 addAttendance({
@@ -100,8 +100,8 @@ const AttendanceWrite = () => {
                     attendanceStart: attendanceData.attendanceStart,
                     attendanceEnd: attendanceData.attendanceEnd,
                     createdAt: new Date().toLocaleString(),
-                    name: user.displayName,
-                    userId: user.uid,
+                    name: userInfo.name,
+                    userId: userInfo.uid,
                 })
             );
         } catch (error) {
@@ -109,6 +109,7 @@ const AttendanceWrite = () => {
         } finally {
             navigate('/Attendance');
         }
+        console.log(userInfo);
     };
 
     return (

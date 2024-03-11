@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { db } from '../firebase';
 import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 
+// 글 작성,조회
 export const fetchAttendance = createAsyncThunk(
     'user/fetchAttendance',
     async (user, thunkAPI) => {
