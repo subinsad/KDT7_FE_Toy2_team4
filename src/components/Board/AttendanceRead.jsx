@@ -9,8 +9,7 @@ import Input from '../Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAttendanceById } from '../../store/attendanceDetail.slice';
 
-const AttendanceRead = (props) => {
-    const [attendances, setAttendances] = useState({}); // json
+const AttendanceRead = () => {
     const navigate = useNavigate();
     const Back = () => {
         navigate('/attendance');
