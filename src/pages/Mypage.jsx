@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { BarChart, Calendar2, CardList, Mailbox, MailboxFlag, People, Person, PersonBadge, PersonWorkspace, Telephone } from "react-bootstrap-icons";
 import bg from "../assets/bg_profile.png";
 import MypageHeader from "./MypageHeader";
+import { useSelector } from "react-redux";
+import { useMemo } from "react";
 
 const MypageWrap = styled.div`
   display: grid;
@@ -77,6 +79,20 @@ const Right = styled.div`
 `;
 
 function Mypage() {
+  const { name, email, team, position, phone } = useSelector((state) => state.userSlice.userInfo)
+  const { baseSalary, bonusSalary, SpecialSalary } = useSelector((state) => state.salarySlice.salary)
+
+  const calTax = useMemo(() => {
+    const totalSalary = Number(baseSalary) + Number(bonusSalary) + Number(SpecialSalary);
+    const insurance = parseInt(totalSalary * 0.06);
+    const tax = parseInt(totalSalary * 0.04);
+    const sum = totalSalary - insurance - tax
+    return { insurance, tax, sum };
+  }, [baseSalary, bonusSalary, SpecialSalary]);
+
+
+  const { insurance, tax, sum } = calTax;
+
   return (
     <>
       <MypageWrap>
@@ -89,31 +105,31 @@ function Mypage() {
                 <b>
                   <Person /> 이름
                 </b>
-                : <strong> 아무개</strong>
+                : <strong> {name}</strong>
               </li>
               <li>
                 <b>
                   <BarChart /> 직급
                 </b>
-                : <strong> 과장</strong>
+                : <strong> {position}</strong>
               </li>
               <li>
                 <b>
                   <MailboxFlag /> 이메일
                 </b>
-                : <strong> 123@123.com</strong>
+                : <strong> {email}</strong>
               </li>
               <li>
                 <b>
                   <Telephone /> 전화번호
                 </b>
-                : <strong> 000-0000-0000</strong>
+                : <strong> {phone}</strong>
               </li>
               <li>
                 <b>
                   <People /> 소속팀
                 </b>
-                :<strong> 개발팀</strong>
+                :<strong>{team}</strong>
               </li>
             </PersonalInfoList>
           </Card>
@@ -146,24 +162,29 @@ function Mypage() {
           </Card>
           <Card title={"이달의 급여"}>
             <ThisMonthSalary>
-              ₩4,000,000<span>원</span>
+              ₩{sum.toLocaleString()}<span>원</span>
             </ThisMonthSalary>
             <hr />
             <PersonalInfoList className="salary">
               <li>
-                <b>실급여</b> : <strong>1,000,000원</strong>
+                <b>기본급</b> : {baseSalary ? <strong>{Number(baseSalary).toLocaleString()}원</strong>
+                  : ''}
               </li>
               <li>
-                <b>급여삭감</b> : <strong>- 200,000원</strong>
+                <b>성과급</b> : {bonusSalary ? <strong>{Number(bonusSalary).toLocaleString()}원</strong>
+                  : ''}
               </li>
               <li>
-                <b>예상급여</b> : <strong>1,000,000원</strong>
+                <b>특별수당</b> : {SpecialSalary ? <strong>{Number(SpecialSalary).toLocaleString()}원</strong>
+                  : ''}
               </li>
               <li>
-                <b>4대보험</b> : <strong>1,000,000원</strong>
+                <b>4대보험</b> : {insurance ? <strong>-{Number(insurance).toLocaleString()}원</strong>
+                  : ''}
               </li>
               <li>
-                <b>성과급</b> :<strong>1,000,000원</strong>
+                <b>소득세</b> : {tax ? <strong>-{Number(tax).toLocaleString()}원</strong>
+                  : ''}
               </li>
             </PersonalInfoList>
           </Card>

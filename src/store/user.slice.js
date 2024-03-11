@@ -14,6 +14,9 @@ export const fetchUserInfo = createAsyncThunk(
                     try {
                         const state = thunkAPI.getState();
                         const { name, email, team, position, phone, shortInfo, image, backgroundImage } = state.signInfoSlice.signInfo;
+                        const currentYear = new Date().getFullYear(); // 현재 년도
+                        const currentMonth = new Date().getMonth() + 1;
+
                         await setDoc(userDocRef, {
                             name: name,
                             email: email,
@@ -22,7 +25,10 @@ export const fetchUserInfo = createAsyncThunk(
                             shortInfo: shortInfo,
                             team: team,
                             userImg: image,
-                            userBg: backgroundImage
+                            userBg: backgroundImage,
+                            joinYear: currentYear,
+                            joinMonth: currentMonth
+
                         }, { merge: true });
                         return {
                             shortInfo,
@@ -32,8 +38,10 @@ export const fetchUserInfo = createAsyncThunk(
                             email,
                             team,
                             uid: user.uid, //추가,
-                            userImg:image,
-                            userBg:backgroundImage
+                            userImg: image,
+                            userBg: backgroundImage,
+                            joinYear: currentYear,
+                            joinMonth: currentMonth
                         }
                     } catch (error) {
                         console.error(error);
@@ -48,7 +56,9 @@ export const fetchUserInfo = createAsyncThunk(
                     name: userData.name || "",
                     email: userData.email || "",
                     team: userData.team || "",
-                    uid: user.uid //추가
+                    uid: user.uid, //추가,
+                    joinYear: userData.joinYear || 0, // 기본값 설정
+                    joinMonth: userData.joinMonth || 0 // 기본값 설정
                 };
             } catch (error) {
                 return thunkAPI.rejectWithValue(error.message);
@@ -86,7 +96,9 @@ const initialState = {
         position: "",
         team: "",
         shortInfo: "",
-        uid: "" //추가
+        uid: "",
+        joinYear: "",
+        joinMonth: ""
     },
     isAdmin: false,
     isAdminLoading: false
@@ -105,7 +117,8 @@ export const userSlice = createSlice({
                 phone: "",
                 position: "",
                 team: "",
-                shortInfo: ""
+                shortInfo: "",
+
             },
                 state.isAdmin = false
         }
@@ -123,7 +136,9 @@ export const userSlice = createSlice({
                     position: action.payload.position,
                     team: action.payload.team,
                     shortInfo: action.payload.shortInfo,
-                    uid: action.payload.uid //추가
+                    uid: action.payload.uid, //추가
+                    joinYear: action.payload.joinYear,
+                    joinMonth: action.payload.joinMonth
                 };
             })
             .addCase(userIsAdmin.pending, (state) => {
