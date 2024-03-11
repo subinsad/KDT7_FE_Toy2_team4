@@ -89,7 +89,7 @@ const AttendanceWrite = () => {
                 attendanceStart: attendanceData.attendanceStart,
                 attendanceEnd: attendanceData.attendanceEnd,
                 createdAt: new Date().toLocaleString(),
-                username: user.displayName,
+                name: user.displayName,
                 userId: user.uid,
             });
             dispatch(
@@ -100,7 +100,7 @@ const AttendanceWrite = () => {
                     attendanceStart: attendanceData.attendanceStart,
                     attendanceEnd: attendanceData.attendanceEnd,
                     createdAt: new Date().toLocaleString(),
-                    username: user.displayName,
+                    name: user.displayName,
                     userId: user.uid,
                 })
             );
@@ -123,7 +123,7 @@ const AttendanceWrite = () => {
                                 label="Name"
                                 labelText="Name"
                                 readOnly="readonly"
-                                value={'user.name'}
+                                value={userInfo.name}
                             />
                         </div>
                         <div>
@@ -133,7 +133,7 @@ const AttendanceWrite = () => {
                                 label="job"
                                 labelText="Job Position"
                                 readOnly="readonly"
-                                value={'user'}
+                                value={userInfo.position}
                             />
                         </div>
                         <div>

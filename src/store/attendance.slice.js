@@ -1,13 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { db } from '../firebase';
-import {
-    collection,
-    query,
-    orderBy,
-    limit,
-    onSnapshot,
-    getDocs,
-} from 'firebase/firestore';
+import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 
 export const fetchAttendance = createAsyncThunk(
     'user/fetchAttendance',
@@ -30,7 +23,7 @@ export const fetchAttendance = createAsyncThunk(
                         title,
                         attendanceContext,
                         userId,
-                        username,
+                        name,
                     } = doc.data();
 
                     return {
@@ -42,7 +35,7 @@ export const fetchAttendance = createAsyncThunk(
                         category,
                         title,
                         userId,
-                        username,
+                        name,
                         id: doc.id,
                     };
                 });
@@ -70,9 +63,13 @@ export const attendanceSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchAttendance.fulfilled, (state, action) => {
-            state.attendance = [...action.payload];
-        });
+        builder
+            .addCase(fetchAttendance.fulfilled, (state, action) => {
+                state.attendance = [...action.payload];
+            })
+            .addCase(fetchAttendance.rejected, (state, action) => {
+                state.error = action.payload;
+            });
     },
 });
 export const { addAttendance } = attendanceSlice.actions;

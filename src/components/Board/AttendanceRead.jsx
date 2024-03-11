@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import Card from '../Card';
 import { Button, Grid, GridColumnSpan } from '../GlobalStyles';
@@ -8,6 +8,8 @@ import Input from '../Input';
 
 import { auth, db } from '../../firebase';
 import { getDoc, doc } from 'firebase/firestore';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAttendance } from '../../store/attendance.slice';
 
 const AttendanceRead = (props) => {
     const navigate = useNavigate();
@@ -15,28 +17,19 @@ const AttendanceRead = (props) => {
         navigate('/attendance');
     };
 
-    const [attendances, setAttendances] = useState({}); // json
     const { attendanceId } = useParams();
     const user = auth.currentUser;
 
+    const dispatch = useDispatch();
+    const { attendance } = useSelector((state) => state.attendanceSlice);
+
     useEffect(() => {
-        const fetchAttendance = async () => {
-            try {
-                const attendanceDoc = await getDoc(
-                    doc(db, 'users', user.uid, 'attendance', attendanceId)
-                ); // 해당 attendanceId에 대한 문서 가져오기
-                if (attendanceDoc.exists()) {
-                    // 문서가 존재할 경우 해당 데이터로 상태 업데이트
-                    setAttendances(attendanceDoc.data());
-                } else {
-                    console.log('No such document!');
-                }
-            } catch (error) {
-                console.error('Error fetching attendance:', error);
-            }
-        };
-        fetchAttendance(); // fetchAttendance 함수 호출
-    }, [attendanceId]); // attendanceId가 변경될 때마다 useEffect 실행
+        if (attendanceId) {
+            // 컴포넌트가 마운트될 때 API로부터 근태 정보를 가져옵니다.
+            dispatch(fetchAttendance(attendanceId));
+        }
+        console.log(attendanceId);
+    }, [attendanceId, dispatch]);
 
     return (
         <>
@@ -79,7 +72,7 @@ const AttendanceRead = (props) => {
                             label="job3"
                             labelText="근태종류"
                             readOnly="readonly"
-                            value="유급휴가"
+                            value={attendance.category}
                         />
                     </div>
                     <div>
@@ -89,7 +82,7 @@ const AttendanceRead = (props) => {
                             label="job4"
                             labelText="근태 시작일"
                             readOnly="readonly"
-                            value={attendances.attendanceStart}
+                            value={attendance.attendanceStart}
                         />
                     </div>
                     <div>
@@ -99,7 +92,7 @@ const AttendanceRead = (props) => {
                             label="job5"
                             labelText="근태 종료일"
                             readOnly="readonly"
-                            value="2024-03-25"
+                            value={attendance.attendanceEnd}
                         />
                     </div>
                     <GridColumnSpan $span="3">
@@ -110,14 +103,14 @@ const AttendanceRead = (props) => {
                                 label="title"
                                 readOnly="readonly"
                                 labelText="제목"
-                                value={attendances.title}
+                                value={attendance.title}
                             />
                         </div>
                     </GridColumnSpan>
                     <GridColumnSpan $span="3">
                         <hr />
 
-                        {attendances.attendanceContext}
+                        {attendance.attendanceContext}
                     </GridColumnSpan>
                 </Grid>
                 <hr />

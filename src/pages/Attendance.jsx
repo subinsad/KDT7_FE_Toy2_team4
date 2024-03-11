@@ -4,6 +4,8 @@ import BoardList from '../components/Board/BoardList';
 import { Button } from '../components/GlobalStyles';
 import { useNavigate } from 'react-router-dom';
 
+import { auth } from '../firebase';
+
 const Attendance = () => {
     const navigate = useNavigate();
     const gotoWrite = () => {
@@ -11,13 +13,13 @@ const Attendance = () => {
     };
 
     const [isAdmin, setIsAdmin] = useState(false);
-    const [currentUser, setCurrentUser] = useState({ id: 'user1' });
+    const user = auth.currentUser;
 
     return (
         <div>
             <Card title={'Member Salary List'}>
                 <div className="align right mb3">
-                    {currentUser && (
+                    {user && (
                         <Button $color="primary" onClick={gotoWrite}>
                             근태신청
                         </Button>

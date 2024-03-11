@@ -4,10 +4,7 @@ import { Badge, Button } from '../GlobalStyles';
 import { useParams, Link } from 'react-router-dom';
 
 const AttendanceListItem = ({ item }) => {
-    const [attendances, setAttendances] = useState([]); // json
     const [isAdmin, setIsAdmin] = useState(false);
-
-    const [currentUser, setCurrentUser] = useState({ id: 'user1' }); // 로그인한 사용자 정보
 
     const { attendanceId } = useParams();
 
