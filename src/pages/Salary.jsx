@@ -4,6 +4,11 @@ import Card from "../components/Card";
 import { Grid } from "../components/GlobalStyles";
 import { ArrowRightSquare, Coin, PersonAdd, TicketPerforated } from "react-bootstrap-icons";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useEffect } from "react";
+import Alert from "../components/Alert";
+import { Check } from "react-bootstrap-icons";
 
 export const Member = styled.div`
   strong {
@@ -52,12 +57,25 @@ export const Member = styled.div`
 `;
 
 const Salary = () => {
+  const { allSalaryInfo, allUserInfo } = useSelector((state) => state.salaryAdminSlice)
+  const [showDialog, setShowDialog] = useState(false);
+  const totalSalary = allSalaryInfo?.reduce((a, currentItem) => {
+    return a + parseInt(currentItem.salary, 10);
+  }, 0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowDialog(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [showDialog]);
   return (
     <div>
       <Grid $col="4" className="mb3">
         <Card title={"Members"}>
           <Member>
-            <strong>12</strong>
+            <strong>{allUserInfo.length}</strong>
             <div>총 직원수</div>
             <div className="icon primary">
               <PersonAdd />
@@ -66,8 +84,8 @@ const Salary = () => {
         </Card>
         <Card title={"Expenditure Salary"}>
           <Member>
-            <strong>12,100,000</strong>
-            <div>지출 급여</div>
+            {totalSalary ? <strong>{totalSalary.toLocaleString()}원</strong> : <strong>0원</strong>}
+            <div>이번 달 지출 급여</div>
             <div className="icon warning">
               <Coin />
             </div>
@@ -92,8 +110,13 @@ const Salary = () => {
           </Member>
         </Card>
       </Grid>
+      {showDialog && (
+        <Alert color="success" close title="급여 수정이 완료되었습니다">
+          <Check />
+        </Alert>
+      )}
       <Card title={"Member Salary List"}>
-        <BoardList state={"salary"} />
+        <BoardList state={"salary"} setShowDialog={setShowDialog} />
       </Card>
     </div>
   );

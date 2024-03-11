@@ -84,6 +84,7 @@ const optionMail = [
 const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate();
+  const { isAdmin } = useSelector((state) => state.userSlice)
   const { userInfo } = useSelector((state) => state.userSlice)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -9,7 +9,7 @@ export const fetchUserInfo = createAsyncThunk(
             try {
                 const userDocRef = doc(db, "users", user.uid, "userInfo", "data")
                 const userDoc = await getDoc(userDocRef)
-                const userData = userDoc.data() || {}; // 데이터가 없을 경우 빈 객체로 초기화
+                const userData = userDoc.data() || {};
                 if (!userDoc.data()) {
                     try {
                         const state = thunkAPI.getState();
@@ -28,7 +28,8 @@ export const fetchUserInfo = createAsyncThunk(
                             position,
                             name,
                             email,
-                            team
+                            team,
+                            uid: user.uid //추가
                         }
                     } catch (error) {
                         console.error(error);
@@ -42,10 +43,30 @@ export const fetchUserInfo = createAsyncThunk(
                     userImg: userData.userImg || "",
                     name: userData.name || "",
                     email: userData.email || "",
-                    team: userData.team || ""
+                    team: userData.team || "",
+                    uid: user.uid //추가
                 };
             } catch (error) {
                 return thunkAPI.rejectWithValue(error.message);
+            }
+        }
+    }
+)
+
+export const userIsAdmin = createAsyncThunk(
+    "user/isAdmin",
+    async (user) => {
+        if (user) {
+            const userDocRef = doc(db, "users", user.uid, "userInfo", "data");
+            const userDocSnap = await getDoc(userDocRef);
+            if (userDocSnap.exists()) {
+                const userData = userDocSnap.data();
+                const role = userData.role;
+                if (role === "admin") {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
     }
@@ -60,8 +81,11 @@ const initialState = {
         phone: "",
         position: "",
         team: "",
-        shortInfo: ""
-    }
+        shortInfo: "",
+        uid: "" //추가
+    },
+    isAdmin: false,
+    isAdminLoading: false
 }
 
 export const userSlice = createSlice({
@@ -90,7 +114,8 @@ export const userSlice = createSlice({
                 position: "",
                 team: "",
                 shortInfo: ""
-            }
+            },
+                state.isAdmin = false
         }
     },
     extraReducers: (builder) => {
@@ -105,8 +130,16 @@ export const userSlice = createSlice({
                     phone: action.payload.phone,
                     position: action.payload.position,
                     team: action.payload.team,
-                    shortInfo: action.payload.shortInfo
+                    shortInfo: action.payload.shortInfo,
+                    uid: action.payload.uid //추가
                 };
+            })
+            .addCase(userIsAdmin.pending, (state) => {
+                state.isAdminLoading = true;
+            })
+            .addCase(userIsAdmin.fulfilled, (state, action) => {
+                state.isAdmin = action.payload;
+                state.isAdminLoading = false;
             })
     }
 })

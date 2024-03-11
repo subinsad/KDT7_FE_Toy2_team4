@@ -5,7 +5,12 @@ import Avatar from "./Avatar";
 import { useDispatch } from "react-redux";
 import { auth } from "../firebase";
 import { clearUser } from "../store/user.slice";
+<<<<<<< HEAD
 import { useRef, useState } from "react";
+=======
+import { clearSalaryInfo } from "../store/salaryAdmin.slice";
+import { useSelector } from "react-redux";
+>>>>>>> 6442f1902052ba9669f6985c949b74e3532ed719
 
 const NavBarWrap = styled.div`
   position: fixed;
@@ -151,6 +156,7 @@ const AvatarList = styled.div`
 `;
 
 function NavBar() {
+<<<<<<< HEAD
   const dispatch = useDispatch();
   const navigate = useNavigation();
   const logout = async () => {
@@ -158,6 +164,17 @@ function NavBar() {
       await auth.signOut();
       dispatch(clearUser());
       navigate("/login");
+=======
+  const { userImg } = useSelector((state) => state.userSlice.userInfo)
+  const dispatch = useDispatch()
+  const navigate = useNavigation()
+  const logout = async () => {
+    try {
+      await auth.signOut();
+      dispatch(clearUser())
+      dispatch(clearSalaryInfo())
+      navigate('/login')
+>>>>>>> 6442f1902052ba9669f6985c949b74e3532ed719
     } catch (error) {
       console.log("logout error : ", error);
     }
@@ -229,10 +246,15 @@ function NavBar() {
               </li>
             </ul>
           </AlramList>
+<<<<<<< HEAD
           <button onClick={handleAvatar} popovertarget="avatar">
             <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
           </button>
           <AvatarList ref={avatarListRef} popover="auto" id="avatar" $left={isrect[0]} $top={isrect[1]}>
+=======
+          <Avatar src={userImg} popovertarget="avatar" />
+          <AvatarList popover="auto" id="avatar">
+>>>>>>> 6442f1902052ba9669f6985c949b74e3532ed719
             <ul>
               <li>
                 <Link to={"/mypage"}>
