@@ -76,13 +76,14 @@ const NavItem = styled.li`
 `;
 function Gnb() {
   const location = useLocation();
-  const { name } = useSelector((state) => state.userSlice.userInfo)
+  const { isAdmin } = useSelector((state) => state.userSlice)
+
 
   return (
     <>
       <AsideNav>
         <Logo>
-          <Link to="/">
+          <Link to="/main">
             <svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M0.00172773 0V6.85398C0.00172773 6.85398 -0.133178 9.01207 1.98092 10.8388L13.6912 21.9964L19.7809 21.9181L18.8042 9.88248L16.4951 7.17289L9.23799 0H0.00172773Z" fill="#7367F0"></path>
               <path opacity="0.06" d="M7.69824 16.4364L12.5199 3.23696L16.5541 7.25596L7.69824 16.4364Z" fill="#161616"></path>
@@ -111,11 +112,20 @@ function Gnb() {
               <PersonUp /> Attendance
             </Link>
           </NavItem>
-          <NavItem $active={location.pathname.includes("/salary")}>
-            <Link to="salary">
-              <Wallet /> Salary
-            </Link>
-          </NavItem>
+
+          {isAdmin ?
+            (<NavItem $active={location.pathname.includes("/salary")}>
+              <Link to="/salaryAdmin">
+                <Wallet /> Salary
+              </Link>
+            </NavItem>) :
+
+            <NavItem $active={location.pathname.includes("/salary")}>
+              <Link to="/salary">
+                <Wallet /> Salary
+              </Link>
+            </NavItem>}
+
         </ul>
         <Heading size={"xs"} tag={"h3"}>
           PERSONAL
@@ -127,22 +137,6 @@ function Gnb() {
               <Gear /> Mypage
             </Link>
           </NavItem>
-
-          {/* {!name && (
-            <NavItem $active={location.pathname === "/login"}>
-              <Link to="login">
-                <BoxArrowInRight /> login
-              </Link>
-            </NavItem>
-          )}
-
-          {!name && (
-            <NavItem $active={location.pathname === "/create-account"}>
-              <Link to="create-account">
-                <PersonBoundingBox /> CreateAccount
-              </Link>
-            </NavItem>
-          )} */}
 
         </ul>
       </AsideNav>

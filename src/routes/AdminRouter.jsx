@@ -17,7 +17,7 @@ import AttendanceRead from "../components/Board/AttendanceRead";
 import MypageEdit from "../pages/MypageEdit";
 import ProtectedRoute from "./ProtectedRoute";
 
-const router = createBrowserRouter([
+const AdminRouter = createBrowserRouter([
   {
     path: "/",
     element: <ProtectedRoute>
@@ -32,6 +32,15 @@ const router = createBrowserRouter([
         path: "work",
         element: <Work />,
       },
+      //salaryAdmin, salary/write는 admin 계정에서만 라우팅 될 수 있게 path 변경. 
+      {
+        path: "salaryAdmin",
+        element: <Salary />,
+      },
+      {
+        path: "salary/write",
+        element: <SalaryWrite />,
+      },
       {
         path: "attendance",
         element: <Attendance />,
@@ -41,7 +50,7 @@ const router = createBrowserRouter([
         element: <AttendanceWrite />,
       },
       {
-        path: 'attendance/read/:attendanceId',
+        path: "attendance/read",
         element: <AttendanceRead />,
       },
       {
@@ -75,4 +84,4 @@ const router = createBrowserRouter([
     element: <NotFound />,
   },
 ]);
-export default router;
+export default AdminRouter;

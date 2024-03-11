@@ -12,12 +12,14 @@ import {
 } from 'redux-persist/es/constants';
 import signInfoSlice from './signInfo.slice';
 import userSlice from './user.slice';
-import attendanceSlice from './attendance.slice';
+import attendanceSlice from './attendance.slice';import salaryAdminSlice from "./salaryAdmin.slice";
+
 
 const rootReducer = combineReducers({
     signInfoSlice: signInfoSlice,
     userSlice: userSlice,
-    attendanceSlice: attendanceSlice,
+    attendanceSlice: attendanceSlice,,
+    salaryAdminSlice: salaryAdminSlice
 });
 
 const persistConfig = {

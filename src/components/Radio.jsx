@@ -63,16 +63,14 @@ export function RadioGroup({ title, children }) {
   );
 }
 
-function Radio({ id, value, name, color, checked, ...props }) {
-  const [ischecked, setIschecked] = useState(checked);
-
+function Radio({ id, value, name, color, checked, onChange, ...props }) {
   const handleChange = () => {
-    setIschecked(!ischecked);
+    onChange(value); // 부모 컴포넌트의 상태를 변경하는 함수 호출
   };
 
   return (
     <>
-      <RadioButton name={name} type="radio" id={id} checked={ischecked} onChange={handleChange} $color={color} {...props} />
+      <RadioButton name={name} type="radio" id={id} checked={checked} onChange={handleChange} $color={color} {...props} />
       <Label htmlFor={id}>{value}</Label>
     </>
   );
