@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { editUserBg, editUserImg, fetchUserInfo } from "../../store/user.slice";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { doc, setDoc } from "firebase/firestore";
+import { arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
 import Loading from "../Loading";
 import { clearUserInfo } from "../../store/signInfo.slice";
 
@@ -56,7 +56,7 @@ const SampleMypage = styled.div`
 
 const JoinThird = ({ setActiveStep }) => {
   const dispatch = useDispatch();
-  const { name, email, password } = useSelector((state) => state.signInfoSlice.signInfo);
+  const { name, email, password, team, position, phone, shortInfo } = useSelector((state) => state.signInfoSlice.signInfo);
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -96,69 +96,64 @@ const JoinThird = ({ setActiveStep }) => {
         [field]: files[0],
       }));
     }
+  };
 
-    const handleSubmit = async () => {
-        const isValidForm = checkForm();
-        if (isValidForm) {
-            try {
-                setLoading(true)
-                const { user } = await createUserWithEmailAndPassword(auth, email, password);
-                dispatch(fetchUserInfo(user))
-                const userDocRef = doc(db, "users", user.uid, "userInfo", "data")
+  const handlePrev = () => {
+    setActiveStep((prev) => prev - 1);
+  };
 
-                //img추가
-                const imgLocationRef = ref(storage, `UserImage/${name}`);
-                const imgResult = await uploadBytes(imgLocationRef, formData.userImg);
-                const userImgUrl = await getDownloadURL(imgResult.ref);
-                await setDoc(
-                    userDocRef,
-                    {
-                        userImg: userImgUrl,
-                    },
-                    { merge: true }
-                );
-                dispatch(editUserImg(userImgUrl));
+  const handleSubmit = async () => {
+    const isValidForm = checkForm();
+    if (isValidForm) {
+      try {
+        setLoading(true);
+        const { user } = await createUserWithEmailAndPassword(auth, email, password);
+        dispatch(fetchUserInfo(user));
+        const userDocRef = doc(db, "users", user.uid, "userInfo", "data");
 
-                //bg추가
-                const bgLocationRef = ref(storage, `UserBg/${name}`);
-                const bgResult = await uploadBytes(bgLocationRef, formData.userBg);
-                const userBgUrl = await getDownloadURL(bgResult.ref);
-                await setDoc(
-                    userDocRef,
-                    {
-                        userBg: userBgUrl,
-                    },
-                    { merge: true }
-                );
-                dispatch(editUserBg(userBgUrl));
-                const userEmailRef = ref(storage, `UserEmail/${email}`);
-                await uploadBytes(userEmailRef, new Uint8Array(0));
+        //img추가
+        const imgLocationRef = ref(storage, `UserImage/${name}`);
+        const imgResult = await uploadBytes(imgLocationRef, formData.userImg);
+        const userImgUrl = await getDownloadURL(imgResult.ref);
+        await setDoc(
+          userDocRef,
+          {
+            userImg: userImgUrl,
+          },
+          { merge: true }
+        );
+        dispatch(editUserImg(userImgUrl));
 
-                //여기서부터 추가
-                const salaryDocRef = doc(db, "users", "0vY0bqw8nKT7lGbiSotVrcVzZWs1", "salary", "data")
-                await updateDoc(salaryDocRef, {
-                    allUserInfo: arrayUnion({
-                        name,
-                        email,
-                        userImg: userImgUrl,
-                        userBg: userBgUrl,
-                        phone,
-                        position,
-                        team,
-                        shortInfo,
-                        uid: user.uid,
-                    })
-                });
+        //bg추가
+        const bgLocationRef = ref(storage, `UserBg/${name}`);
+        const bgResult = await uploadBytes(bgLocationRef, formData.userBg);
+        const userBgUrl = await getDownloadURL(bgResult.ref);
+        await setDoc(
+          userDocRef,
+          {
+            userBg: userBgUrl,
+          },
+          { merge: true }
+        );
+        dispatch(editUserBg(userBgUrl));
+        const userEmailRef = ref(storage, `UserEmail/${email}`);
+        await uploadBytes(userEmailRef, new Uint8Array(0));
 
-            } catch (error) {
-                console.error(error)
-            }
-            finally {
-                setLoading(false)
-                dispatch(clearUserInfo())
-            }
-            setActiveStep((prev) => prev + 1)
-        }
+        //여기서부터 추가
+        const salaryDocRef = doc(db, "users", "0vY0bqw8nKT7lGbiSotVrcVzZWs1", "salary", "data");
+        await updateDoc(salaryDocRef, {
+          allUserInfo: arrayUnion({
+            name,
+            email,
+            userImg: userImgUrl,
+            userBg: userBgUrl,
+            phone,
+            position,
+            team,
+            shortInfo,
+            uid: user.uid,
+          }),
+        });
       } catch (error) {
         console.error(error);
       } finally {
