@@ -96,48 +96,68 @@ const JoinThird = ({ setActiveStep }) => {
         [field]: files[0],
       }));
     }
-  };
 
-  const handlePrev = () => {
-    setActiveStep((prev) => prev - 1);
-  };
+    const handleSubmit = async () => {
+        const isValidForm = checkForm();
+        if (isValidForm) {
+            try {
+                setLoading(true)
+                const { user } = await createUserWithEmailAndPassword(auth, email, password);
+                dispatch(fetchUserInfo(user))
+                const userDocRef = doc(db, "users", user.uid, "userInfo", "data")
 
-  const handleSubmit = async () => {
-    const isValidForm = checkForm();
-    if (isValidForm) {
-      try {
-        setLoading(true);
-        const { user } = await createUserWithEmailAndPassword(auth, email, password);
-        dispatch(fetchUserInfo(user));
-        if (formData.userImg) {
-          const userDocRef = doc(db, "users", user.uid, "userInfo", "data");
-          const locationRef = ref(storage, `UserImage/${name}`);
-          const result = await uploadBytes(locationRef, formData.userImg);
-          const userImgUrl = await getDownloadURL(result.ref);
-          await setDoc(
-            userDocRef,
-            {
-              userImg: userImgUrl,
-            },
-            { merge: true }
-          );
-          dispatch(editUserImg(userImgUrl));
-        }
-        if (formData.userBg) {
-          const userDocRef = doc(db, "users", user.uid, "userInfo", "data");
-          const locationRef = ref(storage, `UserBg/${name}`);
-          const result = await uploadBytes(locationRef, formData.userBg);
-          const userBgUrl = await getDownloadURL(result.ref);
-          await setDoc(
-            userDocRef,
-            {
-              userBg: userBgUrl,
-            },
-            { merge: true }
-          );
-          dispatch(editUserBg(userBgUrl));
-          const userEmailRef = ref(storage, `UserEmail/${email}`);
-          await uploadBytes(userEmailRef, new Uint8Array(0));
+                //img추가
+                const imgLocationRef = ref(storage, `UserImage/${name}`);
+                const imgResult = await uploadBytes(imgLocationRef, formData.userImg);
+                const userImgUrl = await getDownloadURL(imgResult.ref);
+                await setDoc(
+                    userDocRef,
+                    {
+                        userImg: userImgUrl,
+                    },
+                    { merge: true }
+                );
+                dispatch(editUserImg(userImgUrl));
+
+                //bg추가
+                const bgLocationRef = ref(storage, `UserBg/${name}`);
+                const bgResult = await uploadBytes(bgLocationRef, formData.userBg);
+                const userBgUrl = await getDownloadURL(bgResult.ref);
+                await setDoc(
+                    userDocRef,
+                    {
+                        userBg: userBgUrl,
+                    },
+                    { merge: true }
+                );
+                dispatch(editUserBg(userBgUrl));
+                const userEmailRef = ref(storage, `UserEmail/${email}`);
+                await uploadBytes(userEmailRef, new Uint8Array(0));
+
+                //여기서부터 추가
+                const salaryDocRef = doc(db, "users", "0vY0bqw8nKT7lGbiSotVrcVzZWs1", "salary", "data")
+                await updateDoc(salaryDocRef, {
+                    allUserInfo: arrayUnion({
+                        name,
+                        email,
+                        userImg: userImgUrl,
+                        userBg: userBgUrl,
+                        phone,
+                        position,
+                        team,
+                        shortInfo,
+                        uid: user.uid,
+                    })
+                });
+
+            } catch (error) {
+                console.error(error)
+            }
+            finally {
+                setLoading(false)
+                dispatch(clearUserInfo())
+            }
+            setActiveStep((prev) => prev + 1)
         }
       } catch (error) {
         console.error(error);

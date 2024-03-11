@@ -39,14 +39,7 @@ const router = createBrowserRouter([
         path: "work/qbJmALKztAJNVMa5KRKd",
         element: <WorkRead />,
       },
-      {
-        path: "salary",
-        element: <Salary />,
-      },
-      {
-        path: "salary/write",
-        element: <SalaryWrite />,
-      },
+
       {
         path: "attendance",
         element: <Attendance />,
