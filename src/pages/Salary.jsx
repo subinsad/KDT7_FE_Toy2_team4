@@ -75,7 +75,7 @@ const Salary = () => {
       <Grid $col="4" className="mb3">
         <Card title={"Members"}>
           <Member>
-            <strong>{allUserInfo.length}</strong>
+            <strong>{allUserInfo?.length}</strong>
             <div>총 직원수</div>
             <div className="icon primary">
               <PersonAdd />
