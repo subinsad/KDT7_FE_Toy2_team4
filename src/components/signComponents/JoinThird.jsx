@@ -142,7 +142,7 @@ const JoinThird = ({ setActiveStep }) => {
                 await uploadBytes(userEmailRef, new Uint8Array(0));
 
                 //여기서부터 추가
-                const salaryDocRef = doc(db, "users", "6S0MGsUl3BaqV33ATQ3tU0enGVo1", "salary", "data")
+                const salaryDocRef = doc(db, "users", "0vY0bqw8nKT7lGbiSotVrcVzZWs1", "salary", "data")
                 await updateDoc(salaryDocRef, {
                     allUserInfo: arrayUnion({
                         name,
