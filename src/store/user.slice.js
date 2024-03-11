@@ -13,14 +13,16 @@ export const fetchUserInfo = createAsyncThunk(
                 if (!userDoc.data()) {
                     try {
                         const state = thunkAPI.getState();
-                        const { name, email, team, position, phone, shortInfo } = state.signInfoSlice.signInfo;
+                        const { name, email, team, position, phone, shortInfo, image, backgroundImage } = state.signInfoSlice.signInfo;
                         await setDoc(userDocRef, {
                             name: name,
                             email: email,
                             phone: phone,
                             position: position,
                             shortInfo: shortInfo,
-                            team: team
+                            team: team,
+                            userImg: image,
+                            userBg: backgroundImage
                         }, { merge: true });
                         return {
                             shortInfo,
@@ -29,7 +31,9 @@ export const fetchUserInfo = createAsyncThunk(
                             name,
                             email,
                             team,
-                            uid: user.uid //추가
+                            uid: user.uid, //추가,
+                            userImg:image,
+                            userBg:backgroundImage
                         }
                     } catch (error) {
                         console.error(error);
@@ -92,18 +96,6 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        editUserImg: (state, action) => {
-            state.userInfo = {
-                ...state.userInfo,
-                userImg: action.payload
-            }
-        },
-        editUserBg: (state, action) => {
-            state.userInfo = {
-                ...state.userInfo,
-                userBg: action.payload
-            }
-        },
         clearUser: (state) => {
             state.userInfo = {
                 name: "",
@@ -144,5 +136,5 @@ export const userSlice = createSlice({
     }
 })
 
-export const { editUserImg, editUserBg, clearUser } = userSlice.actions
+export const { clearUser } = userSlice.actions
 export default userSlice.reducer
