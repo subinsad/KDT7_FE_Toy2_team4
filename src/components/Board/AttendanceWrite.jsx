@@ -90,16 +90,18 @@ const AttendanceWrite = () => {
         const user = auth.currentUser;
         if (!user || attendanceData.title === '') return;
 
+        const attendanceId = Date.now().toString();
+
         try {
-            const userDocRef = doc(
+            const userAttendanceRef = collection(
                 db,
                 'users',
                 user.uid,
                 'attendance',
                 'request'
             );
-            await setDoc(
-                userDocRef,
+            await addDoc(
+                userAttendanceRef,
                 {
                     title: attendanceData.title,
                     attendanceContext: attendanceData.attendanceContext,
@@ -111,6 +113,7 @@ const AttendanceWrite = () => {
                     position: userInfo.position,
                     userId: userInfo.uid,
                     state: '대기중',
+                    id: attendanceId,
                 },
                 { merge: true }
             );
@@ -126,6 +129,7 @@ const AttendanceWrite = () => {
                     position: userInfo.position,
                     userId: userInfo.uid,
                     state: '대기중',
+                    id: attendanceId,
                 })
             );
 
@@ -137,6 +141,7 @@ const AttendanceWrite = () => {
                 'attendance',
                 'data'
             );
+
             await updateDoc(attendaceDocRef, {
                 allAttendanceInfo: arrayUnion({
                     title: attendanceData.title,
@@ -149,6 +154,7 @@ const AttendanceWrite = () => {
                     position: userInfo.position,
                     userId: userInfo.uid,
                     state: '대기중',
+                    id: attendanceId,
                 }),
             });
         } catch (error) {
