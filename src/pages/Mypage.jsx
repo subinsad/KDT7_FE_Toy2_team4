@@ -162,7 +162,7 @@ function Mypage() {
           </Card>
           <Card title={"이달의 급여"}>
             <ThisMonthSalary>
-              ₩{sum.toLocaleString()}<span>원</span>
+              ₩{sum ? sum.toLocaleString() : 0}<span>원</span>
             </ThisMonthSalary>
             <hr />
             <PersonalInfoList className="salary">
