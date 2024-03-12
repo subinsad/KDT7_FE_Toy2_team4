@@ -17,6 +17,13 @@ const AttendanceList = ({ ...props }) => {
     const { attendance } = useSelector((state) => state.attendanceSlice);
     const email = useSelector((state) => state.userSlice.userInfo.email);
 
+    const { allAttendance } = useSelector(
+        (state) => state.attendanceAdminSlice
+    );
+
+    const [selectedState, setSelectedState] = useState('');
+    const { isAdmin } = useSelector((state) => state.userSlice);
+
     useEffect(() => {
         // 사용자의 인증 상태를 감시하고 변경되면 setUser를 호출하여 사용자를 업데이트
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -32,6 +39,10 @@ const AttendanceList = ({ ...props }) => {
             dispatch(fetchAttendance(user));
         }
     }, [dispatch, user]); // user 상태가 변경될 때마다 실행
+
+    const handleSetting = (itemId) => {
+        dispatch(updateAttendanceState({ id: itemId, state: selectedState }));
+    };
 
     return (
         <>
@@ -49,15 +60,30 @@ const AttendanceList = ({ ...props }) => {
                         <th>Date</th>
                         <th>Category</th>
                         <th>Status</th>
-                        {email === 'admin@naver.com' && <th>Setting</th>}
+                        {isAdmin && <th>Setting</th>}
                     </tr>
                 </thead>
                 <tbody>
+                    {allAttendance &&
+                        allAttendance.map((item) => {
+                            if (item.userId === userInfo.uid || isAdmin) {
+                                return (
+                                    <tr key={item.id}>
+                                        <AttendanceListItem
+                                            item={item}
+                                            allAttendanceId={item.id}
+                                            allAttendance={allAttendance}
+                                        />
+                                    </tr>
+                                );
+                            }
+                        })}
+
                     {/* 아이템 map으로 배열 */}
                     {attendance &&
                         attendance.length > 0 &&
                         attendance.map((item) => {
-                            if (email === 'admin@naver.com') {
+                            if (item.userId === userInfo.uid || isAdmin) {
                                 // 관리자는 모든 글을 반환
                                 return (
                                     <tr key={item.id}>
@@ -68,18 +94,8 @@ const AttendanceList = ({ ...props }) => {
                                         />
                                     </tr>
                                 );
-                            } else if (item.userId === userInfo.uid) {
-                                // 사용자는 자신이 작성한 글만 반환
-                                return (
-                                    <tr key={item.id}>
-                                        <AttendanceListItem
-                                            item={item}
-                                            attendanceId={item.id}
-                                            attendance={attendance}
-                                        />
-                                    </tr>
-                                );
                             }
+
                             // 나머지 경우는 null을 반환하여 해당 글을 숨깁니다.
                             return null;
                         })}
@@ -104,18 +120,21 @@ const AttendanceList = ({ ...props }) => {
                             id="settingRadio1"
                             name="settingRadio"
                             color="success"
+                            onClick={() => handleSetting(selectedItemId)}
                         />
                         <Radio
                             value="대기"
                             id="settingRadio2"
                             name="settingRadio"
                             color="primary"
+                            onClick={() => handleSetting(selectedItemId)}
                         />
                         <Radio
                             value="반려"
                             id="settingRadio3"
                             name="settingRadio"
                             color="danger"
+                            onClick={() => handleSetting(selectedItemId)}
                         />
                     </RadioGroup>
                 </div>
