@@ -91,6 +91,7 @@ const AttendanceWrite = () => {
                 createdAt: new Date().toLocaleString(),
                 name: userInfo.name,
                 userId: userInfo.uid,
+                state: '대기중',
             });
             dispatch(
                 addAttendance({
@@ -102,6 +103,7 @@ const AttendanceWrite = () => {
                     createdAt: new Date().toLocaleString(),
                     name: userInfo.name,
                     userId: userInfo.uid,
+                    state: '대기중',
                 })
             );
         } catch (error) {
