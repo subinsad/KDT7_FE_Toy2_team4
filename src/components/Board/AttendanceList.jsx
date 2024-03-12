@@ -11,7 +11,7 @@ import { fetchAttendance } from '../../store/attendance.slice';
 
 const AttendanceList = ({ ...props }) => {
     const [user, setUser] = useState(null); // 사용자 상태
-    const [isAdmin, setIsAdmin] = useState(false);
+    const { userInfo } = useSelector((state) => state.userSlice);
 
     const dispatch = useDispatch();
     const { attendance } = useSelector((state) => state.attendanceSlice);
@@ -68,7 +68,7 @@ const AttendanceList = ({ ...props }) => {
                                         />
                                     </tr>
                                 );
-                            } else if (item.userId === user?.uid) {
+                            } else if (item.userId === userInfo.uid) {
                                 // 사용자는 자신이 작성한 글만 반환
                                 return (
                                     <tr key={item.id}>

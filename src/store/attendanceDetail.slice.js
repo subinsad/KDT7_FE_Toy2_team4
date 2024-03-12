@@ -31,6 +31,7 @@ const initialState = {
         category: '',
         title: '',
         name: '',
+        position: '',
         id: '',
         state: '대기중',
     },
@@ -56,6 +57,7 @@ export const attendanceDetailSlice = createSlice({
                     category: action.payload.category,
                     title: action.payload.title,
                     name: action.payload.name,
+                    position: action.payload.position,
                     id: action.payload.id,
                     state: action.payload.state,
                 };

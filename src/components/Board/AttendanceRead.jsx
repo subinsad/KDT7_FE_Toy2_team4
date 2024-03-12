@@ -39,7 +39,7 @@ const AttendanceRead = () => {
                             label="job0"
                             labelText="Name"
                             readOnly="readonly"
-                            value={userInfo.name}
+                            value={attendanceDetail.name}
                         />
                     </div>
                     <div>
@@ -49,7 +49,7 @@ const AttendanceRead = () => {
                             label="job1"
                             labelText="Job Position"
                             readOnly="readonly"
-                            value={userInfo.position}
+                            value={attendanceDetail.position}
                         />
                     </div>
                     <div>

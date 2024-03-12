@@ -1,6 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { db } from '../firebase';
-import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
+import {
+    collection,
+    query,
+    orderBy,
+    limit,
+    getDocs,
+    getDoc,
+} from 'firebase/firestore';
 
 // 글 작성,조회
 export const fetchAttendance = createAsyncThunk(
@@ -25,6 +32,7 @@ export const fetchAttendance = createAsyncThunk(
                         attendanceContext,
                         userId,
                         name,
+                        position,
                         state,
                     } = doc.data();
 
@@ -38,6 +46,7 @@ export const fetchAttendance = createAsyncThunk(
                         title,
                         userId,
                         name,
+                        position,
                         id: doc.id,
                         state,
                     };
@@ -48,6 +57,25 @@ export const fetchAttendance = createAsyncThunk(
             }
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message);
+        }
+    }
+);
+
+export const fetchAttendanceInfo = createAsyncThunk(
+    'attendance/fetchAttendanceInfo',
+    async (user) => {
+        if (user) {
+            const attendanceDocRef = doc(
+                db,
+                'users',
+                user.uid,
+                'attendance',
+                'data'
+            );
+            const attendanceDoc = await getDoc(attendanceDocRef);
+            const attendanceData = attendanceDoc.data();
+            const allattendanceInfo = attendanceData.allAttendanceInfo;
+            return { allattendanceInfo };
         }
     }
 );

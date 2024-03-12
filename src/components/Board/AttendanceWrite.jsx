@@ -11,7 +11,15 @@ import { attendaceCategory } from '../../data/selectOption';
 import useInput from '../../Hooks/useInput';
 
 import { auth, db } from '../../firebase';
-import { addDoc, collection, getDoc, doc } from '@firebase/firestore';
+import {
+    addDoc,
+    collection,
+    getDoc,
+    doc,
+    setDoc,
+    updateDoc,
+    arrayUnion,
+} from '@firebase/firestore';
 import { fetchUserInfo } from '../../store/user.slice';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -24,6 +32,7 @@ const AttendanceWrite = () => {
     };
 
     const { userInfo } = useSelector((state) => state.userSlice);
+    const email = useSelector((state) => state.userSlice.userInfo.email);
     const dispatch = useDispatch();
 
     const [attendanceData, setAttendanceData] = useState({
@@ -82,17 +91,29 @@ const AttendanceWrite = () => {
         if (!user || attendanceData.title === '') return;
 
         try {
-            await addDoc(collection(db, 'users', user.uid, 'attendance'), {
-                title: attendanceData.title,
-                attendanceContext: attendanceData.attendanceContext,
-                category: attendanceData.category,
-                attendanceStart: attendanceData.attendanceStart,
-                attendanceEnd: attendanceData.attendanceEnd,
-                createdAt: new Date().toLocaleString(),
-                name: userInfo.name,
-                userId: userInfo.uid,
-                state: '대기중',
-            });
+            const userDocRef = doc(
+                db,
+                'users',
+                user.uid,
+                'attendance',
+                'request'
+            );
+            await setDoc(
+                userDocRef,
+                {
+                    title: attendanceData.title,
+                    attendanceContext: attendanceData.attendanceContext,
+                    category: attendanceData.category,
+                    attendanceStart: attendanceData.attendanceStart,
+                    attendanceEnd: attendanceData.attendanceEnd,
+                    createdAt: new Date().toLocaleString(),
+                    name: userInfo.name,
+                    position: userInfo.position,
+                    userId: userInfo.uid,
+                    state: '대기중',
+                },
+                { merge: true }
+            );
             dispatch(
                 addAttendance({
                     title: attendanceData.title,
@@ -102,10 +123,34 @@ const AttendanceWrite = () => {
                     attendanceEnd: attendanceData.attendanceEnd,
                     createdAt: new Date().toLocaleString(),
                     name: userInfo.name,
+                    position: userInfo.position,
                     userId: userInfo.uid,
                     state: '대기중',
                 })
             );
+
+            //여기서부터 추가
+            const attendaceDocRef = doc(
+                db,
+                'users',
+                '0vY0bqw8nKT7lGbiSotVrcVzZWs1',
+                'attendance',
+                'data'
+            );
+            await updateDoc(attendaceDocRef, {
+                allAttendanceInfo: arrayUnion({
+                    title: attendanceData.title,
+                    attendanceContext: attendanceData.attendanceContext,
+                    category: attendanceData.category,
+                    attendanceStart: attendanceData.attendanceStart,
+                    attendanceEnd: attendanceData.attendanceEnd,
+                    createdAt: new Date().toLocaleString(),
+                    name: userInfo.name,
+                    position: userInfo.position,
+                    userId: userInfo.uid,
+                    state: '대기중',
+                }),
+            });
         } catch (error) {
             console.log('onSubmit Error : ', error);
         } finally {
