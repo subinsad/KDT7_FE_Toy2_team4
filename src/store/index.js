@@ -15,6 +15,8 @@ import userSlice from './user.slice';
 import attendanceSlice from './attendance.slice';
 import salaryAdminSlice from './salaryAdmin.slice';
 import attendanceDetailSlice from './attendanceDetail.slice';
+import attendanceAdminSlice from './attendanceAdmin.slice';
+import attendanceStateSlice from './attendanceState.slice';
 
 const rootReducer = combineReducers({
     signInfoSlice: signInfoSlice,
@@ -22,6 +24,8 @@ const rootReducer = combineReducers({
     attendanceSlice: attendanceSlice,
     attendanceDetailSlice: attendanceDetailSlice,
     salaryAdminSlice: salaryAdminSlice,
+    attendanceAdminSlice: attendanceAdminSlice,
+    attendanceStateSlice: attendanceStateSlice,
 });
 
 const persistConfig = {

@@ -61,25 +61,6 @@ export const fetchAttendance = createAsyncThunk(
     }
 );
 
-export const fetchAttendanceInfo = createAsyncThunk(
-    'attendance/fetchAttendanceInfo',
-    async (user) => {
-        if (user) {
-            const attendanceDocRef = doc(
-                db,
-                'users',
-                user.uid,
-                'attendance',
-                'data'
-            );
-            const attendanceDoc = await getDoc(attendanceDocRef);
-            const attendanceData = attendanceDoc.data();
-            const allattendanceInfo = attendanceData.allAttendanceInfo;
-            return { allattendanceInfo };
-        }
-    }
-);
-
 const initialState = {
     attendance: [],
     error: '',
