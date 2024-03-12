@@ -9,7 +9,7 @@ import {
     getDoc,
 } from 'firebase/firestore';
 
-// 글 작성,조회
+// 글 작성,조회 작성
 export const fetchAttendance = createAsyncThunk(
     'user/fetchAttendance',
     async (user, thunkAPI) => {
