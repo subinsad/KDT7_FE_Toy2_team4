@@ -15,6 +15,7 @@ const AttendanceList = ({ ...props }) => {
 
     const dispatch = useDispatch();
     const { attendance } = useSelector((state) => state.attendanceSlice);
+    const email = useSelector((state) => state.userSlice.userInfo.email);
 
     useEffect(() => {
         // 사용자의 인증 상태를 감시하고 변경되면 setUser를 호출하여 사용자를 업데이트
@@ -48,7 +49,7 @@ const AttendanceList = ({ ...props }) => {
                         <th>Date</th>
                         <th>Category</th>
                         <th>Status</th>
-                        {isAdmin && <th>Setting</th>}
+                        {email === 'admin@naver.com' && <th>Setting</th>}
                     </tr>
                 </thead>
                 <tbody>
@@ -56,7 +57,8 @@ const AttendanceList = ({ ...props }) => {
                     {attendance &&
                         attendance.length > 0 &&
                         attendance.map((item) => {
-                            if (item.userId === user?.uid || isAdmin) {
+                            if (email === 'admin@naver.com') {
+                                // 관리자는 모든 글을 반환
                                 return (
                                     <tr key={item.id}>
                                         <AttendanceListItem
@@ -66,9 +68,20 @@ const AttendanceList = ({ ...props }) => {
                                         />
                                     </tr>
                                 );
-                            } else {
-                                return null;
+                            } else if (item.userId === user?.uid) {
+                                // 사용자는 자신이 작성한 글만 반환
+                                return (
+                                    <tr key={item.id}>
+                                        <AttendanceListItem
+                                            item={item}
+                                            attendanceId={item.id}
+                                            attendance={attendance}
+                                        />
+                                    </tr>
+                                );
                             }
+                            // 나머지 경우는 null을 반환하여 해당 글을 숨깁니다.
+                            return null;
                         })}
                 </tbody>
             </Table>

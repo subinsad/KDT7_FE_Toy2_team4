@@ -17,6 +17,7 @@ const AttendanceRead = () => {
 
     const { attendanceId } = useParams();
     const { userInfo } = useSelector((state) => state.userSlice);
+    const email = useSelector((state) => state.userSlice.userInfo.email);
 
     const dispatch = useDispatch();
     const { attendanceDetail } = useSelector(
@@ -114,12 +115,14 @@ const AttendanceRead = () => {
                     <Button $color="secondary" onClick={Back}>
                         이전
                     </Button>
-                    <div>
-                        <Button $color="primary" className="mr2">
-                            승인
-                        </Button>
-                        <Button $color="danger">반려</Button>
-                    </div>
+                    {email === 'admin@naver.com' && (
+                        <div>
+                            <Button $color="primary" className="mr2">
+                                승인
+                            </Button>
+                            <Button $color="danger">반려</Button>
+                        </div>
+                    )}
                 </div>
             </Card>
         </>
