@@ -7,8 +7,11 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 // import date from "../data/date";
 import WorkWrite from "./WorkWrite";
 import { collection, onSnapshot, query } from "firebase/firestore";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 import WorkRead from "./WorkRead";
+import { userIsAdmin } from "../store/user.slice";
+import { Badge } from "../components/GlobalStyles";
+import { useSelector } from "react-redux";
 
 const CalendarWrap = styled(Card)`
   overflow: hidden;
@@ -140,6 +143,9 @@ const CalendarWrap = styled(Card)`
       white-space: nowrap;
       padding: 0.3rem 1.25rem;
       border-radius: 0.375rem;
+      &:empty {
+        display: none;
+      }
       &::before {
         content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='white' class='bi bi-plus' viewBox='0 0 16 16'%3E%3Cpath d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4'/%3E%3C/svg%3E");
         transform: translateY(2px);
@@ -173,6 +179,11 @@ const CalendarWrap = styled(Card)`
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="" fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>');
   }
 `;
+const BadgeList = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+`;
 
 const Work = () => {
   const calendarRef = useRef(null);
@@ -180,85 +191,98 @@ const Work = () => {
   const [isprojects, setIsProjects] = useState([]);
   const [viewProject, setViewProject] = useState({});
   const [isColor, setIsColor] = useState("");
+  const { isAdmin } = useSelector((state) => state.userSlice);
+  const { allProjectInfo } = useSelector((state) => state.projectSlice);
+
+  // const { title, start, end, extendedProps, member } = allProjects;
 
   const handleData = (value) => {
     setinput(value);
   };
 
   useEffect(() => {
-    const fetchProject = async () => {
-      const projectQuery = query(collection(db, `project`));
-      const unsubscribe = await onSnapshot(projectQuery, (snapshot) => {
-        const projects = snapshot.docs.map((doc) => {
-          // const url = `work/${doc.id}`; //페이지 정보
-          // const url = viewWork();
-          const { title, start, end, state, color, textColor, description } = doc.data();
-          return { title, start, end, state, color, textColor, description };
-        });
-        setIsProjects(projects);
+    const customButtons = {};
+    const calendarEl = document.querySelector(".calendar");
+    const calendar = new Calendar(calendarEl, {
+      headerToolbar: {
+        left: "prev,next today",
+        center: "title",
+        right: "addEventButton",
+      },
 
-        const calendarEl = document.querySelector(".calendar");
-
-        const calendar = new Calendar(calendarEl, {
-          headerToolbar: {
-            left: "prev,next today",
-            center: "title",
-            right: "addEventButton",
-          },
-          plugins: [dayGridPlugin],
-          initialView: "dayGridMonth",
-          locale: "ko",
-          events: isprojects,
-          editable: true,
-          selectable: true,
-          customButtons: {
-            addEventButton: {
+      plugins: [dayGridPlugin],
+      initialView: "dayGridMonth",
+      locale: "ko",
+      events: allProjectInfo,
+      editable: true,
+      selectable: true,
+      customButtons: {
+        addEventButton: isAdmin
+          ? {
               text: "프로젝트 추가",
-
               click: function (e) {
                 const btn = e.target;
                 if (!btn.hasAttribute("popovertarget")) {
                   btn.setAttribute("popovertarget", "aa");
                 }
               },
-            },
-          },
-          eventClick: function (info) {
-            const viewPop = document.querySelector("#read");
-            viewPop.showPopover();
-            const { title, start, end, textColor, id, extendedProps } = info.event;
-            if (textColor === "#28c76f") {
-              setIsColor("진행중");
-            } else if (textColor === "#7367f0") {
-              setIsColor("대기중");
-            } else if (textColor === "#ea5455") {
-              setIsColor("완료");
             }
-            setViewProject({ title, start, end, isColor, id, extendedProps });
-          },
-        });
-        // isprojects.forEach((project) => {
-        //   calendar.addEvent({
-        //     title: project.title,
-        //     start: project.start,
-        //     end: project.end,
-        //     color: project.color,
-        //     textColor: project.textColor,
-        //     allDay: true,
-        //   });
-        // });
-        calendar.render();
-        return () => {
-          calendar.destroy();
-        };
+          : "",
+      },
+      eventClick: function (info) {
+        const viewPop = document.querySelector("#read");
+        viewPop.showPopover();
+        const { title, start, end, textColor, id, extendedProps, member } = info.event;
+        if (textColor === "#28c76f") {
+          setIsColor("진행중");
+        } else if (textColor === "#7367f0") {
+          setIsColor("대기중");
+        } else if (textColor === "#ea5455") {
+          setIsColor("완료");
+        }
+        setViewProject({ title, start, end, isColor, id, extendedProps, member });
+      },
+    });
+    isprojects.forEach((project) => {
+      calendar.addEvent({
+        title: project.title,
+        start: project.start,
+        end: project.end,
+        color: project.color,
+        textColor: project.textColor,
+        allDay: true,
       });
-      return () => unsubscribe();
+    });
+
+    // if (isAdmin) {
+    //   console.log("어드민");
+    //   // if (user) {
+    //   customButtons.addEventButton = {
+    //     text: "프로젝트 추가",
+    //     click: function (e) {
+    //       const btn = e.target;
+    //       if (!btn.hasAttribute("popovertarget")) {
+    //         btn.setAttribute("popovertarget", "aa");
+    //       }
+    //     },
+    //   };
+    // }
+    calendar.render();
+
+    return () => {
+      calendar.destroy();
     };
-    fetchProject();
-  }, []);
+  }, [isAdmin]);
 
   return (
     <>
+      <Card className={"mb3 "} title={"Work Management"}>
+        <BadgeList>
+          <Badge $color="primary">대기중 프로젝트</Badge>
+          <Badge $color="success">진행중 프로젝트</Badge>
+          <Badge $color="danger">완료 프로젝트</Badge>
+        </BadgeList>
+      </Card>
       <CalendarWrap>
         <div ref={calendarRef} className="calendar"></div>
       </CalendarWrap>

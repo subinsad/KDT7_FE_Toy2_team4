@@ -55,15 +55,12 @@ const SampleMypage = styled.div`
 `;
 
 const JoinThird = ({ setActiveStep }) => {
-<<<<<<< HEAD
   const dispatch = useDispatch();
-  const { name, email, password, team, position, phone, shortInfo } = useSelector((state) => state.signInfoSlice.signInfo);
+  const { name, email, password, team, position, phone, shortInfo, image, backgroundImage } = useSelector((state) => state.signInfoSlice.signInfo);
   const [loading, setLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
-    userImg: "",
-    userBg: "",
-  });
+  const [userImg, setUserImg] = useState(image);
+  const [userBg, setUserBg] = useState(backgroundImage);
 
   const [errorMessage, setErrorMessage] = useState({
     userImg: "",
@@ -72,103 +69,59 @@ const JoinThird = ({ setActiveStep }) => {
 
   const checkForm = () => {
     let isValid = true;
-    if (!formData.userImg) {
+    if (!userImg) {
       setErrorMessage((prevData) => ({
         ...prevData,
         userImg: "유저 이미지를 등록해주세요.",
       }));
       isValid = false;
     }
-    if (!formData.userBg) {
+    if (!userBg) {
       setErrorMessage((prevData) => ({
         ...prevData,
         userBg: "배경화면을 등록해주세요.",
       }));
       isValid = false;
-=======
-    const dispatch = useDispatch()
-    const { name, email, password, team, position, phone, shortInfo, image, backgroundImage } = useSelector((state) => state.signInfoSlice.signInfo)
-    const [loading, setLoading] = useState(false)
-
-    const [userImg, setUserImg] = useState(image)
-    const [userBg, setUserBg] = useState(backgroundImage)
-
-    const [errorMessage, setErrorMessage] = useState({
-        userImg: "",
-        userBg: "",
-    })
-
-    const checkForm = () => {
-        let isValid = true;
-        if (!userImg) {
-            setErrorMessage((prevData) => ({
-                ...prevData,
-                userImg: "유저 이미지를 등록해주세요."
-            }));
-            isValid = false;
-        }
-        if (!userBg) {
-            setErrorMessage((prevData) => ({
-                ...prevData,
-                userBg: "배경화면을 등록해주세요."
-            }));
-            isValid = false;
-        }
-        return isValid;
-    }
-
-    const handleUserImg = async (e) => {
-        const { files } = e.target;
-        if (files && files.length === 1) {
-            const file = files[0];
-            try {
-                setLoading(true)
-                const imgLocationRef = ref(storage, `UserImage/${name}`);
-                const imgResult = await uploadBytes(imgLocationRef, file);
-                const userImgUrl = await getDownloadURL(imgResult.ref);
-                setUserImg(userImgUrl)
-                dispatch(addUserImg(userImgUrl))
-            } catch (error) {
-                console.error(error);
-            }
-            finally {
-                setLoading(false)
-            }
-        }
-    }
-
-    const handleUserBg = async (e) => {
-        const { files } = e.target;
-        if (files && files.length === 1) {
-            const file = files[0];
-            try {
-                setLoading(true)
-                const imgLocationRef = ref(storage, `UserBg/${name}`);
-                const imgResult = await uploadBytes(imgLocationRef, file);
-                const userImgUrl = await getDownloadURL(imgResult.ref);
-                setUserBg(userImgUrl)
-                dispatch(addUserBg(userImgUrl))
-            } catch (error) {
-                console.error(error);
-            }
-            finally {
-                setLoading(false)
-            }
-        }
->>>>>>> main
     }
     return isValid;
   };
 
-  const handleFileChange = (field) => (e) => {
+  const handleUserImg = async (e) => {
     const { files } = e.target;
     if (files && files.length === 1) {
-      setFormData((prevData) => ({
-        ...prevData,
-        [field]: files[0],
-      }));
+      const file = files[0];
+      try {
+        setLoading(true);
+        const imgLocationRef = ref(storage, `UserImage/${name}`);
+        const imgResult = await uploadBytes(imgLocationRef, file);
+        const userImgUrl = await getDownloadURL(imgResult.ref);
+        setUserImg(userImgUrl);
+        dispatch(addUserImg(userImgUrl));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
     }
-<<<<<<< HEAD
+  };
+
+  const handleUserBg = async (e) => {
+    const { files } = e.target;
+    if (files && files.length === 1) {
+      const file = files[0];
+      try {
+        setLoading(true);
+        const imgLocationRef = ref(storage, `UserBg/${name}`);
+        const imgResult = await uploadBytes(imgLocationRef, file);
+        const userImgUrl = await getDownloadURL(imgResult.ref);
+        setUserBg(userImgUrl);
+        dispatch(addUserBg(userImgUrl));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   const handlePrev = () => {
@@ -181,34 +134,9 @@ const JoinThird = ({ setActiveStep }) => {
       try {
         setLoading(true);
         const { user } = await createUserWithEmailAndPassword(auth, email, password);
+
         dispatch(fetchUserInfo(user));
-        const userDocRef = doc(db, "users", user.uid, "userInfo", "data");
 
-        //img추가
-        const imgLocationRef = ref(storage, `UserImage/${name}`);
-        const imgResult = await uploadBytes(imgLocationRef, formData.userImg);
-        const userImgUrl = await getDownloadURL(imgResult.ref);
-        await setDoc(
-          userDocRef,
-          {
-            userImg: userImgUrl,
-          },
-          { merge: true }
-        );
-        dispatch(editUserImg(userImgUrl));
-
-        //bg추가
-        const bgLocationRef = ref(storage, `UserBg/${name}`);
-        const bgResult = await uploadBytes(bgLocationRef, formData.userBg);
-        const userBgUrl = await getDownloadURL(bgResult.ref);
-        await setDoc(
-          userDocRef,
-          {
-            userBg: userBgUrl,
-          },
-          { merge: true }
-        );
-        dispatch(editUserBg(userBgUrl));
         const userEmailRef = ref(storage, `UserEmail/${email}`);
         await uploadBytes(userEmailRef, new Uint8Array(0));
 
@@ -218,8 +146,8 @@ const JoinThird = ({ setActiveStep }) => {
           allUserInfo: arrayUnion({
             name,
             email,
-            userImg: userImgUrl,
-            userBg: userBgUrl,
+            userImg: userImg,
+            userBg: userBg,
             phone,
             position,
             team,
@@ -234,50 +162,9 @@ const JoinThird = ({ setActiveStep }) => {
         dispatch(clearUserInfo());
       }
       setActiveStep((prev) => prev + 1);
-=======
-
-    const handleSubmit = async () => {
-        const isValidForm = checkForm();
-        if (isValidForm) {
-            try {
-                setLoading(true)
-                const { user } = await createUserWithEmailAndPassword(auth, email, password);
-
-                dispatch(fetchUserInfo(user))
-
-                const userEmailRef = ref(storage, `UserEmail/${email}`);
-                await uploadBytes(userEmailRef, new Uint8Array(0));
-
-                //여기서부터 추가
-                const salaryDocRef = doc(db, "users", "0vY0bqw8nKT7lGbiSotVrcVzZWs1", "salary", "data")
-                await updateDoc(salaryDocRef, {
-                    allUserInfo: arrayUnion({
-                        name,
-                        email,
-                        userImg: userImg,
-                        userBg: userBg,
-                        phone,
-                        position,
-                        team,
-                        shortInfo,
-                        uid: user.uid,
-                    })
-                });
-
-            } catch (error) {
-                console.error(error)
-            }
-            finally {
-                setLoading(false)
-                dispatch(clearUserInfo())
-            }
-            setActiveStep((prev) => prev + 1)
-        }
->>>>>>> main
     }
   };
 
-<<<<<<< HEAD
   useEffect(() => {
     const timer = setTimeout(() => {
       setErrorMessage((prevMessages) => ({
@@ -302,20 +189,20 @@ const JoinThird = ({ setActiveStep }) => {
       <Grid $col="2" className="mb3">
         <GridColumnSpan $span="2">
           <SampleMypage>
-            <img src={mypageHeader} alt="" />
+            <img src={userBg ? userBg : mypageHeader} alt="" style={{ maxWidth: "668px", maxHeight: "150px" }} />
             <div className="skeleton">
-              <Avatar $size="md" />
+              <Avatar $size="xl" src={userImg} style={{ borderRadius: "50%" }} />
               <div className="skeleton__name"></div>
               <div className="skeleton__info"></div>
             </div>
           </SampleMypage>
         </GridColumnSpan>
         <div>
-          <Input id="userImg" type="file" label="file1" labelText="Profile Image" onChange={handleFileChange("userImg")} />
+          <Input id="userImg" type="file" label="file1" labelText="Profile Image" onChange={handleUserImg} />
           {errorMessage.userImg && <FormText $error>{errorMessage.userImg}</FormText>}
         </div>
         <div>
-          <Input id="userBg" type="file" label="file2" labelText="Mypage Background Image" onChange={handleFileChange("userBg")} />
+          <Input id="userBg" type="file" label="file2" labelText="Mypage Background Image" onChange={handleUserBg} />
           {errorMessage.userBg && <FormText $error>{errorMessage.userBg}</FormText>}
         </div>
       </Grid>
@@ -332,62 +219,3 @@ const JoinThird = ({ setActiveStep }) => {
 };
 
 export default JoinThird;
-=======
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setErrorMessage((prevMessages) => ({
-                ...prevMessages,
-                userImg: "",
-                userBg: "",
-            }));
-        }, 3000);
-
-        return () => clearTimeout(timer);
-    }, [errorMessage]);
-
-
-
-    return (
-        <>
-            {loading && (<Loading />)}
-            <SignHeader>
-                <Heading size={"sm"} tag={"h2"}>
-                    사진 업로드
-                </Heading>
-                <p className="mb3">본인 인증을 위한 사진을 업로드하세요.</p>
-            </SignHeader>
-            <Grid $col="2" className="mb3">
-                <GridColumnSpan $span="2">
-                    <SampleMypage>
-                        <img src={userBg ? userBg : mypageHeader} alt="" style={{ maxWidth: '668px', maxHeight: '150px' }} />
-                        <div className="skeleton">
-                            <Avatar $size="xl" src={userImg} style={{ borderRadius: '50%' }} />
-                            <div className="skeleton__name"></div>
-                            <div className="skeleton__info"></div>
-                        </div>
-                    </SampleMypage>
-                </GridColumnSpan>
-                <div>
-                    <Input id="userImg" type="file" label="file1" labelText="Profile Image" onChange={handleUserImg} />
-                    {errorMessage.userImg && (<FormText $error>{errorMessage.userImg}</FormText>)}
-                </div>
-                <div>
-                    <Input id="userBg" type="file" label="file2" labelText="Mypage Background Image" onChange={handleUserBg} />
-                    {errorMessage.userBg && (<FormText $error>{errorMessage.userBg}</FormText>)}
-                </div>
-            </Grid>
-            <div className="align both">
-                <Button $color="secondary" onClick={handlePrev} >
-                    이전
-                </Button>
-                <Button $color="primary" onClick={handleSubmit}>
-                    완료
-                </Button>
-            </div>
-        </>
-    )
-}
-
-export default JoinThird
-
->>>>>>> main

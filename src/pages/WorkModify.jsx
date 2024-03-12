@@ -58,7 +58,7 @@ const PopupContent = styled.div`
   padding-top: 0;
 `;
 
-const WorkWrite = ({ id, getData, ...props }) => {
+const WorkModify = ({ id, getData, ...props }) => {
   const [info, setInfo] = useState({});
   const [member, setMember] = useState("");
   const [first, setfirst] = useState("");
@@ -94,7 +94,7 @@ const WorkWrite = ({ id, getData, ...props }) => {
   };
 
   const onMember = ({ uid, team, name }) => {
-    setInfo({ ...info, member: { uid: { uid, team, name } } });
+    setInfo({ ...info, member: { uid, team, name } });
   };
 
   const handleProject = async (e) => {
@@ -107,7 +107,8 @@ const WorkWrite = ({ id, getData, ...props }) => {
     const description = info.description;
     const color = info.color;
     const textColor = info.textColor;
-    const member = info.member;
+
+    console.log(info);
 
     if (title === "" || start === "" || end === "" || info.color === "" || description === "" || state === "") {
       return console.log("모두입력하셔요");
@@ -122,7 +123,6 @@ const WorkWrite = ({ id, getData, ...props }) => {
         description,
         color,
         textColor,
-        member,
       });
     } catch (error) {
       console.log(error);
@@ -139,10 +139,18 @@ const WorkWrite = ({ id, getData, ...props }) => {
     body.style.overflow = "visible";
   };
 
+  const backDropClose = () => {
+    const backdrop = document.querySelector(`#${id}:backdrop`);
+    backdrop.addEventListener("click", () => {
+      handleClose();
+    });
+  };
+  // backDropClose();
+
   return (
     <Popup popover="auto" id={id} {...props}>
       <PopupHeader>
-        <Heading size="xs">프로젝트 추가</Heading>
+        <Heading size="xs">프로젝트 수정</Heading>
         <Close popovertargetaction="hide" popovertarget={id}>
           <X />
         </Close>
@@ -172,7 +180,7 @@ const WorkWrite = ({ id, getData, ...props }) => {
         </div>
         <div>
           <Button $color="primary" className="mr2" onClick={handleProject}>
-            Add
+            Modify
           </Button>
           <Button $color="secondary" onClick={handleClose}>
             Cancel
@@ -183,4 +191,4 @@ const WorkWrite = ({ id, getData, ...props }) => {
   );
 };
 
-export default WorkWrite;
+export default WorkModify;

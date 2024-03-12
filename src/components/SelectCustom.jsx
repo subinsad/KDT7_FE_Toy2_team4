@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Avatar from "./Avatar";
 import Alert from "./Alert";
-import users from "../data/user";
 import SelectUserItem from "./SelectUserItem";
+import { useSelector } from "react-redux";
 
 const Label = styled.div`
   margin-bottom: 0.25rem;
@@ -135,7 +135,23 @@ const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
   const [isList, setIsList] = useState(false);
   const [isValue, setIsValue] = useState("진행현황 선택");
   const [isUser, setIsUser] = useState("멤버 선택");
-  const [tagVisible, setTagVisible] = useState([]);
+  const [tagVisible, setTagVisible] = useState({});
+  const listRef = useRef(null);
+
+  const { allUserInfo } = useSelector((state) => state.salaryAdminSlice);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (listRef.current && !listRef.current.contains(event.target)) {
+        setIsList(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleList = () => {
     setIsList(!isList);
@@ -146,14 +162,20 @@ const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
     setIsList(false);
     onSelected(isValue);
   };
-  const handleUserSelection = (value) => {
-    setIsUser(value);
+  const handleUserSelection = (team, name, uid) => {
+    // setIsUser(value);
     setIsList(false);
-    setTagVisible([...tagVisible, value]);
+    setTagVisible({ ...tagVisible, [uid]: { team, name } });
+    onMemberTagChange({ uid, team, name });
   };
 
-  const handleOnInput = () => {
-    onMemberTagChange(memberRef.current.innerHTML);
+  // console.log(allUserInfo);
+  // console.log(tagVisible);
+
+  const handleOnClick = (uid) => {
+    const updatedTagVisible = { ...tagVisible };
+    delete updatedTagVisible[uid];
+    setTagVisible(updatedTagVisible);
   };
 
   return (
@@ -163,7 +185,7 @@ const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
         <SelectDetailButton onClick={handleList}>{option === "state" ? isValue : isUser}</SelectDetailButton>
         {isList &&
           (option === "state" ? (
-            <List>
+            <List ref={listRef}>
               <li>
                 <button value="pending" onClick={handleText}>
                   대기중
@@ -182,18 +204,18 @@ const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
             </List>
           ) : (
             <>
-              <List className="user">
-                {users.map((user) => (
-                  <SelectUserItem key={user.id} {...user} onChecked={handleUserSelection} />
+              <List className="user" ref={listRef}>
+                {allUserInfo.map((user) => (
+                  <SelectUserItem key={user.uid} {...user} onChecked={handleUserSelection} />
                 ))}
               </List>
             </>
           ))}
       </SelectDetailWrap>
-      <MemberTag onInput={handleOnInput} ref={memberRef}>
-        {tagVisible.map((user, index) => (
-          <Alert key={index} color="primary" close className="tag">
-            {user}
+      <MemberTag ref={memberRef}>
+        {Object.keys(tagVisible).map((uid, index) => (
+          <Alert key={index} color="primary" close className="tag" onClick={() => handleOnClick(uid)}>
+            [{tagVisible[uid].team}] {tagVisible[uid].name}
           </Alert>
         ))}
       </MemberTag>

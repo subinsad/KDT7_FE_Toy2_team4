@@ -7,11 +7,8 @@ import { auth } from "../firebase";
 import { clearUser } from "../store/user.slice";
 import { clearSalaryInfo } from "../store/salaryAdmin.slice";
 import { useSelector } from "react-redux";
-<<<<<<< HEAD
-import { useRef, useState } from "react";
-=======
 import { clearSalary } from "../store/salary.slice";
->>>>>>> main
+import { clearProjectInfo } from "../store/project.slice";
 
 const NavBarWrap = styled.div`
   position: fixed;
@@ -36,15 +33,11 @@ const NavBarWrap = styled.div`
     display: flex;
     justify-content: end;
     position: relative;
-    right: 0;
     gap: 0.5rem;
     z-index: 20;
     height: 100%;
     padding: 0.5rem 1.5rem;
     background-color: rgba(255, 255, 255, 0.95);
-  }
-  button {
-    background-color: transparent;
   }
   @media (max-width: 1800px) {
     left: 17.25rem;
@@ -74,9 +67,8 @@ const Alrams = styled.button`
 `;
 const AlramList = styled.div`
   position: fixed;
-  inset: inherit;
-  left: ${(props) => props.$left && `calc(${props.$left} - 200px)`};
-  top: ${(props) => props.$top && `calc(${props.$top} + 35px)`};
+  left: calc(50% + 34rem);
+  top: 4rem;
   overflow: visible;
   inset: none;
   box-shadow: 0 0.25rem 1rem rgba(165, 163, 174, 0.45);
@@ -127,11 +119,11 @@ const AlramList = styled.div`
 `;
 
 const AvatarList = styled.div`
-  position: absolute;
-  inset: inherit;
-  left: ${(props) => props.$left && `calc(${props.$left} - 180px)`};
-  top: ${(props) => props.$top && `calc(${props.$top} + 50px)`};
+  position: fixed;
+  left: calc(50% + 37.5rem);
+  top: 4.5rem;
   overflow: visible;
+  inset: none;
   box-shadow: 0 0.25rem 1rem rgba(165, 163, 174, 0.45);
   background-color: var(--white);
   border-radius: 0.375rem;
@@ -163,41 +155,25 @@ function NavBar() {
   const logout = async () => {
     try {
       await auth.signOut();
-<<<<<<< HEAD
       dispatch(clearUser());
       dispatch(clearSalaryInfo());
+      dispatch(clearSalary());
+      dispatch(clearProjectInfo());
       navigate("/login");
-=======
-      dispatch(clearUser())
-      dispatch(clearSalaryInfo())
-      dispatch(clearSalary())
-      navigate('/login')
->>>>>>> main
     } catch (error) {
       console.log("logout error : ", error);
     }
-  };
-
-  const [isrect, setIsRect] = useState([]);
-  const avatarListRef = useRef(null);
-
-  const handleAvatar = (e) => {
-    const rect = e.target.getBoundingClientRect();
-    setIsRect([`${rect.left}px`, `${rect.top}px`]);
-  };
-  const closeAvatarList = () => {
-    setIsRect([]);
   };
 
   return (
     <>
       <NavBarWrap>
         <nav className="navbar__wrap">
-          <Alrams onClick={handleAvatar} popovertarget="alram">
+          <Alrams popovertarget="alram">
             <Bell />
             <span>5</span>
           </Alrams>
-          <AlramList ref={avatarListRef} popover="auto" id="alram" $left={isrect[0]} $top={isrect[1]}>
+          <AlramList popover="auto" id="alram">
             <strong>Notification</strong>
             <ul>
               <li>
@@ -244,7 +220,7 @@ function NavBar() {
               </li>
             </ul>
           </AlramList>
-          <Avatar src={userImg} popovertarget="avatar" tabindex="0" role="button" />
+          <Avatar src={userImg} popovertarget="avatar" as="button" />
           <AvatarList popover="auto" id="avatar">
             <ul>
               <li>

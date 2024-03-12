@@ -19,6 +19,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { clearUser, fetchUserInfo } from "../store/user.slice";
 import { useSelector } from "react-redux";
 import { fetchMySalary } from "../store/salary.slice";
+import { fetchProject } from "../store/project.slice";
 
 const LoginWrap = styled.div`
   display: grid;
@@ -83,10 +84,10 @@ const optionMail = [
 ];
 
 const Login = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAdmin } = useSelector((state) => state.userSlice)
-  const { userInfo } = useSelector((state) => state.userSlice)
+  const { isAdmin } = useSelector((state) => state.userSlice);
+  const { userInfo } = useSelector((state) => state.userSlice);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -94,46 +95,46 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState({
     email: "",
     password: "",
-  })
+  });
 
   const handlePassword = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       onSubmit();
     } else {
       const { value } = e.target;
       setPassword(value);
     }
-  }
+  };
   const handleEmail = (e) => {
-    const { value } = e.target
-    setEmail(value)
-  }
+    const { value } = e.target;
+    setEmail(value);
+  };
   const selectEmail = (e) => {
     const pickEmail = e.target.value;
-    if (pickEmail === "default") return
+    if (pickEmail === "default") return;
     else {
-      setEmail(email.split('@')[0] + '@' + pickEmail)
+      setEmail(email.split("@")[0] + "@" + pickEmail);
     }
-  }
+  };
 
   const checkForm = () => {
     let isValid = true;
     if (!email) {
       setErrorMessage((prevData) => ({
         ...prevData,
-        email: "이메일을 입력해주세요."
+        email: "이메일을 입력해주세요.",
       }));
       isValid = false;
     }
     if (!password) {
       setErrorMessage((prevData) => ({
         ...prevData,
-        password: "비밀번호를 입력해주세요."
+        password: "비밀번호를 입력해주세요.",
       }));
       isValid = false;
     }
     return isValid;
-  }
+  };
 
   const onSubmit = async (e) => {
     const isValidForm = checkForm();
@@ -141,26 +142,27 @@ const Login = () => {
       try {
         setLoading(true);
         const { user } = await signInWithEmailAndPassword(auth, email, password);
-        dispatch(fetchUserInfo(user))
-        dispatch(fetchMySalary(user))
+        dispatch(fetchUserInfo(user));
+        dispatch(fetchMySalary(user));
+        dispatch(fetchProject());
         navigate("/main");
       } catch (error) {
         setError("이메일 또는 비밀번호가 올바르지 않습니다.");
-      }
-      finally {
+      } finally {
         setLoading(false);
       }
     }
   };
 
   useEffect(() => {
-    if (!userInfo.name) { // 유저 상태가 없으면 = 비어있으면 = 로그인 안되어 있으면
+    if (!userInfo.name) {
+      // 유저 상태가 없으면 = 비어있으면 = 로그인 안되어 있으면
       dispatch(clearUserInfo());
-      dispatch(clearUser())
+      dispatch(clearUser());
       return; //통과
     }
     navigate("/main"); //유저 상태가 있으면  = 로그인 되어 있으면
-  }, [dispatch])
+  }, [dispatch]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -169,16 +171,15 @@ const Login = () => {
         email: "",
         password: "",
       }));
-      setError("")
+      setError("");
     }, 3000);
 
     return () => clearTimeout(timer);
   }, [errorMessage, error]);
 
-
   return (
     <>
-      {loading && (<Loading />)}
+      {loading && <Loading />}
       <LoginWrap>
         <LoginLeft>
           <img src={loginImg} alt="" />
@@ -194,18 +195,20 @@ const Login = () => {
               <Input type="text" onChange={handleEmail} />
               <Select options={optionMail} onChange={selectEmail} />
             </EmailGroup>
-            {errorMessage.email && (<FormText $error>{errorMessage.email}</FormText>)}
+            {errorMessage.email && <FormText $error>{errorMessage.email}</FormText>}
           </div>
           <div>
             <Input type="password" label="Password" labelText="Password" showPassword onChange={handlePassword} />
-            {errorMessage.password && (<FormText $error>{errorMessage.password}</FormText>)}
+            {errorMessage.password && <FormText $error>{errorMessage.password}</FormText>}
           </div>
           <div>
             <Checkbox value="Remember Me" id="id1" color="primary" />
           </div>
-          {error && (<FormText $error>{error}</FormText>)}
+          {error && <FormText $error>{error}</FormText>}
           <div>
-            <Button $color="primary" onClick={onSubmit}>Sign in</Button>
+            <Button $color="primary" onClick={onSubmit}>
+              Sign in
+            </Button>
           </div>
           <div className="guide-account">
             계정이 없으신가요? <Link to="/create-account">계정 만들기</Link>

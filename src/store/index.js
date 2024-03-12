@@ -7,30 +7,31 @@ import signInfoSlice from "./signInfo.slice";
 import userSlice from "./user.slice";
 import salaryAdminSlice from "./salaryAdmin.slice";
 import salarySlice from "./salary.slice";
-
+import projectSlice from "./project.slice";
 
 const rootReducer = combineReducers({
-    signInfoSlice: signInfoSlice,
-    userSlice: userSlice,
-    salaryAdminSlice: salaryAdminSlice,
-    salarySlice: salarySlice
-})
+  signInfoSlice: signInfoSlice,
+  userSlice: userSlice,
+  salaryAdminSlice: salaryAdminSlice,
+  salarySlice: salarySlice,
+  projectSlice: projectSlice,
+});
 
 const persistConfig = {
-    key: "root",
-    storage: storage
-}
+  key: "root",
+  storage: storage,
+};
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-    reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
-            }
-        }),
-})
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);

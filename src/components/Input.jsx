@@ -114,7 +114,7 @@ const InputElement = styled.input`
     }
   }
 `;
-const Label = styled.label`
+export const Label = styled.label`
   display: inline-block;
   margin-bottom: 0.25rem;
   font-size: 0.8125rem;

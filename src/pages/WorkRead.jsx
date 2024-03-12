@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Heading from "../components/Heading";
 import { X } from "react-bootstrap-icons";
 import styled from "styled-components";
-import Input from "../components/Input";
+import Input, { Label } from "../components/Input";
 import Editor from "../components/Editor";
 import { Button } from "../components/GlobalStyles";
 import SelectDetail from "../components/SelectCustom";
+import { auth } from "../firebase";
+import { userIsAdmin } from "../store/user.slice";
 
 const Popup = styled.div`
   overflow: visible;
@@ -63,7 +65,7 @@ const WorkRead = ({ id, getData, isData, ...props }) => {
     popoverId.hidePopover();
   };
 
-  const { title, start, end, extendedProps } = isData;
+  const { title, start, end, extendedProps, member } = isData;
   const startDate = new Date(start);
   const startyear = startDate.getFullYear();
   const startmonth = startDate.getMonth() + 1;
@@ -75,6 +77,8 @@ const WorkRead = ({ id, getData, isData, ...props }) => {
 
   const formatStartDate = `${startyear}년 ${startmonth < 10 ? "0" + startmonth : startmonth}월 ${startday < 10 ? "0" + startday : startday}일`;
   const formatEndDate = `${endyear}년 ${endmonth < 10 ? "0" + endmonth : endmonth}월 ${endday < 10 ? "0" + endday : endday}일`;
+
+  const user = auth.currentUser;
 
   return (
     <Popup popover="auto" id={id} {...props}>
@@ -95,16 +99,20 @@ const WorkRead = ({ id, getData, isData, ...props }) => {
           <Input type="text" label="project3" labelText="프로젝트 종료일" plainText readOnly="readonly" value={formatEndDate} />
         </div>
         <div className="mb2">
-          <SelectDetail options="user" label="project4" labelText="프로젝트 참여 멤버" />
+          <Label style={{ marginBottom: "-0.5rem" }}>프로젝트 참여 멤버</Label>
         </div>
-        <div className="mb2">
+        {/* <div className="mb2">
           <Input type="text" label="project5" labelText="프로젝트 현황" plainText readOnly="readonly" value={extendedProps.state} />
+          {member}
         </div>
-        <div dangerouslySetInnerHTML={{ __html: extendedProps.description }} />
+        <Label style={{ marginBottom: "-0.5rem" }}>프로젝트 정보</Label>
+        <div dangerouslySetInnerHTML={{ __html: extendedProps.description }} /> */}
         <div>
-          <Button $color="primary" className="mr2">
-            Modify
-          </Button>
+          {user === userIsAdmin && (
+            <Button $color="primary" className="mr2">
+              Modify
+            </Button>
+          )}
           <Button $color="secondary" onClick={handleClose}>
             Close
           </Button>
