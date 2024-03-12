@@ -187,7 +187,6 @@ const BadgeList = styled.div`
 
 const Work = () => {
   const calendarRef = useRef(null);
-  const [inputData, setinput] = useState({});
   const [isprojects, setIsProjects] = useState([]);
   const [viewProject, setViewProject] = useState({});
   const [isColor, setIsColor] = useState("");
@@ -195,11 +194,7 @@ const Work = () => {
   const { allProjectInfo } = useSelector((state) => state.projectSlice);
 
   // const { title, start, end, extendedProps, member } = allProjects;
-
-  const handleData = (value) => {
-    setinput(value);
-  };
-
+  console.log(allProjectInfo);
   useEffect(() => {
     const customButtons = {};
     const calendarEl = document.querySelector(".calendar");
@@ -248,8 +243,8 @@ const Work = () => {
         title: project.title,
         start: project.start,
         end: project.end,
-        color: project.color,
-        textColor: project.textColor,
+        color: "#dff7e9",
+        textColor: "#28c76f",
         allDay: true,
       });
     });
@@ -272,7 +267,7 @@ const Work = () => {
     return () => {
       calendar.destroy();
     };
-  }, [isAdmin]);
+  }, [isAdmin, allProjectInfo]);
 
   return (
     <>
@@ -286,7 +281,7 @@ const Work = () => {
       <CalendarWrap>
         <div ref={calendarRef} className="calendar"></div>
       </CalendarWrap>
-      <WorkWrite id={"aa"} getData={handleData} />
+      <WorkWrite id={"aa"} />
       <WorkRead id={"read"} isData={viewProject} />
     </>
   );

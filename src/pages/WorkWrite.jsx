@@ -7,7 +7,10 @@ import Editor from "../components/Editor";
 import { Button, FormText } from "../components/GlobalStyles";
 import SelectDetail from "../components/SelectCustom";
 import { auth, db } from "../firebase";
-import { addDoc, collection, doc } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../store/projectUser.slice";
+import { fetchProject } from "../store/project.slice";
 const Popup = styled.div`
   overflow: visible;
   left: inherit;
@@ -63,6 +66,8 @@ const WorkWrite = ({ id, getData, ...props }) => {
   const [member, setMember] = useState("");
   const [first, setfirst] = useState("");
   const [dateError, setDateError] = useState(false);
+  const { users } = useSelector((state) => state.projectUserSlice);
+  const dispatch = useDispatch();
 
   const onTitle = (e) => {
     setInfo({ ...info, title: e.target.value });
@@ -80,22 +85,27 @@ const WorkWrite = ({ id, getData, ...props }) => {
       setInfo({ ...info, end: e.target.value });
     }
   };
-  const onSelect = (value) => {
-    if (value === "pending") {
-      setInfo({ ...info, color: "#eae8fd", textColor: "#7367f0", state: "대기중" });
-    } else if (value === "progress") {
-      setInfo({ ...info, color: "#dff7e9", textColor: "#28c76f", state: "진행중" });
-    } else if (value === "completed") {
-      setInfo({ ...info, color: "#fce5e6", textColor: "#ea5455", state: "완료" });
-    }
-  };
+  // const onSelect = (value) => {
+  //   if (value === "pending") {
+  //     setInfo({ ...info, color: "#eae8fd", textColor: "#7367f0", state: "대기중" });
+  //   } else if (value === "progress") {
+  //     setInfo({ ...info, color: "#dff7e9", textColor: "#28c76f", state: "진행중" });
+  //   } else if (value === "completed") {
+  //     setInfo({ ...info, color: "#fce5e6", textColor: "#ea5455", state: "완료" });
+  //   }
+  // };
   const onDetail = (e) => {
     setInfo({ ...info, description: e });
   };
 
-  const onMember = ({ uid, team, name }) => {
-    setInfo({ ...info, member: { uid: { uid, team, name } } });
-  };
+  // const onMember = (members) => {
+  //   const updateMember = [...info.member, members];
+  //   setInfo({ ...info, member: updateMember });
+  // };
+  // const onMember = (members) => {
+  //   console.log(members);
+  // setInfo((prevInfo) => ({ ...prevInfo, member: [...prevInfo.member, members] }));
+  // };
 
   const handleProject = async (e) => {
     e.preventDefault();
@@ -103,13 +113,13 @@ const WorkWrite = ({ id, getData, ...props }) => {
     const title = info.title;
     const start = info.start;
     const end = info.end;
-    const state = info.state;
+    // const state = info.state;
     const description = info.description;
     const color = info.color;
     const textColor = info.textColor;
-    const member = info.member;
+    const member = users;
 
-    if (title === "" || start === "" || end === "" || info.color === "" || description === "" || state === "") {
+    if (title === "" || start === "" || end === "" || description === "") {
       return console.log("모두입력하셔요");
     }
 
@@ -118,11 +128,32 @@ const WorkWrite = ({ id, getData, ...props }) => {
         title,
         start,
         end,
-        state,
+        // state,
         description,
-        color,
-        textColor,
+        // color,
+        // textColor,
         member,
+      });
+      dispatch(fetchProject());
+      //모든 멤버들의 아이디를 받고 받은 아이디에 대하여 파이어베이스 해당 유저 프로젝트 컬렉션에 해당 프로젝트 내용 입력
+      const usersUid = users.map((item) => {
+        return item.uid;
+      });
+      // console.log(usersUid);
+      usersUid.forEach(async (item) => {
+        const userDocRef = doc(db, "users", item, "project", "data");
+        await setDoc(
+          userDocRef,
+          {
+            title,
+            start,
+            end,
+            description,
+            member,
+            state: "",
+          },
+          { merge: true }
+        );
       });
     } catch (error) {
       console.log(error);
@@ -134,10 +165,11 @@ const WorkWrite = ({ id, getData, ...props }) => {
 
   const handleClose = () => {
     const popoverId = document.querySelector(`#${id}`);
-    const body = document.body;
     popoverId.hidePopover();
-    body.style.overflow = "visible";
+    dispatch(clearUser());
+    setInfo({});
   };
+  console.log(info.title);
 
   return (
     <Popup popover="auto" id={id} {...props}>
@@ -149,23 +181,20 @@ const WorkWrite = ({ id, getData, ...props }) => {
       </PopupHeader>
       <PopupContent>
         <div className="mb2">
-          <Input type="text" label="project1" labelText="프로젝트명" onChange={onTitle} />
+          <Input type="text" label="project1" labelText="프로젝트명" value={info.title || ""} onChange={onTitle} />
         </div>
         <div className="mb2">
-          <Input type="date" label="project2" labelText="프로젝트 시작일" onChange={onStart} data-placeholder="YYYY-MM-DD" />
+          <Input type="date" label="project2" labelText="프로젝트 시작일" onChange={onStart} value={info.start || ""} />
         </div>
         <div className="mb2">
-          <Input type="date" label="project3" labelText="프로젝트 종료일" onChange={onEnd} data-placeholder="YYYY-MM-DD" />
+          <Input type="date" label="project3" labelText="프로젝트 종료일" onChange={onEnd} value={info.end || ""} />
           {dateError && <FormText $error>종료일은 시작일보다 같은날이거나 다음날이어야 합니다.</FormText>}
         </div>
         <div className="mb2">
-          <SelectDetail options="user" label="project4" labelText="프로젝트 참여 멤버" onMemberTagChange={onMember} />
-        </div>
-        <div className="mb2">
-          <SelectDetail option="state" labelText="프로젝트 현황" onSelected={onSelect} />
+          <SelectDetail options="user" label="project4" labelText="프로젝트 참여 멤버" />
         </div>
         {/* <div className="mb2">
-          <Select options={optionProject} label="project5" labelText="프로젝트 진행 현황" />
+          <SelectDetail option="state" labelText="프로젝트 현황" onSelected={onSelect} />
         </div> */}
         <div>
           <Editor title="프로젝트 상세정보" onChange={onDetail}></Editor>

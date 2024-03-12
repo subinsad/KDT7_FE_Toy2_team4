@@ -19,7 +19,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { clearUser, fetchUserInfo } from "../store/user.slice";
 import { useSelector } from "react-redux";
 import { fetchMySalary } from "../store/salary.slice";
-import { fetchProject } from "../store/project.slice";
+import { fetchMyProject, fetchProject } from "../store/project.slice";
 
 const LoginWrap = styled.div`
   display: grid;
@@ -145,6 +145,7 @@ const Login = () => {
         dispatch(fetchUserInfo(user));
         dispatch(fetchMySalary(user));
         dispatch(fetchProject());
+        dispatch(fetchMyProject(user));
         navigate("/main");
       } catch (error) {
         setError("이메일 또는 비밀번호가 올바르지 않습니다.");

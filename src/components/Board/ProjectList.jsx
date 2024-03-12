@@ -1,8 +1,11 @@
 import React from "react";
 import { Badge, PagingItem, Table, TablePaging } from "../GlobalStyles";
 import Avatar, { AvatarGroup } from "../Avatar";
+import { useSelector } from "react-redux";
 
 const ProjectList = ({ ...props }) => {
+  const { myProjectInfo } = useSelector((state) => state.projectSlice);
+
   return (
     <>
       <Table {...props}>
@@ -16,50 +19,24 @@ const ProjectList = ({ ...props }) => {
         </thead>
         <tbody>
           <tr>
-            <td>Hoffman Website</td>
-            <td>2024.02.20 ~ 2024.03.20</td>
+            <td>{myProjectInfo?.title}</td>
             <td>
-              <Badge $color="success">In progress</Badge>
+              {myProjectInfo?.start} ~ {myProjectInfo?.end}
+            </td>
+            <td>
+              <Badge $color="success">{myProjectInfo?.state === "" ? "in Prograss" : ""}</Badge>
             </td>
             <td>
               <AvatarGroup>
-                <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
-                <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
-                <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
-              </AvatarGroup>
-            </td>
-          </tr>
-          <tr>
-            <td>Hoffman Website</td>
-            <td>2024.02.20 ~ 2024.03.20</td>
-            <td>
-              <Badge $color="danger">Completed</Badge>
-            </td>
-            <td>
-              <AvatarGroup>
-                <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
-                <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
-                <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
-              </AvatarGroup>
-            </td>
-          </tr>
-          <tr>
-            <td>Hoffman Website</td>
-            <td>2024.02.20 ~ 2024.03.20</td>
-            <td>
-              <Badge $color="primary">Pending</Badge>
-            </td>
-            <td>
-              <AvatarGroup>
-                <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
-                <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
-                <Avatar src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/1.png"} />
+                {myProjectInfo.member?.map((user) => {
+                  return <Avatar src={user.userImg} name={user.name} key={user.uid} />;
+                })}
               </AvatarGroup>
             </td>
           </tr>
         </tbody>
       </Table>
-      <TablePaging>
+      {/* <TablePaging>
         <PagingItem>Previous</PagingItem>
         <PagingItem $active>1</PagingItem>
         <PagingItem>2</PagingItem>
@@ -67,7 +44,7 @@ const ProjectList = ({ ...props }) => {
         <PagingItem>4</PagingItem>
         <PagingItem>5</PagingItem>
         <PagingItem>Next</PagingItem>
-      </TablePaging>
+      </TablePaging> */}
     </>
   );
 };

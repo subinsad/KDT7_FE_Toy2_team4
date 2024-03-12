@@ -8,6 +8,7 @@ import { Button } from "../components/GlobalStyles";
 import SelectDetail from "../components/SelectCustom";
 import { auth } from "../firebase";
 import { userIsAdmin } from "../store/user.slice";
+import { useSelector } from "react-redux";
 
 const Popup = styled.div`
   overflow: visible;
@@ -64,6 +65,7 @@ const WorkRead = ({ id, getData, isData, ...props }) => {
     const popoverId = document.querySelector(`#${id}`);
     popoverId.hidePopover();
   };
+  const { isAdmin } = useSelector((state) => state.userSlice);
 
   const { title, start, end, extendedProps, member } = isData;
   const startDate = new Date(start);
@@ -108,7 +110,7 @@ const WorkRead = ({ id, getData, isData, ...props }) => {
         <Label style={{ marginBottom: "-0.5rem" }}>프로젝트 정보</Label>
         <div dangerouslySetInnerHTML={{ __html: extendedProps.description }} /> */}
         <div>
-          {user === userIsAdmin && (
+          {isAdmin && (
             <Button $color="primary" className="mr2">
               Modify
             </Button>

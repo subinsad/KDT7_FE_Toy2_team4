@@ -16,6 +16,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
 import Loading from "../Loading";
 import { addUserBg, addUserImg, clearUserInfo } from "../../store/signInfo.slice";
+import { fetchProject } from "../../store/project.slice";
 
 const SignHeader = styled.div``;
 const SampleMypage = styled.div`
@@ -136,6 +137,7 @@ const JoinThird = ({ setActiveStep }) => {
         const { user } = await createUserWithEmailAndPassword(auth, email, password);
 
         dispatch(fetchUserInfo(user));
+        dispatch(fetchProject());
 
         const userEmailRef = ref(storage, `UserEmail/${email}`);
         await uploadBytes(userEmailRef, new Uint8Array(0));

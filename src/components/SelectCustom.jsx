@@ -3,7 +3,8 @@ import styled from "styled-components";
 import Avatar from "./Avatar";
 import Alert from "./Alert";
 import SelectUserItem from "./SelectUserItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser, clearUser } from "../store/projectUser.slice";
 
 const Label = styled.div`
   margin-bottom: 0.25rem;
@@ -135,8 +136,10 @@ const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
   const [isList, setIsList] = useState(false);
   const [isValue, setIsValue] = useState("진행현황 선택");
   const [isUser, setIsUser] = useState("멤버 선택");
-  const [tagVisible, setTagVisible] = useState({});
+  const [tagVisible, setTagVisible] = useState([]);
   const listRef = useRef(null);
+  const dispatch = useDispatch();
+  const { users } = useSelector((state) => state.projectUserSlice);
 
   const { allUserInfo } = useSelector((state) => state.salaryAdminSlice);
 
@@ -162,20 +165,33 @@ const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
     setIsList(false);
     onSelected(isValue);
   };
-  const handleUserSelection = (team, name, uid) => {
+  const handleUserSelection = (team, name, uid, userImg) => {
     // setIsUser(value);
+    const data = {
+      team,
+      name,
+      uid,
+      userImg,
+    };
+    dispatch(addUser(data));
+    // const updatedTagVisible = [...tagVisible, { team, name, uid }];
+
     setIsList(false);
-    setTagVisible({ ...tagVisible, [uid]: { team, name } });
-    onMemberTagChange({ uid, team, name });
+    // setTagVisible(updatedTagVisible);
   };
+  // console.log(tagVisible);
+  // useEffect(() => {
+  //   onMemberTagChange(tagVisible);
+  // }, [tagVisible]);
 
   // console.log(allUserInfo);
   // console.log(tagVisible);
 
   const handleOnClick = (uid) => {
-    const updatedTagVisible = { ...tagVisible };
-    delete updatedTagVisible[uid];
-    setTagVisible(updatedTagVisible);
+    // const updatedTagVisible = { ...tagVisible };
+    // delete updatedTagVisible[uid];
+    // setTagVisible(updatedTagVisible);
+    dispatch(clearUser(uid));
   };
 
   return (
@@ -213,9 +229,9 @@ const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
           ))}
       </SelectDetailWrap>
       <MemberTag ref={memberRef}>
-        {Object.keys(tagVisible).map((uid, index) => (
-          <Alert key={index} color="primary" close className="tag" onClick={() => handleOnClick(uid)}>
-            [{tagVisible[uid].team}] {tagVisible[uid].name}
+        {users.map((item) => (
+          <Alert key={item.uid} color="primary" close className="tag" onClick={() => handleOnClick(item.uid)}>
+            [{item.team}] {item.name}
           </Alert>
         ))}
       </MemberTag>

@@ -4,7 +4,7 @@ import Avatar from "./Avatar";
 const SelectUserItem = ({ userImg, name, team, uid, onChecked }) => {
   const [isActive, setIsActive] = useState(false);
   const handleUser = (e) => {
-    onChecked(team, name, uid);
+    onChecked(team, name, uid, userImg);
     setIsActive(!isActive);
   };
 
