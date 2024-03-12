@@ -25,6 +25,7 @@ export const fetchAttendance = createAsyncThunk(
                         attendanceContext,
                         userId,
                         name,
+                        state,
                     } = doc.data();
 
                     return {
@@ -38,6 +39,7 @@ export const fetchAttendance = createAsyncThunk(
                         userId,
                         name,
                         id: doc.id,
+                        state,
                     };
                 });
                 return attends;

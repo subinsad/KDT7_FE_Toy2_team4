@@ -32,6 +32,7 @@ const initialState = {
         title: '',
         name: '',
         id: '',
+        state: '대기중',
     },
     error: '',
 };
@@ -56,6 +57,7 @@ export const attendanceDetailSlice = createSlice({
                     title: action.payload.title,
                     name: action.payload.name,
                     id: action.payload.id,
+                    state: action.payload.state,
                 };
                 state.error = '';
             });
