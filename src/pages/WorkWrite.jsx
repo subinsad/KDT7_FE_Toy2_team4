@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import Heading from "../components/Heading";
 import { X } from "react-bootstrap-icons";
 import styled from "styled-components";
-import Input from "./Input";
-import Editor from "./Editor";
-import { Button, FormText } from "./GlobalStyles";
-import SelectDetail from "./SelectCustom";
+import Input from "../components/Input";
+import Editor from "../components/Editor";
+import { Button, FormText } from "../components/GlobalStyles";
+import SelectDetail from "../components/SelectCustom";
 import { auth, db } from "../firebase";
 import { addDoc, collection, doc } from "firebase/firestore";
 const Popup = styled.div`
@@ -58,7 +58,7 @@ const PopupContent = styled.div`
   padding-top: 0;
 `;
 
-const WorkWrite = ({ id, getData }) => {
+const WorkWrite = ({ id, getData, ...props }) => {
   const [info, setInfo] = useState({});
   const [member, setMember] = useState("");
   const [first, setfirst] = useState("");
@@ -90,7 +90,7 @@ const WorkWrite = ({ id, getData }) => {
     }
   };
   const onDetail = (e) => {
-    setInfo({ ...info, content: e });
+    setInfo({ ...info, description: e });
   };
 
   const onMember = (e) => {
@@ -105,11 +105,11 @@ const WorkWrite = ({ id, getData }) => {
     const start = info.start;
     const end = info.end;
     const state = info.state;
-    const content = info.content;
+    const description = info.description;
     const color = info.color;
     const textColor = info.textColor;
 
-    if (title === "" || start === "" || end === "" || info.color === "" || content === "" || state === "") {
+    if (title === "" || start === "" || end === "" || info.color === "" || description === "" || state === "") {
       return console.log("모두입력하셔요");
     }
 
@@ -119,7 +119,7 @@ const WorkWrite = ({ id, getData }) => {
         start,
         end,
         state,
-        content,
+        description,
         color,
         textColor,
       });
@@ -147,7 +147,7 @@ const WorkWrite = ({ id, getData }) => {
   // backDropClose();
 
   return (
-    <Popup popover="auto" id={id}>
+    <Popup popover="auto" id={id} {...props}>
       <PopupHeader>
         <Heading size="xs">프로젝트 추가</Heading>
         <Close popovertargetaction="hide" popovertarget={id}>

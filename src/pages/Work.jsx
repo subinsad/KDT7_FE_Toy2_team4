@@ -5,9 +5,10 @@ import { Calendar } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 
 // import date from "../data/date";
-import WorkWrite from "../components/WorkWrite";
+import WorkWrite from "./WorkWrite";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "../firebase";
+import WorkRead from "./WorkRead";
 
 const CalendarWrap = styled(Card)`
   overflow: hidden;
@@ -176,18 +177,12 @@ const CalendarWrap = styled(Card)`
 const Work = () => {
   const calendarRef = useRef(null);
   const [inputData, setinput] = useState({});
-  const [ovfhidden, setOvfhidden] = useState(false);
   const [isprojects, setIsProjects] = useState([]);
+  const [viewProject, setViewProject] = useState({});
+  const [isColor, setIsColor] = useState("");
 
   const handleData = (value) => {
     setinput(value);
-  };
-
-  const handleOverflow = () => {
-    const body = document.body;
-    if (!ovfhidden) {
-      body.style.overflow = "hidden";
-    }
   };
 
   useEffect(() => {
@@ -195,65 +190,80 @@ const Work = () => {
       const projectQuery = query(collection(db, `project`));
       const unsubscribe = await onSnapshot(projectQuery, (snapshot) => {
         const projects = snapshot.docs.map((doc) => {
-          const url = `work/${doc.id}`; //페이지 정보
-          const { title, start, end, state, color, textColor } = doc.data();
-          return { url, title, start, end, state, color, textColor };
+          // const url = `work/${doc.id}`; //페이지 정보
+          // const url = viewWork();
+          const { title, start, end, state, color, textColor, description } = doc.data();
+          return { title, start, end, state, color, textColor, description };
         });
         setIsProjects(projects);
+
+        const calendarEl = document.querySelector(".calendar");
+
+        const calendar = new Calendar(calendarEl, {
+          headerToolbar: {
+            left: "prev,next today",
+            center: "title",
+            right: "addEventButton",
+          },
+          plugins: [dayGridPlugin],
+          initialView: "dayGridMonth",
+          locale: "ko",
+          events: isprojects,
+          editable: true,
+          selectable: true,
+          customButtons: {
+            addEventButton: {
+              text: "프로젝트 추가",
+
+              click: function (e) {
+                const btn = e.target;
+                if (!btn.hasAttribute("popovertarget")) {
+                  btn.setAttribute("popovertarget", "aa");
+                }
+              },
+            },
+          },
+          eventClick: function (info) {
+            const viewPop = document.querySelector("#read");
+            viewPop.showPopover();
+            const { title, start, end, textColor, id, extendedProps } = info.event;
+            if (textColor === "#28c76f") {
+              setIsColor("진행중");
+            } else if (textColor === "#7367f0") {
+              setIsColor("대기중");
+            } else if (textColor === "#ea5455") {
+              setIsColor("완료");
+            }
+            setViewProject({ title, start, end, isColor, id, extendedProps });
+          },
+        });
+        // isprojects.forEach((project) => {
+        //   calendar.addEvent({
+        //     title: project.title,
+        //     start: project.start,
+        //     end: project.end,
+        //     color: project.color,
+        //     textColor: project.textColor,
+        //     allDay: true,
+        //   });
+        // });
+        calendar.render();
+        return () => {
+          calendar.destroy();
+        };
       });
       return () => unsubscribe();
     };
     fetchProject();
-
-    const calendarEl = document.querySelector(".calendar");
-
-    const calendar = new Calendar(calendarEl, {
-      headerToolbar: {
-        left: "prev,next today",
-        center: "title",
-        right: "addEventButton",
-      },
-      plugins: [dayGridPlugin],
-      initialView: "dayGridMonth",
-      locale: "ko",
-      events: isprojects,
-      editable: true,
-      selectable: true,
-      customButtons: {
-        addEventButton: {
-          text: "프로젝트 추가",
-
-          click: function (e) {
-            const btn = e.target;
-            if (!btn.hasAttribute("popovertarget")) {
-              btn.setAttribute("popovertarget", "aa");
-            }
-            handleOverflow();
-          },
-        },
-      },
-    });
-    // isprojects.forEach((project) => {
-    //   calendar.addEvent({
-    //     title: project.title,
-    //     start: project.start,
-    //     end: project.end,
-    //     color: project.color,
-    //     textColor: project.textColor,
-    //     allDay: true,
-    //   });
-    // });
-    calendar.render();
-    return () => {
-      calendar.destroy();
-    };
   }, []);
+
   return (
     <>
       <CalendarWrap>
         <div ref={calendarRef} className="calendar"></div>
       </CalendarWrap>
-      <WorkWrite className="aa" id={"aa"} getData={handleData} />
+      <WorkWrite id={"aa"} getData={handleData} />
+      <WorkRead id={"read"} isData={viewProject} />
     </>
   );
 };

@@ -36,11 +36,6 @@ const router = createBrowserRouter([
         element: <Work />,
       },
       {
-        path: "work/qbJmALKztAJNVMa5KRKd",
-        element: <WorkRead />,
-      },
-
-      {
         path: "attendance",
         element: <Attendance />,
       },
