@@ -52,7 +52,7 @@ const AdminRouter = createBrowserRouter([
                 element: <AttendanceWrite />,
             },
             {
-                path: 'attendance/read/:attendanceId',
+                path: 'attendance/read/:allAttendanceId',
                 element: <AttendanceRead />,
             },
             {
