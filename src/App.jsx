@@ -9,7 +9,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Loading from "./components/Loading";
 import { clearUser, userIsAdmin } from "./store/user.slice";
-import { fetchUserInfo } from "./store/salaryAdmin.slice";
+import { clearSalaryInfo, fetchUserInfo } from "./store/salaryAdmin.slice";
+import { clearSalary } from "./store/salary.slice";
 
 function App() {
   const { isAdmin, isAdminLoading } = useSelector((state) => state.userSlice)
@@ -19,6 +20,8 @@ function App() {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user === null) {
         dispatch(clearUser());
+        dispatch(clearSalaryInfo())
+        dispatch(clearSalary())
       } else {
         dispatch(userIsAdmin(user));
       }

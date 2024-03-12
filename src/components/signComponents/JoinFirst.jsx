@@ -100,6 +100,7 @@ const JoinFirst = ({ setActiveStep }) => {
       }));
       isValid = false;
     }
+<<<<<<< HEAD
     if (!formData.email) {
       setErrorMessage((prevData) => ({
         ...prevData,
@@ -124,6 +125,75 @@ const JoinFirst = ({ setActiveStep }) => {
         email: "이메일을 확인해주세요",
       }));
       isValid = false;
+=======
+
+    const checkForm = () => {
+        let isValid = true;
+        if (!formData.name) {
+            setErrorMessage((prevData) => ({
+                ...prevData,
+                name: "이름을 입력해 주세요."
+            }));
+            isValid = false;
+        }
+        if (!formData.email) {
+            setErrorMessage((prevData) => ({
+                ...prevData,
+                email: "이메일을 입력해주세요."
+            }));
+            isValid = false;
+        }
+        else if (!formData.email.includes('@')) {
+            setErrorMessage((prevData) => ({
+                ...prevData,
+                email: "이메일을 선택해주세요"
+            }));
+            isValid = false;
+        }
+        else if ((/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(formData.email))) {
+            setErrorMessage((prevData) => ({
+                ...prevData,
+                email: "이메일을 확인해주세요"
+            }));
+            isValid = false;
+        }
+        else if ((formData.email.match(/@/g) || []).length !== 1) {
+            setErrorMessage((prevData) => ({
+                ...prevData,
+                email: "이메일을 확인해주세요"
+            }));
+            isValid = false;
+        }
+        if (!formData.password) {
+            setErrorMessage((prevData) => ({
+                ...prevData,
+                password: "비밀번호를 입력해주세요."
+            }));
+            isValid = false;
+        }
+        if (formData.password.length < 6) {
+            setErrorMessage((prevData) => ({
+                ...prevData,
+                password: "비밀번호는 6자 이상이여야 합니다."
+            }));
+            isValid = false;
+        }
+        if (!formData.passwordConfirm) {
+            setErrorMessage((prevData) => ({
+                ...prevData,
+                passwordConfirm: "비밀번호를 입력해주세요."
+            }));
+            isValid = false;
+        }
+        if (formData.password !== formData.passwordConfirm) {
+            setErrorMessage((prevData) => ({
+                ...prevData,
+                passwordConfirm: "비밀번호가 맞지 않습니다."
+            }));
+            isValid = false;
+        }
+        return isValid;
+>>>>>>> main
     }
     if (!formData.password) {
       setErrorMessage((prevData) => ({

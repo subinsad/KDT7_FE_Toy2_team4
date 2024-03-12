@@ -7,7 +7,11 @@ import { auth } from "../firebase";
 import { clearUser } from "../store/user.slice";
 import { clearSalaryInfo } from "../store/salaryAdmin.slice";
 import { useSelector } from "react-redux";
+<<<<<<< HEAD
 import { useRef, useState } from "react";
+=======
+import { clearSalary } from "../store/salary.slice";
+>>>>>>> main
 
 const NavBarWrap = styled.div`
   position: fixed;
@@ -159,9 +163,16 @@ function NavBar() {
   const logout = async () => {
     try {
       await auth.signOut();
+<<<<<<< HEAD
       dispatch(clearUser());
       dispatch(clearSalaryInfo());
       navigate("/login");
+=======
+      dispatch(clearUser())
+      dispatch(clearSalaryInfo())
+      dispatch(clearSalary())
+      navigate('/login')
+>>>>>>> main
     } catch (error) {
       console.log("logout error : ", error);
     }

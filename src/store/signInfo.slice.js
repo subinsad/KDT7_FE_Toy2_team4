@@ -30,8 +30,20 @@ export const signInfoSlice = createSlice({
                 shortInfo,
             }
         },
+        addUserImg: (state, action) => {
+            state.signInfo = {
+                ...state.signInfo,
+                image: action.payload
+            }
+        },
+        addUserBg: (state, action) => {
+            state.signInfo = {
+                ...state.signInfo,
+                backgroundImage: action.payload
+            }
+        }
     }
 })
 
-export const { addUserInfo1, clearUserInfo, addUserInfo2 } = signInfoSlice.actions
+export const { addUserInfo1, clearUserInfo, addUserInfo2, addUserImg, addUserBg } = signInfoSlice.actions
 export default signInfoSlice.reducer

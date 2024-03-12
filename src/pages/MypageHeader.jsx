@@ -5,6 +5,7 @@ import { Badge, Button } from "../components/GlobalStyles";
 import { Calendar2, PersonBadge, PersonWorkspace } from "react-bootstrap-icons";
 import bg from "../assets/bg_profile.png";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = styled.div`
   grid-column: 1/-1;
@@ -54,6 +55,7 @@ const Header = styled.div`
 `;
 
 function MypageHeader({ ...props }) {
+  const { userImg, userBg, name, team, joinYear, joinMonth } = useSelector((state) => state.userSlice.userInfo)
   const navigate = useNavigate();
   const handleEdit = () => {
     navigate("/mypage/edit");
@@ -62,19 +64,20 @@ function MypageHeader({ ...props }) {
     <>
       <Header {...props}>
         <Card>
-          <div className="personal-bg">
-            <img src={bg} alt="" />
+          <div className="personal-bg" style={{ maxWidth: '1500px', maxHeight: '228px' }}>
+            <img src={userBg} alt="" />
           </div>
           <div className="personal-info">
-            <Avatar />
-            <p>My Name Taki</p>
+            <Avatar src={userImg} style={{ maxWidth: '150px', maxHeight: '150px', cursor: 'default', borderRadius: '50%' }} />
+            <p>{name}</p>
             <ul>
               <li>
-                <PersonBadge /> 소속팀 : 개발팀
+                <PersonBadge /> 소속팀 : {team}
               </li>
               <li>
-                <Calendar2 /> 입사일 : 2024년 3월
+                <Calendar2 /> 입사일 : {joinYear}년 {joinMonth}월
               </li>
+              {/* 근무 상태 변경 필요 */}
               <li>
                 <PersonWorkspace /> 상태 :
                 <Badge $color="success" $size="xs">

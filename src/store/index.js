@@ -6,12 +6,14 @@ import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from "redux-persist
 import signInfoSlice from "./signInfo.slice";
 import userSlice from "./user.slice";
 import salaryAdminSlice from "./salaryAdmin.slice";
+import salarySlice from "./salary.slice";
 
 
 const rootReducer = combineReducers({
     signInfoSlice: signInfoSlice,
     userSlice: userSlice,
-    salaryAdminSlice: salaryAdminSlice
+    salaryAdminSlice: salaryAdminSlice,
+    salarySlice: salarySlice
 })
 
 const persistConfig = {
