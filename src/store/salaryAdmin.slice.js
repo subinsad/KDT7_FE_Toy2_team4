@@ -3,7 +3,7 @@ import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 export const fetchUserInfo = createAsyncThunk(
-    "salary/fetchUserInfo",
+    "salaryAdmin/fetchUserInfo",
     async (user) => {
         if (user) {
             const userDocRef = doc(db, "users", user.uid, "salary", "data")
@@ -17,7 +17,7 @@ export const fetchUserInfo = createAsyncThunk(
 )
 
 export const fetchSalaryInfo = createAsyncThunk(
-    "salary/fetchSalaryInfo",
+    "salaryAdmin/fetchSalaryInfo",
     async (info, thunkAPI) => {
         const state = thunkAPI.getState();
         const { user, salary, type } = info

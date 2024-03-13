@@ -18,6 +18,7 @@ import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { clearUser, fetchUserInfo } from "../store/user.slice";
 import { useSelector } from "react-redux";
+import { fetchMySalary } from "../store/salary.slice";
 
 const LoginWrap = styled.div`
   display: grid;
@@ -141,6 +142,7 @@ const Login = () => {
         setLoading(true);
         const { user } = await signInWithEmailAndPassword(auth, email, password);
         dispatch(fetchUserInfo(user))
+        dispatch(fetchMySalary(user))
         navigate("/main");
       } catch (error) {
         setError("이메일 또는 비밀번호가 올바르지 않습니다.");

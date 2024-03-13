@@ -136,6 +136,13 @@ const JoinFirst = ({ setActiveStep }) => {
             }));
             isValid = false;
         }
+        if (formData.password.length < 6) {
+            setErrorMessage((prevData) => ({
+                ...prevData,
+                password: "비밀번호는 6자 이상이여야 합니다."
+            }));
+            isValid = false;
+        }
         if (!formData.passwordConfirm) {
             setErrorMessage((prevData) => ({
                 ...prevData,

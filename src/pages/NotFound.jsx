@@ -35,7 +35,7 @@ const NotFound = () => {
   const navigate = useNavigate();
 
   const gotoHome = () => {
-    navigate("/");
+    navigate("/main");
   };
 
   return (
