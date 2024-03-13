@@ -131,11 +131,11 @@ const MemberTag = styled.div`
   }
 `;
 
-const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
+const SelectCustom = ({ option, labelText, onSelected, isMembers, onMemberTagChange }) => {
   const memberRef = useRef(null);
   const [isList, setIsList] = useState(false);
   const [isValue, setIsValue] = useState("진행현황 선택");
-  const [isUser, setIsUser] = useState("멤버 선택");
+  const [isUser, setIsUser] = useState({});
   const [tagVisible, setTagVisible] = useState([]);
   const listRef = useRef(null);
   const dispatch = useDispatch();
@@ -165,8 +165,8 @@ const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
     setIsList(false);
     onSelected(isValue);
   };
+
   const handleUserSelection = (team, name, uid, userImg) => {
-    // setIsUser(value);
     const data = {
       team,
       name,
@@ -174,23 +174,13 @@ const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
       userImg,
     };
     dispatch(addUser(data));
-    // const updatedTagVisible = [...tagVisible, { team, name, uid }];
-
     setIsList(false);
-    // setTagVisible(updatedTagVisible);
-  };
-  // console.log(tagVisible);
-  // useEffect(() => {
-  //   onMemberTagChange(tagVisible);
-  // }, [tagVisible]);
 
-  // console.log(allUserInfo);
-  // console.log(tagVisible);
+    // const updatedTagVisible = [...tagVisible, { team, name, uid }];
+    // setIsUser(updatedTagVisible);
+  };
 
   const handleOnClick = (uid) => {
-    // const updatedTagVisible = { ...tagVisible };
-    // delete updatedTagVisible[uid];
-    // setTagVisible(updatedTagVisible);
     dispatch(clearUser(uid));
   };
 
@@ -198,7 +188,7 @@ const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
     <>
       <Label>{labelText}</Label>
       <SelectDetailWrap>
-        <SelectDetailButton onClick={handleList}>{option === "state" ? isValue : isUser}</SelectDetailButton>
+        <SelectDetailButton onClick={handleList}>멤버선택</SelectDetailButton>
         {isList &&
           (option === "state" ? (
             <List ref={listRef}>
@@ -230,7 +220,7 @@ const SelectCustom = ({ option, labelText, onSelected, onMemberTagChange }) => {
       </SelectDetailWrap>
       <MemberTag ref={memberRef}>
         {users.map((item) => (
-          <Alert key={item.uid} color="primary" close className="tag" onClick={() => handleOnClick(item.uid)}>
+          <Alert key={item.uid} color="primary" className="tag" onClick={() => handleOnClick(item.uid)}>
             [{item.team}] {item.name}
           </Alert>
         ))}
