@@ -68,24 +68,21 @@ export const fetchUserInfo = createAsyncThunk(
 )
 
 
-export const userIsAdmin = createAsyncThunk(
-    "user/isAdmin",
-    async (user) => {
-        if (user) {
-            const userDocRef = doc(db, "users", user.uid, "userInfo", "data");
-            const userDocSnap = await getDoc(userDocRef);
-            if (userDocSnap.exists()) {
-                const userData = userDocSnap.data();
-                const role = userData.role;
-                if (role === "admin") {
-                    return true;
-                } else {
-                    return false;
-                }
+export const userIsAdmin = createAsyncThunk("user/isAdmin", async (user) => {
+    if (user) {
+        const userDocRef = doc(db, "users", user.uid, "userInfo", "data");
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            const role = userData.role;
+            if (role === "admin") {
+                return true;
+            } else {
+                return false;
             }
         }
     }
-)
+});
 
 const initialState = {
     userInfo: {

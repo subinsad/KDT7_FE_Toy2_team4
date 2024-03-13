@@ -16,6 +16,7 @@ import AttendanceWrite from "../components/Board/AttendanceWrite";
 import AttendanceRead from "../components/Board/AttendanceRead";
 import MypageEdit from "../pages/MypageEdit";
 import ProtectedRoute from "./ProtectedRoute";
+import Chat from "../pages/Chat";
 
 const AdminRouter = createBrowserRouter([
   {
@@ -32,7 +33,6 @@ const AdminRouter = createBrowserRouter([
         path: "work",
         element: <Work />,
       },
-      //salaryAdmin, salary/write는 admin 계정에서만 라우팅 될 수 있게 path 변경. 
       {
         path: "salaryAdmin",
         element: <Salary />,
@@ -53,6 +53,7 @@ const AdminRouter = createBrowserRouter([
         path: "attendance/read",
         element: <AttendanceRead />,
       },
+
       {
         path: "styleguide",
         element: <StyleGuide />,
@@ -69,6 +70,11 @@ const AdminRouter = createBrowserRouter([
         path: "about",
         element: <About />,
       },
+      {
+        path: "chat",
+        element: <Chat />,
+      }
+
     ],
   },
   {
