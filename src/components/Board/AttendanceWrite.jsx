@@ -97,8 +97,7 @@ const AttendanceWrite = () => {
                 db,
                 'users',
                 user.uid,
-                'attendance',
-                'request'
+                'attendance'
             );
             await addDoc(
                 userAttendanceRef,
