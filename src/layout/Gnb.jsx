@@ -103,12 +103,12 @@ function Gnb() {
             </Link>
           </NavItem>
           <NavItem $active={location.pathname.includes("/work")}>
-            <Link to="work">
+            <Link to="/work">
               <PersonWorkspace /> Work Management
             </Link>
           </NavItem>
           <NavItem $active={location.pathname.includes("/attendance")}>
-            <Link to="attendance">
+            <Link to="/attendance">
               <PersonUp /> Attendance
             </Link>
           </NavItem>
@@ -131,7 +131,7 @@ function Gnb() {
         </Heading>
         <ul>
           <NavItem $active={location.pathname.includes("/mypage")}>
-            <Link to="mypage">
+            <Link to="/mypage">
               <Gear /> Mypage
             </Link>
           </NavItem>

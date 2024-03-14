@@ -40,6 +40,10 @@ const SampleMypage = styled.div`
       width: 10rem;
       height: 0.5rem;
     }
+    em {
+      grid-column: 1/1;
+      grid-row: span 2;
+    }
   }
   button {
     grid-row: span 2;

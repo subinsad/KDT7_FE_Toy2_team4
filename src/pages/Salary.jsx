@@ -77,7 +77,7 @@ const Salary = () => {
   }, [showDialog]);
   return (
     <div>
-      <Grid $col="4" className="mb3" data-aos="fade-up">
+      {/* <Grid $col="4" className="mb3" data-aos="fade-up">
         <Card title={"Members"} data-aos="fade-up" data-aos-delay="200">
           <Member>
             <strong>{allUserInfo?.length}</strong>
@@ -114,14 +114,15 @@ const Salary = () => {
             </div>
           </Member>
         </Card>
-      </Grid>
+      </Grid> */}
       {showDialog && (
         <Alert color="success" close title="급여 수정이 완료되었습니다">
           <Check />
         </Alert>
       )}
       <Card title={"Member Salary List"} data-aos="fade-up" data-aos-delay="1000">
-        <BoardList state={"salary"} setShowDialog={setShowDialog} />
+        <BoardList state={"salary"} setShowDialog={setShowDialog} className="mb3" />
+        <div className="align right">{totalSalary ? <strong>총 지출 급여 : {totalSalary.toLocaleString()}원</strong> : <strong>0원</strong>}</div>
       </Card>
     </div>
   );

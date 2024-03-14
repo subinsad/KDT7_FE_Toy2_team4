@@ -13,7 +13,6 @@ import { useSelector } from "react-redux";
 
 const SignHeader = styled.div`
   display: grid;
-  grid-template-columns: min-content 1fr;
   align-items: center;
   gap: 0.2rem 0.5rem;
   button {
@@ -181,7 +180,6 @@ const JoinSecond = ({ setActiveStep }) => {
   return (
     <>
       <SignHeader>
-        <Avatar $size="md" />
         <Heading size={"sm"} tag={"h2"}>
           개인정보 입력
         </Heading>

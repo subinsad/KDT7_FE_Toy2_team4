@@ -24,9 +24,7 @@ const SalaryList = ({ setShowDialog, ...props }) => {
           <tr>
             <th>Name</th>
             <th>Job Position</th>
-            <th>Working Month</th>
             <th>Salary</th>
-            <th>Status</th>
             <th>Salary Type</th>
             <th>Edit</th>
           </tr>

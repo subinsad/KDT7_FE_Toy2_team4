@@ -6,7 +6,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import WorkWrite from "./WorkWrite";
 import WorkRead from "./WorkRead";
 import { Badge } from "../components/GlobalStyles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProject } from "../store/project.slice";
 import Aos from "aos";
 import "aos/dist/aos.css";
 
@@ -164,9 +165,7 @@ const BadgeList = styled.div`
 
 const Work = () => {
   const calendarRef = useRef(null);
-  const [isprojects, setIsProjects] = useState([]);
   const [viewProject, setViewProject] = useState({});
-  const [ingState, setIsColor] = useState("");
   const { isAdmin } = useSelector((state) => state.userSlice);
   const { allProjectInfo } = useSelector((state) => state.projectSlice);
 
@@ -206,7 +205,7 @@ const Work = () => {
       eventClick: function (info) {
         const viewPop = document.querySelector("#read");
         viewPop.showPopover();
-        const { title, start, end, backgroundColor, textColor, _def, extendedProps, member } = info.event;
+        const { title, start, end, backgroundColor, textColor, _def, extendedProps } = info.event;
 
         const startDate = new Date(start);
         const startyear = startDate.getFullYear();
@@ -247,8 +246,6 @@ const Work = () => {
       calendar.destroy();
     };
   }, [isAdmin, allProjectInfo]);
-
-  // console.log(viewProject);
 
   return (
     <>
