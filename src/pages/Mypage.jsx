@@ -79,15 +79,10 @@ const Right = styled.div`
 `;
 //수정
 function Mypage() {
-<<<<<<< HEAD
   const { name, email, team, position, phone } = useSelector((state) => state.userSlice.userInfo);
   const { baseSalary, bonusSalary, SpecialSalary } = useSelector((state) => state.salarySlice.salary);
+  const { isAdmin, isAdminLoading } = useSelector((state) => state.userSlice);
 
-=======
-  const { name, email, team, position, phone } = useSelector((state) => state.userSlice.userInfo)
-  const { baseSalary, bonusSalary, SpecialSalary } = useSelector((state) => state.salarySlice.salary)
-  const { isAdmin, isAdminLoading } = useSelector((state) => state.userSlice)
->>>>>>> 233423f59ebba0ca66e6bf4fe6db3324934afe5b
   const calTax = useMemo(() => {
     const totalSalary = Number(baseSalary) + Number(bonusSalary) + Number(SpecialSalary);
     const insurance = parseInt(totalSalary * 0.06);
@@ -165,65 +160,33 @@ function Mypage() {
               </PersonalInfoList>
             </Grid>
           </Card>
-<<<<<<< HEAD
-          <Card title={"이달의 급여"}>
-            <ThisMonthSalary>
-              ₩ {sum ? sum.toLocaleString() : 0}
-              <span>원</span>
-            </ThisMonthSalary>
-            <hr />
-            <PersonalInfoList className="salary">
-              <li>
-                <b>기본급</b> : {baseSalary ? <strong>{Number(baseSalary).toLocaleString()}원</strong> : ""}
-              </li>
-              <li>
-                <b>성과급</b> : {bonusSalary ? <strong>{Number(bonusSalary).toLocaleString()}원</strong> : ""}
-              </li>
-              <li>
-                <b>특별수당</b> : {SpecialSalary ? <strong>{Number(SpecialSalary).toLocaleString()}원</strong> : ""}
-              </li>
-              <li>
-                <b>4대보험</b> : {insurance ? <strong>-{Number(insurance).toLocaleString()}원</strong> : ""}
-              </li>
-              <li>
-                <b>소득세</b> : {tax ? <strong>-{Number(tax).toLocaleString()}원</strong> : ""}
-              </li>
-            </PersonalInfoList>
-          </Card>
-=======
 
           {!isAdmin && (
             <Card title={"이달의 급여"}>
               <ThisMonthSalary>
-                ₩{sum ? sum.toLocaleString() : 0}<span>원</span>
+                ₩{sum ? sum.toLocaleString() : 0}
+                <span>원</span>
               </ThisMonthSalary>
               <hr />
               <PersonalInfoList className="salary">
                 <li>
-                  <b>기본급</b> : {baseSalary ? <strong>{Number(baseSalary).toLocaleString()}원</strong>
-                    : ''}
+                  <b>기본급</b> : {baseSalary ? <strong>{Number(baseSalary).toLocaleString()}원</strong> : ""}
                 </li>
                 <li>
-                  <b>성과급</b> : {bonusSalary ? <strong>{Number(bonusSalary).toLocaleString()}원</strong>
-                    : ''}
+                  <b>성과급</b> : {bonusSalary ? <strong>{Number(bonusSalary).toLocaleString()}원</strong> : ""}
                 </li>
                 <li>
-                  <b>특별수당</b> : {SpecialSalary ? <strong>{Number(SpecialSalary).toLocaleString()}원</strong>
-                    : ''}
+                  <b>특별수당</b> : {SpecialSalary ? <strong>{Number(SpecialSalary).toLocaleString()}원</strong> : ""}
                 </li>
                 <li>
-                  <b>4대보험</b> : {insurance ? <strong>-{Number(insurance).toLocaleString()}원</strong>
-                    : ''}
+                  <b>4대보험</b> : {insurance ? <strong>-{Number(insurance).toLocaleString()}원</strong> : ""}
                 </li>
                 <li>
-                  <b>소득세</b> : {tax ? <strong>-{Number(tax).toLocaleString()}원</strong>
-                    : ''}
+                  <b>소득세</b> : {tax ? <strong>-{Number(tax).toLocaleString()}원</strong> : ""}
                 </li>
               </PersonalInfoList>
             </Card>
           )}
-
->>>>>>> 233423f59ebba0ca66e6bf4fe6db3324934afe5b
         </Left>
         <Right>
           <Card title={"My Project State"}>
