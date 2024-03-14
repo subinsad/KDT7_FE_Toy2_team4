@@ -7,18 +7,6 @@ import signInfoSlice from "./signInfo.slice";
 import userSlice from "./user.slice";
 import salaryAdminSlice from "./salaryAdmin.slice";
 import salarySlice from "./salary.slice";
-<<<<<<< HEAD
-import chennelSlice from "./chennel.slice";
-
-
-const rootReducer = combineReducers({
-    signInfoSlice: signInfoSlice,
-    userSlice: userSlice,
-    salaryAdminSlice: salaryAdminSlice,
-    salarySlice: salarySlice,
-    chennelSlice: chennelSlice
-})
-=======
 import projectSlice from "./project.slice";
 import projectUserSlice from "./projectUser.slice";
 
@@ -30,7 +18,6 @@ const rootReducer = combineReducers({
   projectSlice: projectSlice,
   projectUserSlice: projectUserSlice,
 });
->>>>>>> feature/work
 
 const persistConfig = {
   key: "root",
@@ -49,8 +36,4 @@ export const store = configureStore({
     }),
 });
 
-<<<<<<< HEAD
-export const persistor = persistStore(store)
-=======
 export const persistor = persistStore(store);
->>>>>>> feature/work

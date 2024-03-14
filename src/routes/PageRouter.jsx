@@ -14,11 +14,8 @@ import AttendanceWrite from "../components/Board/AttendanceWrite";
 import AttendanceRead from "../components/Board/AttendanceRead";
 import MypageEdit from "../pages/MypageEdit";
 import ProtectedRoute from "./ProtectedRoute";
-<<<<<<< HEAD
-import Chat from "../pages/Chat";
-=======
 import WorkRead from "../pages/WorkRead";
->>>>>>> feature/work
+import Chat from "../pages/Chat";
 
 const router = createBrowserRouter([
   {
@@ -46,7 +43,7 @@ const router = createBrowserRouter([
         element: <AttendanceWrite />,
       },
       {
-        path: 'attendance/read/:attendanceId',
+        path: "attendance/read/:attendanceId",
         element: <AttendanceRead />,
       },
       {
@@ -68,7 +65,7 @@ const router = createBrowserRouter([
       {
         path: "chat",
         element: <Chat />,
-      }
+      },
     ],
   },
   {
