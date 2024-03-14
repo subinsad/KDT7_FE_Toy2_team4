@@ -19,7 +19,9 @@ const Main = () => {
   return (
     <div>
       <Grid $col="2" className="mb3">
-        <Slide />
+        <GridColumnSpan $span="2" data-aos="fade-top" data-aos-delay="200">
+          <Slide />
+        </GridColumnSpan>
         {/* <Card title={"Members"} data-aos="fade-up">
           <Member>
             <strong>12</strong>
@@ -56,12 +58,12 @@ const Main = () => {
             </div>
           </Member>
         </Card> */}
-        <GridColumnSpan data-aos="fade-right" data-aos-delay="800">
+        <GridColumnSpan data-aos="fade-right" data-aos-delay="400">
           <Card title={"Attendance State"}>
             <BoardList state="attendance" />
           </Card>
         </GridColumnSpan>
-        <GridColumnSpan data-aos="fade-left" data-aos-delay="900">
+        <GridColumnSpan data-aos="fade-left" data-aos-delay="600">
           <Work />
         </GridColumnSpan>
       </Grid>
