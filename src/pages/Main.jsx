@@ -7,6 +7,7 @@ import BoardList from "../components/Board/BoardList";
 import Work from "./Work";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import Slide from "../components/Slide";
 
 const Main = () => {
   useEffect(() => {
@@ -17,8 +18,9 @@ const Main = () => {
 
   return (
     <div>
-      <Grid $col="4" className="mb3">
-        <Card title={"Members"} data-aos="fade-up">
+      <Grid $col="2" className="mb3">
+        <Slide />
+        {/* <Card title={"Members"} data-aos="fade-up">
           <Member>
             <strong>12</strong>
             <div>총 직원수</div>
@@ -53,13 +55,13 @@ const Main = () => {
               <TicketDetailed />
             </div>
           </Member>
-        </Card>
-        <GridColumnSpan $span="2" data-aos="fade-right" data-aos-delay="800">
+        </Card> */}
+        <GridColumnSpan data-aos="fade-right" data-aos-delay="800">
           <Card title={"Attendance State"}>
             <BoardList state="attendance" />
           </Card>
         </GridColumnSpan>
-        <GridColumnSpan $span="2" data-aos="fade-left" data-aos-delay="900">
+        <GridColumnSpan data-aos="fade-left" data-aos-delay="900">
           <Work />
         </GridColumnSpan>
       </Grid>

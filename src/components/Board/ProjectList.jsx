@@ -18,7 +18,7 @@ const ProjectList = ({ ...props }) => {
           </tr>
         </thead>
         <tbody>
-          {myProjectInfo.title ? (
+          {myProjectInfo?.title ? (
             <tr>
               <td>{myProjectInfo?.title}</td>
               <td>

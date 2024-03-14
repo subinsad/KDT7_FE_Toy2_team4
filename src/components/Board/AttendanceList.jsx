@@ -28,7 +28,7 @@ const AttendanceList = ({ ...props }) => {
         </thead>
         <tbody>
           {/* 관리자컴포넌트 */}
-          {allAttendance &&
+          {allAttendance ? (
             allAttendance.map((item) => {
               if (isAdmin) {
                 return (
@@ -37,11 +37,17 @@ const AttendanceList = ({ ...props }) => {
                   </tr>
                 );
               }
-            })}
+            })
+          ) : (
+            <tr>
+              <td colSpan="4" style={{ textAlign: "center" }}>
+                접수된 근태 신청이 없습니다.
+              </td>
+            </tr>
+          )}
 
           {/* 사용자컴포넌트 */}
-          {attendance &&
-            attendance.length > 0 &&
+          {attendance && attendance.length > 0 ? (
             attendance.map((item) => {
               if (item.userId === userInfo.uid) {
                 return (
@@ -51,7 +57,14 @@ const AttendanceList = ({ ...props }) => {
                 );
               }
               return null;
-            })}
+            })
+          ) : (
+            <tr>
+              <td colSpan="4" style={{ textAlign: "center" }}>
+                접수된 근태 신청이 없습니다.
+              </td>
+            </tr>
+          )}
         </tbody>
       </Table>
     </>

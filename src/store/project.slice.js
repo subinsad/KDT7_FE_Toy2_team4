@@ -33,6 +33,7 @@ export const projectSlice = createSlice({
   reducers: {
     clearProjectInfo: (state) => {
       state.allProjectInfo = [];
+      state.myProjectInfo = {};
     },
   },
   extraReducers: (builder) => {
