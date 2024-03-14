@@ -14,7 +14,7 @@ const AttendanceList = ({ ...props }) => {
       <Table {...props}>
         <colgroup>
           <col />
-          <col style={{ width: "200px" }} />
+          <col style={{ width: "250px" }} />
           <col style={{ width: "100px" }} />
           <col style={{ width: "100px" }} />
         </colgroup>
@@ -28,23 +28,24 @@ const AttendanceList = ({ ...props }) => {
         </thead>
         <tbody>
           {/* 관리자컴포넌트 */}
-          {allAttendance ? (
-            allAttendance.map((item) => {
-              if (isAdmin) {
-                return (
-                  <tr key={item.id}>
-                    <AttendanceListItem item={item} allAttendance={item.id} />
-                  </tr>
-                );
-              }
-            })
-          ) : (
-            <tr>
-              <td colSpan="4" style={{ textAlign: "center" }}>
-                접수된 근태 신청이 없습니다.
-              </td>
-            </tr>
-          )}
+          {
+            allAttendance &&
+              allAttendance.map((item) => {
+                if (isAdmin) {
+                  return (
+                    <tr key={item.id}>
+                      <AttendanceListItem item={item} allAttendance={item.id} />
+                    </tr>
+                  );
+                }
+              })
+            // ) : (
+            //   <tr>
+            //     <td colSpan="4" style={{ textAlign: "center" }}>
+            //       접수된 근태 신청이 없습니다.
+            //     </td>
+            //   </tr>
+          }
 
           {/* 사용자컴포넌트 */}
           {attendance && attendance.length > 0 ? (
