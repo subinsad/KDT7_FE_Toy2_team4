@@ -1,15 +1,11 @@
-import React from "react";
-import { child, get, getDatabase, onChildAdded, orderByChild, push, query, ref, startAt, update } from "firebase/database";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState, useRef } from "react";
+import { ref, getDatabase, onChildAdded, query, orderByChild, startAt, get } from "firebase/database";
+import { useSelector, useDispatch } from "react-redux";
 import { setChennel } from "../store/chennel.slice";
 import ChatHeader from "../components/chatComponents/ChatHeader";
-import { Divider, Grid, List, Paper } from "@mui/material";
 import ChatInput from "../components/chatComponents/ChatInput";
 import ChatMessage from "../components/chatComponents/ChatMessage";
-import { useRef } from "react";
+import { Divider, Grid, List, Paper } from "@mui/material";
 
 const Chat = () => {
   const { team, uid } = useSelector((state) => state.userSlice.userInfo);
@@ -19,20 +15,34 @@ const Chat = () => {
   const dispatch = useDispatch();
   const messageEndRef = useRef();
 
-  const findAndSetChannel = () => {
-    //해당 유저의 팀과 팀채널을 찾아서 dispatch로 현재 채널을 설정해줌.
-    const foundChannel = channels.find((channel) => channel.name === team);
+  const findAndSetChannel = (channelList) => {
+    const foundChannel = channelList.find((channel) => channel.name === team);
     if (foundChannel) {
-      dispatch(setChennel(foundChannel)); // 선택된 채널을 dispatch
+      dispatch(setChennel(foundChannel));
     }
   };
 
   useEffect(() => {
-    //페이지 마운트 시 채널 전부를 가져와서 모든 채널 정보를 setChannels 해준다
-    const unsubscribe = onChildAdded(ref(getDatabase(), "channels"), (snapshot) => {
+    const channelsRef = ref(getDatabase(), "channels");
+    const unsubscribe = onChildAdded(channelsRef, (snapshot) => {
       const newChannel = snapshot.val();
       setChannels((prevChannels) => [...prevChannels, newChannel]);
+      findAndSetChannel([...channels, newChannel]);
     });
+
+    get(channelsRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const channelData = snapshot.val();
+          const channelList = Object.values(channelData);
+          setChannels(channelList);
+          findAndSetChannel(channelList);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching channels:", error);
+      });
+
     return () => {
       setChannels([]);
       unsubscribe();
@@ -40,27 +50,31 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    findAndSetChannel();
-  }, [channels]);
+    if (currentChennel) {
+      const messagesRef = ref(getDatabase(), "messages/" + currentChennel.id);
+      const unsubscribe = onChildAdded(messagesRef, (snapshot) => {
+        const newMessage = snapshot.val();
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      });
 
-  useEffect(() => {
-    //페이지 마운트 시 기존 채널에 있던 메세지 정보를 들고와서 setMessages 해준다
-    async function getMessages() {
-      const snapShot = await get(child(ref(getDatabase()), "messages/" + currentChennel.id));
-      setMessages(snapShot.val() ? Object.values(snapShot.val()) : []);
+      // 기존 메시지를 가져와서 설정합니다.
+      get(messagesRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const messageData = snapshot.val();
+            const messageList = Object.values(messageData);
+            setMessages(messageList);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching messages:", error);
+        });
+
+      return () => {
+        setMessages([]);
+        unsubscribe();
+      };
     }
-    getMessages();
-    return () => {
-      setMessages([]);
-    };
-  }, [currentChennel]);
-
-  useEffect(() => {
-    const sorted = query(ref(getDatabase(), "messages/" + currentChennel.id), orderByChild("timestamp"));
-    const unsubscribe = onChildAdded(query(sorted, startAt(Date.now())), (snapshot) => setMessages((oldMessages) => [...oldMessages, snapshot.val()]));
-    return () => {
-      unsubscribe?.();
-    };
   }, [currentChennel]);
 
   useEffect(() => {
