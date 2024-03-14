@@ -3,8 +3,8 @@
 - 직원들을 위한 급여 및 업무 관리 플랫폼
 - 직원들의 근무 관리를 위한 여러 기능이 있습니다.
 - 배포링크 : https://test--4uteam.netlify.app/
-- 테스트 아이디 : test11@naver.com
-- 테스트 비밀번호 : test11
+- 테스트 아이디 : test123@naver.com
+- 테스트 비밀번호 : test123
 - 관리자 아이디 : admin@naver.com
 - 관리자 비밀번호 : admin123
 
