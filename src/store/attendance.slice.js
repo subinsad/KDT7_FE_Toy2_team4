@@ -1,15 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { db } from '../firebase';
-import {
-    collection,
-    query,
-    orderBy,
-    limit,
-    getDocs,
-    getDoc,
-} from 'firebase/firestore';
+import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 
-// 글 작성,조회 작성
+// fetchAttendance 액션 생성
 export const fetchAttendance = createAsyncThunk(
     'user/fetchAttendance',
     async (user, thunkAPI) => {
@@ -66,12 +59,17 @@ const initialState = {
     error: '',
 };
 
+// 출석 정보 관련 slice 생성
 export const attendanceSlice = createSlice({
     name: 'attendance',
     initialState,
     reducers: {
         addAttendance: (state, action) => {
             state.attendance = [...state.attendance, action.payload];
+        },
+        clearAttendance: (state) => {
+            state.attendance = []; // 출석 정보 초기화
+            state.error = ''; // 에러 초기화
         },
     },
     extraReducers: (builder) => {
@@ -84,5 +82,9 @@ export const attendanceSlice = createSlice({
             });
     },
 });
-export const { addAttendance } = attendanceSlice.actions;
+
+// 액션 생성자 내보내기
+export const { addAttendance, clearAttendance } = attendanceSlice.actions;
+
+// reducer 내보내기
 export default attendanceSlice.reducer;

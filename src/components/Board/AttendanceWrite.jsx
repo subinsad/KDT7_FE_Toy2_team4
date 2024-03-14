@@ -1,26 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Card from '../Card';
 import { Button, Grid, GridColumnSpan } from '../GlobalStyles';
-import Select from '../Select';
+
 import Input from '../Input';
 import Radio, { RadioGroup } from '../Radio';
 import { useNavigate } from 'react-router-dom';
 import Editor from '../Editor';
 import { attendaceCategory } from '../../data/selectOption';
 
-import useInput from '../../Hooks/useInput';
-
 import { auth, db } from '../../firebase';
 import {
     addDoc,
     collection,
-    getDoc,
     doc,
-    setDoc,
     updateDoc,
     arrayUnion,
 } from '@firebase/firestore';
-import { fetchUserInfo } from '../../store/user.slice';
+
 import { useSelector, useDispatch } from 'react-redux';
 
 import { addAttendance } from '../../store/attendance.slice';
@@ -32,7 +28,7 @@ const AttendanceWrite = () => {
     };
 
     const { userInfo } = useSelector((state) => state.userSlice);
-    const email = useSelector((state) => state.userSlice.userInfo.email);
+
     const dispatch = useDispatch();
 
     const [attendanceData, setAttendanceData] = useState({
@@ -43,9 +39,6 @@ const AttendanceWrite = () => {
         attendanceEnd: '',
     });
 
-    //const title = useInput(''); // input창 입력값 가져오기
-    //const attendanceContext = useInput('');
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === 'title') {
@@ -53,12 +46,14 @@ const AttendanceWrite = () => {
                 ...prevData,
                 [name]: value,
             }));
-        } else if (name === 'attendanceContext') {
-            setAttendanceData((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }));
         }
+    };
+
+    const textChange = (value) => {
+        setAttendanceData((prevData) => ({
+            ...prevData,
+            attendanceContext: value,
+        }));
     };
 
     //라디오체크박스
@@ -82,7 +77,6 @@ const AttendanceWrite = () => {
                 [name]: selectedDate,
             }));
         }
-        console.log(selectedDate); // 선택된 날짜 확인
     };
 
     const handleSubmit = async (e) => {
@@ -90,17 +84,10 @@ const AttendanceWrite = () => {
         const user = auth.currentUser;
         if (!user || attendanceData.title === '') return;
 
-        const attendanceId = Date.now().toString();
-
         try {
-            const userAttendanceRef = collection(
-                db,
-                'users',
-                user.uid,
-                'attendance'
-            );
-            await addDoc(
-                userAttendanceRef,
+            // 파이어베이스에서 생성된 id로 attendanceId 설정
+            const newDocRef = await addDoc(
+                collection(db, 'users', user.uid, 'attendance'),
                 {
                     title: attendanceData.title,
                     attendanceContext: attendanceData.attendanceContext,
@@ -111,11 +98,13 @@ const AttendanceWrite = () => {
                     name: userInfo.name,
                     position: userInfo.position,
                     userId: userInfo.uid,
-                    state: '대기중',
-                    id: attendanceId,
-                },
-                { merge: true }
+                    state: '대기',
+                }
             );
+
+            // attendanceId 설정
+            const attendanceId = newDocRef.id;
+
             dispatch(
                 addAttendance({
                     title: attendanceData.title,
@@ -127,12 +116,12 @@ const AttendanceWrite = () => {
                     name: userInfo.name,
                     position: userInfo.position,
                     userId: userInfo.uid,
-                    state: '대기중',
+                    state: '대기',
                     id: attendanceId,
                 })
             );
 
-            //여기서부터 추가
+            // 여기서부터 추가
             const attendaceDocRef = doc(
                 db,
                 'users',
@@ -140,30 +129,31 @@ const AttendanceWrite = () => {
                 'attendance',
                 'data'
             );
+            try {
+                await updateDoc(attendaceDocRef, {
+                    allAttendanceInfo: arrayUnion({
+                        title: attendanceData.title,
+                        attendanceContext: attendanceData.attendanceContext,
+                        category: attendanceData.category,
+                        attendanceStart: attendanceData.attendanceStart,
+                        attendanceEnd: attendanceData.attendanceEnd,
+                        createdAt: new Date().toLocaleString(),
+                        name: userInfo.name,
+                        position: userInfo.position,
+                        userId: userInfo.uid,
+                        state: '대기',
+                        id: attendanceId,
+                    }),
+                });
+            } catch (error) {
+                console.log('안들어감');
+            }
 
-            await updateDoc(attendaceDocRef, {
-                allAttendanceInfo: arrayUnion({
-                    title: attendanceData.title,
-                    attendanceContext: attendanceData.attendanceContext,
-                    category: attendanceData.category,
-                    attendanceStart: attendanceData.attendanceStart,
-                    attendanceEnd: attendanceData.attendanceEnd,
-                    createdAt: new Date().toLocaleString(),
-                    name: userInfo.name,
-                    position: userInfo.position,
-                    userId: userInfo.uid,
-                    state: '대기중',
-                    id: attendanceId,
-                }),
-            });
+            navigate('/Attendance');
         } catch (error) {
             console.log('onSubmit Error : ', error);
-        } finally {
-            navigate('/Attendance');
         }
-        console.log(userInfo);
     };
-
     return (
         <>
             <Card title={'근태신청'}>
@@ -189,16 +179,7 @@ const AttendanceWrite = () => {
                                 value={userInfo.position}
                             />
                         </div>
-                        <div>
-                            <Input
-                                type="text"
-                                plainText
-                                label="job"
-                                labelText="남은 휴가일수"
-                                readOnly="readonly"
-                                value="8 / 10"
-                            />
-                        </div>
+
                         <RadioGroup title="근태종류">
                             {attendaceCategory.map((item) => {
                                 return (
@@ -220,7 +201,7 @@ const AttendanceWrite = () => {
                                 label="startdate"
                                 labelText="근태 시작일"
                                 name="attendanceStart"
-                                value={attendanceData}
+                                value={attendanceData.attendanceStart}
                                 onChange={(e) =>
                                     handleDate(
                                         'attendanceStart',
@@ -235,7 +216,7 @@ const AttendanceWrite = () => {
                                 label="enddate"
                                 labelText="근태 종료일"
                                 name="attendanceEnd"
-                                value={attendanceData}
+                                value={attendanceData.attendanceEnd}
                                 onChange={(e) =>
                                     handleDate('attendanceEnd', e.target.value)
                                 }
@@ -250,18 +231,13 @@ const AttendanceWrite = () => {
                                     onChange={handleChange}
                                     name="title"
                                 />
-                                {/* 근태내용부분이 안됨*/}
-                                <input
-                                    onChange={handleChange}
-                                    name="attendanceContext"
-                                />
                             </div>
                         </GridColumnSpan>
                         <GridColumnSpan $span="3">
                             <Editor
                                 title="근태내용"
                                 label="attendanceContext"
-                                onChange={handleChange}></Editor>
+                                onChange={textChange}></Editor>
                         </GridColumnSpan>
                     </Grid>
 

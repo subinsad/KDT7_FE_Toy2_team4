@@ -1,15 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Badge, Button } from '../GlobalStyles';
+import { Badge } from '../GlobalStyles';
 
 import { useParams, Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 const AttendanceListItem = ({ item }) => {
-    const [isAdmin, setIsAdmin] = useState(false);
-
     const { attendanceId } = useParams();
-
-    const email = useSelector((state) => state.userSlice.userInfo.email);
 
     //카테고리 색상
     const categoryColor = (category) => {
@@ -41,8 +35,6 @@ const AttendanceListItem = ({ item }) => {
         }
     };
 
-    useEffect(() => {}, []);
-
     return (
         <>
             <td>
@@ -62,16 +54,6 @@ const AttendanceListItem = ({ item }) => {
             </td>
             <td>
                 <Badge $color={stateColor(item.state)}>{item.state}</Badge>
-            </td>
-            <td>
-                {email === 'admin@naver.com' && (
-                    <Button
-                        $color="primary"
-                        $size="xs"
-                        popovertarget="settings">
-                        설정
-                    </Button>
-                )}
             </td>
         </>
     );

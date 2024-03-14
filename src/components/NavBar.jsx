@@ -25,8 +25,9 @@ import Dialog from './Dialog';
 import { Badge, Button } from './GlobalStyles';
 import Card from './Card';
 
-import { workStart, workEnd } from '../store/work.slice';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { clearAttendance } from '../store/attendance.slice';
+import { clearAttendanceState } from '../store/attendanceAdmin.slice';
 
 const NavBarWrap = styled.div`
     position: fixed;
@@ -172,15 +173,9 @@ const AvatarList = styled.div`
 `;
 
 function NavBar() {
-    const [workStartTime, setWorkStartTime] = useState('');
-    const [workEndTime, setWorkEndTime] = useState('');
+    const { userInfo } = useSelector((state) => state.userSlice);
+    const { name, shortInfo, userImg, user } = userInfo;
 
-    const user = useSelector((state) => state.userSlice.userInfo);
-    const { startTime, endTime } = useSelector(
-        (state) => state.workSlice.working
-    );
-
-    const { userImg } = useSelector((state) => state.userSlice.userInfo);
     const dispatch = useDispatch();
 
     const navigate = useNavigation();
@@ -189,70 +184,12 @@ function NavBar() {
             await auth.signOut();
             dispatch(clearUser());
             dispatch(clearSalaryInfo());
+            dispatch(clearAttendance());
+            dispatch(clearAttendanceState());
             navigate('/login');
         } catch (error) {
             console.log('logout error : ', error);
         }
-    };
-
-    const workStart = async (user) => {
-        const today = new Date();
-        const hours = today.getHours().toString().padStart(2, '0');
-        const minutes = today.getMinutes().toString().padStart(2, '0');
-        const formattedTime = `${hours}:${minutes}`;
-        const formattedDate = `${today.getFullYear()}년 ${
-            today.getMonth() + 1
-        }월 ${today.getDate()}일`;
-
-        setWorkStartTime(formattedTime);
-
-        const userDocRef = doc(
-            db,
-            'workingtimeline',
-            user.uid,
-            user.name,
-            formattedDate
-        );
-
-        await setDoc(
-            userDocRef,
-            {
-                startTime: formattedTime,
-            },
-            { merge: true }
-        );
-
-        console.log(user.uid, user.name, formattedDate);
-    };
-
-    const workEnd = async (user) => {
-        const today = new Date();
-        const hours = today.getHours().toString().padStart(2, '0');
-        const minutes = today.getMinutes().toString().padStart(2, '0');
-        const formattedTime = `${hours}:${minutes}`;
-        const formattedDate = `${today.getFullYear()}년 ${
-            today.getMonth() + 1
-        }월 ${today.getDate()}일`;
-
-        setWorkEndTime(formattedTime);
-
-        const userDocRef = doc(
-            db,
-            'workingtimeline',
-            user.uid,
-            user.name,
-            formattedDate
-        );
-
-        await setDoc(
-            userDocRef,
-            {
-                endTime: formattedTime,
-            },
-            { merge: true }
-        );
-
-        console.log(formattedTime);
     };
 
     return (
@@ -310,73 +247,6 @@ function NavBar() {
                             </li>
                         </ul>
                     </AlramList>
-                    {workStartTime === '' && workEndTime === '' && (
-                        <Card>
-                            <Button
-                                $color="primary"
-                                popovertarget="startDialog">
-                                근무시작
-                            </Button>
-                            <Dialog id={'startDialog'}>
-                                근무를 시작하시겠습니까?
-                                <div>
-                                    <Button
-                                        $color="success"
-                                        $size="sm"
-                                        popovertarget="startDialog"
-                                        popovertargetaction="hide"
-                                        className="mr2"
-                                        onClick={() => {
-                                            workStart(user);
-                                        }}>
-                                        확인
-                                    </Button>
-                                    <Button
-                                        $color="secondary"
-                                        $size="sm"
-                                        popovertarget="startDialog"
-                                        popovertargetaction="hide">
-                                        취소
-                                    </Button>
-                                </div>
-                            </Dialog>
-                        </Card>
-                    )}
-                    {workStartTime !== '' && workEndTime === '' && (
-                        <Card>
-                            <Button $color="primary" popovertarget="endDialog">
-                                근무종료
-                            </Button>
-                            <Dialog id={'endDialog'}>
-                                근무를 종료하시겠습니까?
-                                <div>
-                                    <Button
-                                        $color="success"
-                                        $size="sm"
-                                        popovertarget="endDialog"
-                                        popovertargetaction="hide"
-                                        className="mr2"
-                                        onClick={() => {
-                                            workEnd(user);
-                                        }}>
-                                        확인
-                                    </Button>
-                                    <Button
-                                        $color="secondary"
-                                        $size="sm"
-                                        popovertarget="endDialog"
-                                        popovertargetaction="hide">
-                                        취소
-                                    </Button>
-                                </div>
-                            </Dialog>
-                        </Card>
-                    )}
-                    {/* 근무시작은 하루에 1개, 근무종료하면 보여지는 ui */}
-                    {workStartTime !== '' && workEndTime !== '' && (
-                        <Badge $color="secondary">근무종료</Badge>
-                    )}
-
                     <Avatar src={userImg} popovertarget="avatar" />
                     <AvatarList popover="auto" id="avatar">
                         <ul>
