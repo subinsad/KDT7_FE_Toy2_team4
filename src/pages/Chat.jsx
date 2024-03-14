@@ -57,7 +57,7 @@ const ChatWrapper = styled.div`
             border-color: transparent transparent transparent var(--secondaryLabel);
             border-style: solid;
           }
-          &:has(span[class*="css-1mo9ecu"]) {
+          &:has(.me) {
             justify-self: end;
             &::after {
               left: inherit;

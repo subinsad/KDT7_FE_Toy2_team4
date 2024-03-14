@@ -48,24 +48,27 @@ const AttendanceList = ({ ...props }) => {
           }
 
           {/* 사용자컴포넌트 */}
-          {attendance && attendance.length > 0 ? (
-            attendance.map((item) => {
-              if (item.userId === userInfo.uid) {
-                return (
-                  <tr key={item.id}>
-                    <AttendanceListItem item={item} attendanceId={item.id} attendance={attendance} />
-                  </tr>
-                );
-              }
-              return null;
-            })
-          ) : (
-            <tr>
-              <td colSpan="4" style={{ textAlign: "center" }}>
-                접수된 근태 신청이 없습니다.
-              </td>
-            </tr>
-          )}
+          {
+            attendance &&
+              attendance.length > 0 &&
+              attendance.map((item) => {
+                if (item.userId === userInfo.uid) {
+                  return (
+                    <tr key={item.id}>
+                      <AttendanceListItem item={item} attendanceId={item.id} attendance={attendance} />
+                    </tr>
+                  );
+                }
+                return null;
+              })
+            // ) : (
+            //   <tr>
+            //     <td colSpan="4" style={{ textAlign: "center" }}>
+            //       접수된 근태 신청이 없습니다.
+            //     </td>
+            //   </tr>
+            // )
+          }
         </tbody>
       </Table>
     </>
