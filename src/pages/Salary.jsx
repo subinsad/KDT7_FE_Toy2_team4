@@ -9,6 +9,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Alert from "../components/Alert";
 import { Check } from "react-bootstrap-icons";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 export const Member = styled.div`
   strong {
@@ -57,13 +59,16 @@ export const Member = styled.div`
 `;
 
 const Salary = () => {
-  const { allSalaryInfo, allUserInfo } = useSelector((state) => state.salaryAdminSlice)
+  const { allSalaryInfo, allUserInfo } = useSelector((state) => state.salaryAdminSlice);
   const [showDialog, setShowDialog] = useState(false);
   const totalSalary = allSalaryInfo?.reduce((a, currentItem) => {
     return a + parseInt(currentItem.salary, 10);
   }, 0);
 
   useEffect(() => {
+    Aos.init({
+      duration: 500,
+    });
     const timer = setTimeout(() => {
       setShowDialog(false);
     }, 5000);
@@ -72,8 +77,8 @@ const Salary = () => {
   }, [showDialog]);
   return (
     <div>
-      <Grid $col="4" className="mb3">
-        <Card title={"Members"}>
+      <Grid $col="4" className="mb3" data-aos="fade-up">
+        <Card title={"Members"} data-aos="fade-up" data-aos-delay="200">
           <Member>
             <strong>{allUserInfo?.length}</strong>
             <div>총 직원수</div>
@@ -82,7 +87,7 @@ const Salary = () => {
             </div>
           </Member>
         </Card>
-        <Card title={"Expenditure Salary"}>
+        <Card title={"Expenditure Salary"} data-aos="fade-up" data-aos-delay="400">
           <Member>
             {totalSalary ? <strong>{totalSalary.toLocaleString()}원</strong> : <strong>0원</strong>}
             <div>이번 달 지출 급여</div>
@@ -91,7 +96,7 @@ const Salary = () => {
             </div>
           </Member>
         </Card>
-        <Card title={"Request Attendance"}>
+        <Card title={"Request Attendance"} data-aos="fade-up" data-aos-delay="600">
           <Member>
             <strong>5</strong>
             <div>근태 신청자수</div>
@@ -100,7 +105,7 @@ const Salary = () => {
             </div>
           </Member>
         </Card>
-        <Card title={"Ongoing Project"}>
+        <Card title={"Ongoing Project"} data-aos="fade-up" data-aos-delay="800">
           <Member>
             <strong>10</strong>
             <div>진행중인 프로젝트 수</div>
@@ -115,7 +120,7 @@ const Salary = () => {
           <Check />
         </Alert>
       )}
-      <Card title={"Member Salary List"}>
+      <Card title={"Member Salary List"} data-aos="fade-up" data-aos-delay="1000">
         <BoardList state={"salary"} setShowDialog={setShowDialog} />
       </Card>
     </div>

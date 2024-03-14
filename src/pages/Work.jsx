@@ -7,6 +7,8 @@ import WorkWrite from "./WorkWrite";
 import WorkRead from "./WorkRead";
 import { Badge } from "../components/GlobalStyles";
 import { useSelector } from "react-redux";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 const CalendarWrap = styled(Card)`
   overflow: hidden;
@@ -169,6 +171,10 @@ const Work = () => {
   const { allProjectInfo } = useSelector((state) => state.projectSlice);
 
   useEffect(() => {
+    Aos.init({
+      duration: 500,
+    });
+
     const customButtons = {};
     const calendarEl = document.querySelector(".calendar");
     const calendar = new Calendar(calendarEl, {
@@ -246,14 +252,20 @@ const Work = () => {
 
   return (
     <>
-      <Card className={"mb3 "} title={"Work Management"}>
+      <Card className={"mb3 "} title={"Work Management"} data-aos="fade-in" data-aos-delay="200">
         <BadgeList>
-          <Badge $color="primary">대기중 프로젝트</Badge>
-          <Badge $color="success">진행중 프로젝트</Badge>
-          <Badge $color="danger">완료 프로젝트</Badge>
+          <Badge data-aos="fade-left" data-aos-delay="400" $color="primary">
+            대기중 프로젝트
+          </Badge>
+          <Badge data-aos="fade-left" data-aos-delay="600" $color="success">
+            진행중 프로젝트
+          </Badge>
+          <Badge data-aos="fade-left" data-aos-delay="800" $color="danger">
+            완료 프로젝트
+          </Badge>
         </BadgeList>
       </Card>
-      <CalendarWrap>
+      <CalendarWrap data-aos="fade-up" data-aos-delay="1000">
         <div ref={calendarRef} className="calendar"></div>
       </CalendarWrap>
       <WorkWrite id={"aa"} />

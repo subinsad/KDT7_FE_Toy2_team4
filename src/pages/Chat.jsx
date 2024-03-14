@@ -8,6 +8,8 @@ import ChatMessage from "../components/chatComponents/ChatMessage";
 import { Divider, Grid, List, Paper } from "@mui/material";
 import Card from "../components/Card";
 import styled from "styled-components";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 const ChatWrapper = styled.div`
   .chat {
@@ -89,6 +91,9 @@ const Chat = () => {
   };
 
   useEffect(() => {
+    Aos.init({
+      duration: 500,
+    });
     const channelsRef = ref(getDatabase(), "channels");
     const unsubscribe = onChildAdded(channelsRef, (snapshot) => {
       const newChannel = snapshot.val();

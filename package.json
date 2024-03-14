@@ -10,10 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "@fullcalendar/core": "^6.1.11",
     "@fullcalendar/daygrid": "^6.1.11",
+    "@mui/icons-material": "^5.15.10",
+    "@mui/lab": "^5.0.0-alpha.165",
+    "@mui/material": "^5.15.10",
     "@redux-devtools/extension": "^3.3.0",
     "@reduxjs/toolkit": "^2.2.1",
+    "aos": "^2.3.4",
+    "dayjs": "^1.11.10",
     "firebase": "^10.8.1",
     "momnet": "^2.29.1",
     "react": "^18.2.0",
@@ -25,13 +32,7 @@
     "redux-persist": "^6.0.0",
     "styled-components": "^6.1.8",
     "styled-reset": "^4.5.2",
-    "uuid": "^9.0.1",
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.10",
-    "@mui/lab": "^5.0.0-alpha.165",
-    "@mui/material": "^5.15.10",
-    "dayjs": "^1.11.10"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",

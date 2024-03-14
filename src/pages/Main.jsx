@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, GridColumnSpan } from "../components/GlobalStyles";
 import Card from "../components/Card";
 import { ArrowRightSquare, Coin, PersonAdd, TicketDetailed, TicketPerforated } from "react-bootstrap-icons";
 import { Member } from "./Salary";
 import BoardList from "../components/Board/BoardList";
 import Work from "./Work";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 const Main = () => {
+  useEffect(() => {
+    Aos.init({
+      duration: 500,
+    });
+  }, []);
+
   return (
     <div>
       <Grid $col="4" className="mb3">
-        <Card title={"Members"}>
+        <Card title={"Members"} data-aos="fade-up">
           <Member>
             <strong>12</strong>
             <div>총 직원수</div>
@@ -19,7 +27,7 @@ const Main = () => {
             </div>
           </Member>
         </Card>
-        <Card title={"Request Attendance"}>
+        <Card title={"Request Attendance"} data-aos="fade-up" data-aos-delay="200">
           <Member>
             <strong>5</strong>
             <div>근태 신청자수</div>
@@ -28,7 +36,7 @@ const Main = () => {
             </div>
           </Member>
         </Card>
-        <Card title={"Ongoing Project"}>
+        <Card title={"Ongoing Project"} data-aos="fade-up" data-aos-delay="400">
           <Member>
             <strong>10</strong>
             <div>진행중인 프로젝트 수</div>
@@ -37,7 +45,7 @@ const Main = () => {
             </div>
           </Member>
         </Card>
-        <Card title={"OnReady Project"}>
+        <Card title={"OnReady Project"} data-aos="fade-up" data-aos-delay="600">
           <Member>
             <strong>152</strong>
             <div>대기중인 프로젝트 수</div>
@@ -46,12 +54,12 @@ const Main = () => {
             </div>
           </Member>
         </Card>
-        <GridColumnSpan $span="2">
+        <GridColumnSpan $span="2" data-aos="fade-right" data-aos-delay="800">
           <Card title={"Attendance State"}>
             <BoardList state="attendance" />
           </Card>
         </GridColumnSpan>
-        <GridColumnSpan $span="2">
+        <GridColumnSpan $span="2" data-aos="fade-left" data-aos-delay="900">
           <Work />
         </GridColumnSpan>
       </Grid>

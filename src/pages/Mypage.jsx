@@ -8,7 +8,9 @@ import { BarChart, Calendar2, CardList, Mailbox, MailboxFlag, People, Person, Pe
 import bg from "../assets/bg_profile.png";
 import MypageHeader from "./MypageHeader";
 import { useSelector } from "react-redux";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 const MypageWrap = styled.div`
   display: grid;
@@ -92,13 +94,18 @@ function Mypage() {
   }, [baseSalary, bonusSalary, SpecialSalary]);
 
   const { insurance, tax, sum } = calTax;
+  useEffect(() => {
+    Aos.init({
+      duration: 500,
+    });
+  }, []);
 
   return (
     <>
       <MypageWrap>
-        <MypageHeader />
+        <MypageHeader data-aos="fade-down" />
         <Left>
-          <Card className="person-info" title={"Details"}>
+          <Card className="person-info" title={"Details"} data-aos="fade-right" data-aos-delay="200">
             {/* <strong className="person-info__title">Details</strong> */}
             <PersonalInfoList>
               <li>
@@ -162,7 +169,7 @@ function Mypage() {
           </Card> */}
 
           {!isAdmin && (
-            <Card title={"이달의 급여"}>
+            <Card title={"이달의 급여"} data-aos="fade-right" data-aos-delay="400">
               <ThisMonthSalary>
                 ₩{sum ? sum.toLocaleString() : 0}
                 <span>원</span>
@@ -189,10 +196,10 @@ function Mypage() {
           )}
         </Left>
         <Right>
-          <Card title={"My Project State"}>
+          <Card title={"My Project State"} data-aos="fade-left" data-aos-delay="400">
             <BoardList state={"project"} />
           </Card>
-          <Card title={"My Attendance State"}>
+          <Card title={"My Attendance State"} data-aos="fade-left" data-aos-delay="600">
             <BoardList state="attendance" />
           </Card>
         </Right>
