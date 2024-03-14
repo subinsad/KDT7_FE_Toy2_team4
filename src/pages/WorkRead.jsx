@@ -11,9 +11,10 @@ import { userIsAdmin } from "../store/user.slice";
 import { useDispatch, useSelector } from "react-redux";
 import Avatar, { AvatarGroup } from "../components/Avatar";
 import Radio from "../components/Radio";
-import { collection, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { fetchProject } from "../store/project.slice";
 import { clearUser } from "../store/projectUser.slice";
+import Loading from "../components/Loading";
 
 const Popup = styled.div`
   overflow: visible;
@@ -75,6 +76,7 @@ const WorkRead = ({ id, isData, ...props }) => {
   const { allProjectInfo } = useSelector((state) => state.projectSlice);
   const PopoverRef = useRef(null);
   const [isColor, setIsColor] = useState("진행중", "success");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { title, startDay, endDay, projectMembers, description, ingState, isClass, publicId, backgroundColor, textColor } = isData;
 
@@ -175,6 +177,7 @@ const WorkRead = ({ id, isData, ...props }) => {
   const handleUpdate = async (e) => {
     //외부파일.js
     e.preventDefault();
+    setIsLoading(true);
 
     const title = info.title;
     const start = info.start;
@@ -225,103 +228,132 @@ const WorkRead = ({ id, isData, ...props }) => {
     } catch (error) {
       console.log(error);
     } finally {
-      console.log("완료");
+      setIsLoading(false);
+      console.log("수정완료");
       handleClose();
       setIsModify(!isModify);
     }
   };
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const projectId = isData.publicId;
+      const projectDocRef = doc(db, "project", projectId);
+
+      await deleteDoc(projectDocRef);
+
+      dispatch(fetchProject());
+      handleClose();
+
+      console.log("프로젝트가 삭제되었습니다.");
+    } catch (error) {
+      console.error("Error deleting project: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <Popup popover="auto" id={id} {...props} ref={PopoverRef}>
-      <PopupHeader>
-        <Heading size="xs">프로젝트{!isModify ? " 상세보기" : " 수정"}</Heading>
-        <Close popovertargetaction="hide" popovertarget={id}>
-          <X />
-        </Close>
-      </PopupHeader>
-      {!isModify ? (
-        // 상세보기
-        <PopupContent>
-          <div className="mb2">
-            <Input type="text" plainText label="project1" labelText="프로젝트명" readOnly="readonly" value={title} />
-          </div>
-          <div className="mb2">
-            <Input type="text" label="project2" labelText="프로젝트 시작일" plainText readOnly="readonly" value={startDay} />
-          </div>
-          <div className="mb2">
-            <Input type="text" label="project3" labelText="프로젝트 종료일" plainText readOnly="readonly" value={endDay} />
-          </div>
-          <div className="mb2">
-            <Label style={{ marginBottom: "0.5rem" }}>프로젝트 참여 멤버</Label>
-            <AvatarGroup>
-              {Object.keys(isData).length &&
-                projectMembers?.map((user) => {
-                  return <Avatar src={user.userImg} name={user.name} key={user.uid} />;
-                })}
-            </AvatarGroup>
-          </div>
-          <div className="mb2">
-            <Label style={{ marginBottom: "0.5rem" }}>프로젝트 상태</Label>
-            <div style={{ paddingBottom: "0.5rem" }}>
-              <Badge $color={info.badgeClass}>{info.ing}</Badge>
+    <>
+      {isLoading && <Loading />}
+      <Popup popover="auto" id={id} {...props} ref={PopoverRef}>
+        <PopupHeader>
+          <Heading size="xs">프로젝트{!isModify ? " 상세보기" : " 수정"}</Heading>
+          <Close popovertargetaction="hide" popovertarget={id}>
+            <X />
+          </Close>
+        </PopupHeader>
+        {!isModify ? (
+          // 상세보기
+          <PopupContent>
+            <div className="mb2">
+              <Input type="text" plainText label="project1" labelText="프로젝트명" readOnly="readonly" value={title} />
             </div>
-          </div>
-          <Label style={{ marginBottom: "-0.5rem" }}>프로젝트 정보</Label>
-          {Object.keys(isData).length && <div dangerouslySetInnerHTML={{ __html: description }} />}
-          <div>
-            {isAdmin && (
-              <Button $color="primary" className="mr2" onClick={handleModify}>
-                Modify
-              </Button>
-            )}
-            <Button $color="secondary" onClick={handleClose}>
-              Close
-            </Button>
-          </div>
-        </PopupContent>
-      ) : (
-        // 수정하기
-        <PopupContent>
-          <div className="mb2">
-            <Input type="text" label="project1" labelText="프로젝트명" value={info.title} onChange={onTitle} />
-          </div>
-          <div className="mb2">
-            <Input type="date" label="project2" labelText="프로젝트 시작일" value={info.start} onChange={onStart} />
-          </div>
-          <div className="mb2">
-            <Input type="date" label="project3" labelText="프로젝트 종료일" value={info.end} onChange={onEnd} />
-          </div>
-          <div className="mb2">
-            <SelectDetail options="user" label="project4" labelText="프로젝트 참여 멤버" />
-          </div>
-          <div className="mb2">
-            <Label style={{ marginBottom: "0.5rem" }}>진행현황</Label>
+            <div className="mb2">
+              <Input type="text" label="project2" labelText="프로젝트 시작일" plainText readOnly="readonly" value={startDay} />
+            </div>
+            <div className="mb2">
+              <Input type="text" label="project3" labelText="프로젝트 종료일" plainText readOnly="readonly" value={endDay} />
+            </div>
+            <div className="mb2">
+              <Label style={{ marginBottom: "0.5rem" }}>프로젝트 참여 멤버</Label>
+              <AvatarGroup>
+                {Object.keys(isData).length &&
+                  projectMembers?.map((user) => {
+                    return <Avatar src={user.userImg} name={user.name} key={user.uid} />;
+                  })}
+              </AvatarGroup>
+            </div>
+            <div className="mb2">
+              <Label style={{ marginBottom: "0.5rem" }}>프로젝트 상태</Label>
+              <div style={{ paddingBottom: "0.5rem" }}>
+                <Badge $color={info.badgeClass}>{info.ing}</Badge>
+              </div>
+            </div>
+            <Label style={{ marginBottom: "-0.5rem" }}>프로젝트 정보</Label>
+            {Object.keys(isData).length && <div dangerouslySetInnerHTML={{ __html: description }} />}
             <div>
-              <Radio value="진행중" id="ra10_1" name="rag2" color="success" onChange={() => handleRadio("진행중")} checked={radioValue === "진행중"} />
-              <Radio value="대기중" id="ra10_2" name="rag2" color="primary" onChange={() => handleRadio("대기중")} checked={radioValue === "대기중"} />
-              <Radio value="완료" id="ra10_3" name="rag2" color="danger" onChange={() => handleRadio("완료")} checked={radioValue === "완료"} />
-            </div>
-          </div>
-          <div>
-            <Editor title="프로젝트 상세정보" valueData={description} onChange={onDetail}></Editor>
-            {/* <div dangerouslySetInnerHTML={{ __html: extendedProps.description }} /> */}
-          </div>
-          <div>
-            {isAdmin && (
-              <Button $color="primary" className="mr2" onClick={handleUpdate}>
-                Modify
+              {isAdmin && (
+                <>
+                  <Button $color="primary" className="mr2" onClick={handleModify}>
+                    Modify
+                  </Button>
+                  <Button $color="danger" className="mr2" onClick={handleDelete}>
+                    Delete
+                  </Button>
+                </>
+              )}
+              <Button $color="secondary" onClick={handleClose}>
+                Close
               </Button>
-            )}
-            <Button $color="danger" className="mr2" onClick={handleModify}>
-              Cancel
-            </Button>
-            <Button $color="secondary" onClick={handleClose}>
-              Close
-            </Button>
-          </div>
-        </PopupContent>
-      )}
-    </Popup>
+            </div>
+          </PopupContent>
+        ) : (
+          // 수정하기
+          <PopupContent>
+            <div className="mb2">
+              <Input type="text" label="project1" labelText="프로젝트명" value={info.title} onChange={onTitle} />
+            </div>
+            <div className="mb2">
+              <Input type="date" label="project2" labelText="프로젝트 시작일" value={info.start} onChange={onStart} />
+            </div>
+            <div className="mb2">
+              <Input type="date" label="project3" labelText="프로젝트 종료일" value={info.end} onChange={onEnd} />
+            </div>
+            <div className="mb2">
+              <SelectDetail options="user" label="project4" labelText="프로젝트 참여 멤버" />
+            </div>
+            <div className="mb2">
+              <Label style={{ marginBottom: "0.5rem" }}>진행현황</Label>
+              <div>
+                <Radio value="진행중" id="ra10_1" name="rag2" color="success" onChange={() => handleRadio("진행중")} checked={radioValue === "진행중"} />
+                <Radio value="대기중" id="ra10_2" name="rag2" color="primary" onChange={() => handleRadio("대기중")} checked={radioValue === "대기중"} />
+                <Radio value="완료" id="ra10_3" name="rag2" color="danger" onChange={() => handleRadio("완료")} checked={radioValue === "완료"} />
+              </div>
+            </div>
+            <div>
+              <Editor title="프로젝트 상세정보" valueData={description} onChange={onDetail}></Editor>
+              {/* <div dangerouslySetInnerHTML={{ __html: extendedProps.description }} /> */}
+            </div>
+            <div>
+              {isAdmin && (
+                <Button $color="primary" className="mr2" onClick={handleUpdate}>
+                  Modify
+                </Button>
+              )}
+              <Button $color="danger" className="mr2" onClick={handleModify}>
+                Cancel
+              </Button>
+              <Button $color="secondary" onClick={handleClose}>
+                Close
+              </Button>
+            </div>
+          </PopupContent>
+        )}
+      </Popup>
+    </>
   );
 };
 
