@@ -169,7 +169,7 @@ function NavBar() {
     <>
       <NavBarWrap>
         <nav className="navbar__wrap">
-          <Alrams popovertarget="alram">
+          {/* <Alrams popovertarget="alram">
             <Bell />
             <span>5</span>
           </Alrams>
@@ -219,7 +219,7 @@ function NavBar() {
                 </button>
               </li>
             </ul>
-          </AlramList>
+          </AlramList> */}
           <Avatar src={userImg} popovertarget="avatar" as="button" />
           <AvatarList popover="auto" id="avatar">
             <ul>

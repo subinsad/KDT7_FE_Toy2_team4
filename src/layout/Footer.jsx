@@ -47,7 +47,9 @@ function Footer() {
               <Link to={"/styleguide"}>StyleGuide</Link>
             </FooterNavItem>
             <FooterNavItem>
-              <Link to={"/"}>Github</Link>
+              <Link to={"https://github.com/subinsad/KDT7_FE_Toy2_team4"} target="_blank">
+                Github
+              </Link>
             </FooterNavItem>
           </FooterNav>
         </nav>

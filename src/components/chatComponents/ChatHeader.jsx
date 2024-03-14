@@ -1,15 +1,14 @@
-import React from 'react'
+import React from "react";
 import { CardContent, Grid, Paper, Typography } from "@mui/material";
+import Card from "../Card";
 
 const ChatHeader = ({ currentChennel }) => {
-    return (
-        <Grid container component={Paper} variant="outlined">
-            <CardContent>
-                <Typography variant="h5"># {currentChennel?.name}</Typography>
-                <Typography variant="body1"># {currentChennel?.details}</Typography>
-            </CardContent>
-        </Grid>
-    )
-}
+  return (
+    <Card container component={Paper} variant="outlined" title={`${currentChennel?.name} 채널`}>
+      {/* <Typography variant="body1"># {currentChennel?.details}</Typography> */}
+      바른말 고운말을 지킵시다.
+    </Card>
+  );
+};
 
-export default ChatHeader
+export default ChatHeader;

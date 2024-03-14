@@ -1,8 +1,9 @@
-import { BoxArrowInRight, Gear, Memory, Motherboard, PersonBoundingBox, PersonUp, PersonWorkspace, SegmentedNav, Stripe, Wallet } from "react-bootstrap-icons";
+import { Gear, Motherboard, PersonUp, PersonWorkspace, Wallet } from "react-bootstrap-icons";
 import { Link, useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
 import Heading from "../components/Heading";
 import { useSelector } from "react-redux";
+import { ChatOutlined } from "@mui/icons-material";
 const AsideNav = styled.aside`
   position: fixed;
   left: 0;
@@ -76,8 +77,7 @@ const NavItem = styled.li`
 `;
 function Gnb() {
   const location = useLocation();
-  const { isAdmin } = useSelector((state) => state.userSlice)
-
+  const { isAdmin } = useSelector((state) => state.userSlice);
 
   return (
     <>
@@ -114,29 +114,27 @@ function Gnb() {
           </NavItem>
           <NavItem $active={location.pathname.includes("/chat")}>
             <Link to="/chat">
-              <PersonUp /> Chat
+              <ChatOutlined /> Chat
             </Link>
           </NavItem>
 
-          {isAdmin &&
-            (<NavItem $active={location.pathname.includes("/salary")}>
+          {isAdmin && (
+            <NavItem $active={location.pathname.includes("/salary")}>
               <Link to="/salaryAdmin">
                 <Wallet /> Salary
               </Link>
-            </NavItem>)}
-
+            </NavItem>
+          )}
         </ul>
         <Heading size={"xs"} tag={"h3"}>
           PERSONAL
         </Heading>
         <ul>
-
           <NavItem $active={location.pathname.includes("/mypage")}>
             <Link to="mypage">
               <Gear /> Mypage
             </Link>
           </NavItem>
-
         </ul>
       </AsideNav>
     </>

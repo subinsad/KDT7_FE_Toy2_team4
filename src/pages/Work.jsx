@@ -46,26 +46,6 @@ const CalendarWrap = styled(Card)`
     .fc-h-event {
       padding: 0.216rem 0.5rem;
       font-size: 0.8125rem;
-      /* &[style*="255, 241, 227"] {
-        div {
-          color: var(--warning) !important;
-        }
-      }
-      &[style*="223, 247, 233"] {
-        div {
-          color: var(--success) !important;
-        }
-      }
-      &[style*="217, 248, 252"] {
-        div {
-          color: var(--info) !important;
-        }
-      }
-      &[style*="234, 232, 253"] {
-        div {
-          color: var(--primary) !important;
-        }
-      } */
     }
     .fc-button {
       padding: 0;
@@ -188,7 +168,6 @@ const Work = () => {
   const { isAdmin } = useSelector((state) => state.userSlice);
   const { allProjectInfo } = useSelector((state) => state.projectSlice);
 
-  // const { title, start, end, extendedProps, member } = allProjects;
   useEffect(() => {
     const customButtons = {};
     const calendarEl = document.querySelector(".calendar");
@@ -251,7 +230,7 @@ const Work = () => {
           isIng = "완료";
           isClass = "danger";
         }
-        console.log(info.event);
+        // console.log(info.event);
         setViewProject({ title, startDay, endDay, ingState: isIng, isClass, backgroundColor, textColor, description, projectMembers, publicId });
       },
     });

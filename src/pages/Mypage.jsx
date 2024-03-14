@@ -134,7 +134,7 @@ function Mypage() {
             </PersonalInfoList>
           </Card>
 
-          <Card title={"근무일 및 휴가"}>
+          {/* <Card title={"근무일 및 휴가"}>
             <Grid $col="2">
               <PersonalInfoList>
                 <li>
@@ -159,7 +159,7 @@ function Mypage() {
                 </li>
               </PersonalInfoList>
             </Grid>
-          </Card>
+          </Card> */}
 
           {!isAdmin && (
             <Card title={"이달의 급여"}>

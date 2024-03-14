@@ -4,14 +4,13 @@ import { X } from "react-bootstrap-icons";
 import styled from "styled-components";
 import Input, { Label } from "../components/Input";
 import Editor from "../components/Editor";
-import { Badge, Button, Grid, GridColumnSpan } from "../components/GlobalStyles";
+import { Badge, Button } from "../components/GlobalStyles";
 import SelectDetail from "../components/SelectCustom";
-import { auth, db } from "../firebase";
-import { userIsAdmin } from "../store/user.slice";
+import { db } from "../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import Avatar, { AvatarGroup } from "../components/Avatar";
 import Radio from "../components/Radio";
-import { collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { fetchProject } from "../store/project.slice";
 import { clearUser } from "../store/projectUser.slice";
 import Loading from "../components/Loading";
@@ -95,8 +94,6 @@ const WorkRead = ({ id, isData, ...props }) => {
       badgeClass: isClass,
     }));
   }, [isData]);
-
-  console.log(info);
 
   // if (color === "#dff7e9") {
   //   setIsColor("진행중", "success");
@@ -229,7 +226,6 @@ const WorkRead = ({ id, isData, ...props }) => {
       console.log(error);
     } finally {
       setIsLoading(false);
-      console.log("수정완료");
       handleClose();
       setIsModify(!isModify);
     }
@@ -247,7 +243,7 @@ const WorkRead = ({ id, isData, ...props }) => {
       dispatch(fetchProject());
       handleClose();
 
-      console.log("프로젝트가 삭제되었습니다.");
+      // console.log("프로젝트가 삭제되었습니다.");
     } catch (error) {
       console.error("Error deleting project: ", error);
     } finally {

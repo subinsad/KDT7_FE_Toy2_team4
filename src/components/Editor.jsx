@@ -115,20 +115,20 @@ function Editor({ title, children, onChange, valueData, ...props }) {
       <EditorWrap {...props}>
         <Toolbar>
           {fontSizeOptions.map((size) => (
-            <button key={size} className={`font${size}`} onClick={() => changeFontSize(size)}>
+            <button type="button" key={size} className={`font${size}`} onClick={() => changeFontSize(size)}>
               {size}
             </button>
           ))}
-          <button className="bold" onClick={makeBold}>
+          <button type="button" className="bold" onClick={makeBold}>
             B
           </button>
-          <button className="itelic" onClick={makeItelic}>
+          <button type="button" className="itelic" onClick={makeItelic}>
             I
           </button>
-          <button className="underline" onClick={makeUnderline}>
+          <button type="button" className="underline" onClick={makeUnderline}>
             U
           </button>
-          <button className="strike" onClick={makeStrike}>
+          <button type="button" className="strike" onClick={makeStrike}>
             S
           </button>
           {/* <input type="color" className="color" value="A" />

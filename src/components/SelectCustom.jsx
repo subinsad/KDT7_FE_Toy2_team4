@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import Avatar from "./Avatar";
 import Alert from "./Alert";
 import SelectUserItem from "./SelectUserItem";
 import { useDispatch, useSelector } from "react-redux";
@@ -135,8 +134,6 @@ const SelectCustom = ({ option, labelText, onSelected, isMembers, onMemberTagCha
   const memberRef = useRef(null);
   const [isList, setIsList] = useState(false);
   const [isValue, setIsValue] = useState("진행현황 선택");
-  const [isUser, setIsUser] = useState({});
-  const [tagVisible, setTagVisible] = useState([]);
   const listRef = useRef(null);
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.projectUserSlice);
@@ -175,9 +172,6 @@ const SelectCustom = ({ option, labelText, onSelected, isMembers, onMemberTagCha
     };
     dispatch(addUser(data));
     setIsList(false);
-
-    // const updatedTagVisible = [...tagVisible, { team, name, uid }];
-    // setIsUser(updatedTagVisible);
   };
 
   const handleOnClick = (uid) => {

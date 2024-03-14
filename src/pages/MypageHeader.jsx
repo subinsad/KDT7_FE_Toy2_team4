@@ -53,9 +53,13 @@ const Header = styled.div`
     }
   }
 `;
+const ShortInfo = styled.span`
+  font-size: 0.8rem;
+  color: var(--secondary);
+`;
 
 function MypageHeader({ ...props }) {
-  const { userImg, userBg, name, team, joinYear, joinMonth } = useSelector((state) => state.userSlice.userInfo)
+  const { userImg, userBg, name, team, joinYear, joinMonth, shortInfo } = useSelector((state) => state.userSlice.userInfo);
   const navigate = useNavigate();
   const handleEdit = () => {
     navigate("/mypage/edit");
@@ -64,12 +68,14 @@ function MypageHeader({ ...props }) {
     <>
       <Header {...props}>
         <Card>
-          <div className="personal-bg" style={{ maxWidth: '1500px', maxHeight: '228px' }}>
+          <div className="personal-bg" style={{ maxWidth: "1500px", maxHeight: "228px" }}>
             <img src={userBg} alt="" />
           </div>
           <div className="personal-info">
-            <Avatar src={userImg} style={{ maxWidth: '150px', maxHeight: '150px', cursor: 'default', borderRadius: '50%' }} />
-            <p>{name}</p>
+            <Avatar src={userImg} style={{ maxWidth: "150px", maxHeight: "150px", cursor: "default", borderRadius: "50%" }} />
+            <p>
+              {name} <ShortInfo>{shortInfo}</ShortInfo>
+            </p>
             <ul>
               <li>
                 <PersonBadge /> 소속팀 : {team}
@@ -78,12 +84,12 @@ function MypageHeader({ ...props }) {
                 <Calendar2 /> 입사일 : {joinYear}년 {joinMonth}월
               </li>
               {/* 근무 상태 변경 필요 */}
-              <li>
+              {/* <li>
                 <PersonWorkspace /> 상태 :
                 <Badge $color="success" $size="xs">
                   근무중
                 </Badge>
-              </li>
+              </li> */}
             </ul>
             <Button $color="primary" onClick={handleEdit}>
               회원정보수정

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Heading from "../components/Heading";
 import { X } from "react-bootstrap-icons";
 import styled from "styled-components";
@@ -6,7 +6,7 @@ import Input from "../components/Input";
 import Editor from "../components/Editor";
 import { Button, FormText } from "../components/GlobalStyles";
 import SelectDetail from "../components/SelectCustom";
-import { auth, db } from "../firebase";
+import { db } from "../firebase";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../store/projectUser.slice";
@@ -90,15 +90,6 @@ const WorkWrite = ({ id, getData, ...props }) => {
     setInfo({ ...info, description: e });
   };
 
-  // const onMember = (members) => {
-  //   const updateMember = [...info.member, members];
-  //   setInfo({ ...info, member: updateMember });
-  // };
-  // const onMember = (members) => {
-  //   console.log(members);
-  // setInfo((prevInfo) => ({ ...prevInfo, member: [...prevInfo.member, members] }));
-  // };
-
   const handleProject = async (e) => {
     e.preventDefault();
 
@@ -120,7 +111,6 @@ const WorkWrite = ({ id, getData, ...props }) => {
         title,
         start,
         end,
-        // state,
         description,
         color,
         textColor,
@@ -150,7 +140,6 @@ const WorkWrite = ({ id, getData, ...props }) => {
       console.log(error);
     } finally {
       handleClose();
-      console.log("완료");
     }
   };
 

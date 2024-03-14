@@ -4,6 +4,7 @@ import Card from "../components/Card";
 import { ArrowRightSquare, Coin, PersonAdd, TicketDetailed, TicketPerforated } from "react-bootstrap-icons";
 import { Member } from "./Salary";
 import BoardList from "../components/Board/BoardList";
+import Work from "./Work";
 
 const Main = () => {
   return (
@@ -45,15 +46,13 @@ const Main = () => {
             </div>
           </Member>
         </Card>
-        <GridColumnSpan $span="4">
-          <Card title={"Project State"}>
-            <BoardList state={"project"} />
-          </Card>
-        </GridColumnSpan>
-        <GridColumnSpan $span="4">
+        <GridColumnSpan $span="2">
           <Card title={"Attendance State"}>
             <BoardList state="attendance" />
           </Card>
+        </GridColumnSpan>
+        <GridColumnSpan $span="2">
+          <Work />
         </GridColumnSpan>
       </Grid>
     </div>
