@@ -160,13 +160,13 @@ const WorkWrite = ({ id, getData, ...props }) => {
       </PopupHeader>
       <PopupContent>
         <div className="mb2">
-          <Input type="text" label="project1" labelText="프로젝트명" value={info.title || ""} onChange={onTitle} />
+          <Input type="text" label="project1" labelText="프로젝트명" defaultValue="" onChange={onTitle} />
         </div>
         <div className="mb2">
-          <Input type="date" label="project2" labelText="프로젝트 시작일" onChange={onStart} value={info.start || ""} />
+          <Input type="date" label="project2" labelText="프로젝트 시작일" defaultValue="" onChange={onStart} />
         </div>
         <div className="mb2">
-          <Input type="date" label="project3" labelText="프로젝트 종료일" onChange={onEnd} value={info.end || ""} />
+          <Input type="date" label="project3" labelText="프로젝트 종료일" defaultValue="" onChange={onEnd} />
           {dateError && <FormText $error>종료일은 시작일보다 같은날이거나 다음날이어야 합니다.</FormText>}
         </div>
         <div className="mb2">

@@ -9,7 +9,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 const Img = styled.img`
   width: 100%;
-  height: 200px;
+  height: 360px;
   object-fit: cover;
   border-radius: 1rem;
 `;

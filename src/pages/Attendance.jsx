@@ -21,7 +21,7 @@ const Attendance = () => {
   }, []);
   return (
     <div>
-      <Card title={"Member Salary List"} data-aos="fade-in" data-aos-delay="200">
+      <Card title={"Member Salary List"} data-aos="fade-up" data-aos-delay="200">
         <div className="align right mb3">
           {!isAdmin && (
             <Button $color="primary" onClick={gotoWrite} data-aos="fade-left" data-aos-delay="400">

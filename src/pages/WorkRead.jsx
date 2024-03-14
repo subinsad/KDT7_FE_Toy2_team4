@@ -265,13 +265,13 @@ const WorkRead = ({ id, isData, ...props }) => {
           // 상세보기
           <PopupContent>
             <div className="mb2">
-              <Input type="text" plainText label="project1" labelText="프로젝트명" readOnly="readonly" value={title} />
+              <Input type="text" plainText label="project1" labelText="프로젝트명" readOnly="readonly" defaultValue={title} />
             </div>
             <div className="mb2">
-              <Input type="text" label="project2" labelText="프로젝트 시작일" plainText readOnly="readonly" value={startDay} />
+              <Input type="text" label="project2" labelText="프로젝트 시작일" plainText readOnly="readonly" defaultValue={startDay} />
             </div>
             <div className="mb2">
-              <Input type="text" label="project3" labelText="프로젝트 종료일" plainText readOnly="readonly" value={endDay} />
+              <Input type="text" label="project3" labelText="프로젝트 종료일" plainText readOnly="readonly" defaultValue={endDay} />
             </div>
             <div className="mb2">
               <Label style={{ marginBottom: "0.5rem" }}>프로젝트 참여 멤버</Label>
@@ -310,13 +310,13 @@ const WorkRead = ({ id, isData, ...props }) => {
           // 수정하기
           <PopupContent>
             <div className="mb2">
-              <Input type="text" label="project1" labelText="프로젝트명" value={info.title} onChange={onTitle} />
+              <Input type="text" label="project1" labelText="프로젝트명" defaultValue={info.title} onChange={onTitle} />
             </div>
             <div className="mb2">
-              <Input type="date" label="project2" labelText="프로젝트 시작일" value={info.start} onChange={onStart} />
+              <Input type="date" label="project2" labelText="프로젝트 시작일" defaultValue={info.start} onChange={onStart} />
             </div>
             <div className="mb2">
-              <Input type="date" label="project3" labelText="프로젝트 종료일" value={info.end} onChange={onEnd} />
+              <Input type="date" label="project3" labelText="프로젝트 종료일" defaultValue={info.end} onChange={onEnd} />
             </div>
             <div className="mb2">
               <SelectDetail options="user" label="project4" labelText="프로젝트 참여 멤버" />
@@ -324,9 +324,9 @@ const WorkRead = ({ id, isData, ...props }) => {
             <div className="mb2">
               <Label style={{ marginBottom: "0.5rem" }}>진행현황</Label>
               <div>
-                <Radio value="진행중" id="ra10_1" name="rag2" color="success" onChange={() => handleRadio("진행중")} checked={radioValue === "진행중"} />
-                <Radio value="대기중" id="ra10_2" name="rag2" color="primary" onChange={() => handleRadio("대기중")} checked={radioValue === "대기중"} />
-                <Radio value="완료" id="ra10_3" name="rag2" color="danger" onChange={() => handleRadio("완료")} checked={radioValue === "완료"} />
+                <Radio value="진행중" id="ra10_1" name="rag2" color="success" onChange={() => handleRadio("진행중")} checked={radioValue === "진행중" && true} />
+                <Radio value="대기중" id="ra10_2" name="rag2" color="primary" onChange={() => handleRadio("대기중")} checked={radioValue === "대기중" && true} />
+                <Radio value="완료" id="ra10_3" name="rag2" color="danger" onChange={() => handleRadio("완료")} checked={radioValue === "완료" && true} />
               </div>
             </div>
             <div>

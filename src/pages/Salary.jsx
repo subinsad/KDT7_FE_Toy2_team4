@@ -120,7 +120,7 @@ const Salary = () => {
           <Check />
         </Alert>
       )}
-      <Card title={"Member Salary List"} data-aos="fade-up" data-aos-delay="1000">
+      <Card title={"Member Salary List"} data-aos="fade-up" data-aos-delay="200">
         <BoardList state={"salary"} setShowDialog={setShowDialog} className="mb3" />
         <div className="align right">{totalSalary ? <strong>총 지출 급여 : {totalSalary.toLocaleString()}원</strong> : <strong>0원</strong>}</div>
       </Card>
