@@ -77,7 +77,7 @@ const Right = styled.div`
   gap: 1rem;
   align-self: start;
 `;
-
+//수정
 function Mypage() {
   const { name, email, team, position, phone } = useSelector((state) => state.userSlice.userInfo)
   const { baseSalary, bonusSalary, SpecialSalary } = useSelector((state) => state.salarySlice.salary)
