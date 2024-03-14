@@ -1,7 +1,8 @@
 import { createElement } from "react";
 import styled, { css } from "styled-components";
 
-const AvatarWrap = styled.button`
+const AvatarWrap = styled.em`
+  display: inline-block;
   width: 2.375rem;
   height: 2.375rem;
   padding: 0;
@@ -70,12 +71,13 @@ const AvatarWrap = styled.button`
 export const AvatarGroup = styled.div`
   display: flex;
   margin-left: 0.8rem;
-  button {
+  em {
     position: relative;
     margin-left: -0.8rem;
     border: 2px solid #fff;
     transform: translateY(0);
     transition: transform 0.4s;
+    cursor: pointer;
     &:hover {
       z-index: 2;
       transform: translateY(-0.5rem);
@@ -97,11 +99,12 @@ export const AvatarGroup = styled.div`
 const onMouseOver = (e) => {
   const name = e.target.getAttribute("name");
   const span = document.createElement("span");
-  span.innerText = "name";
+  span.innerText = name;
   e.target.after(span);
 };
 const onMouseOut = (e) => {
   const span = e.target.nextElementSibling;
+
   if (span) {
     span.remove();
   }

@@ -61,10 +61,10 @@ const CloseButton = styled.button`
   }
 `;
 
-function Alert({ color, close, title, children, openAlert, ...props }) {
+function Alert({ color, close, title, children, openAlert, onClick, ...props }) {
   const [isOpen, setIsOpen] = useState(true);
 
-  const onClick = () => {
+  const handleonClick = () => {
     setIsOpen(false);
   };
 
@@ -79,7 +79,7 @@ function Alert({ color, close, title, children, openAlert, ...props }) {
           )}
           <div>{children}</div>
           {close && (
-            <CloseButton onClick={onClick}>
+            <CloseButton onClick={handleonClick}>
               <X />
             </CloseButton>
           )}

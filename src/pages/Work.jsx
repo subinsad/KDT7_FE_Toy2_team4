@@ -3,10 +3,10 @@ import styled from "styled-components";
 import Card from "../components/Card";
 import { Calendar } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
-
-import date from "../data/date";
-import Input from "../components/Input";
-import WorkWrite from "../components/WorkWrite";
+import WorkWrite from "./WorkWrite";
+import WorkRead from "./WorkRead";
+import { Badge } from "../components/GlobalStyles";
+import { useSelector } from "react-redux";
 
 const CalendarWrap = styled(Card)`
   overflow: hidden;
@@ -46,7 +46,7 @@ const CalendarWrap = styled(Card)`
     .fc-h-event {
       padding: 0.216rem 0.5rem;
       font-size: 0.8125rem;
-      &[style*="255, 241, 227"] {
+      /* &[style*="255, 241, 227"] {
         div {
           color: var(--warning) !important;
         }
@@ -65,7 +65,7 @@ const CalendarWrap = styled(Card)`
         div {
           color: var(--primary) !important;
         }
-      }
+      } */
     }
     .fc-button {
       padding: 0;
@@ -138,6 +138,9 @@ const CalendarWrap = styled(Card)`
       white-space: nowrap;
       padding: 0.3rem 1.25rem;
       border-radius: 0.375rem;
+      &:empty {
+        display: none;
+      }
       &::before {
         content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='white' class='bi bi-plus' viewBox='0 0 16 16'%3E%3Cpath d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4'/%3E%3C/svg%3E");
         transform: translateY(2px);
@@ -171,63 +174,111 @@ const CalendarWrap = styled(Card)`
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="" fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>');
   }
 `;
+const BadgeList = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+`;
 
 const Work = () => {
   const calendarRef = useRef(null);
-  const [inputData, setinput] = useState("second");
+  const [isprojects, setIsProjects] = useState([]);
+  const [viewProject, setViewProject] = useState({});
+  const [ingState, setIsColor] = useState("");
+  const { isAdmin } = useSelector((state) => state.userSlice);
+  const { allProjectInfo } = useSelector((state) => state.projectSlice);
 
-  const onChange = (e) => {
-    setinput(e.target.value);
-  };
+  // const { title, start, end, extendedProps, member } = allProjects;
   useEffect(() => {
+    const customButtons = {};
     const calendarEl = document.querySelector(".calendar");
-
     const calendar = new Calendar(calendarEl, {
       headerToolbar: {
         left: "prev,next today",
         center: "title",
         right: "addEventButton",
       },
+
       plugins: [dayGridPlugin],
       initialView: "dayGridMonth",
       locale: "ko",
-      events: date,
+      events: allProjectInfo,
       editable: true,
       selectable: true,
       customButtons: {
-        addEventButton: {
-          text: "프로젝트 추가",
-
-          click: function (e) {
-            const btn = e.target;
-            if (!btn.hasAttribute("popovertarget")) {
-              btn.setAttribute("popovertarget", "aa");
+        addEventButton: isAdmin
+          ? {
+              text: "프로젝트 추가",
+              click: function (e) {
+                const btn = e.target;
+                if (!btn.hasAttribute("popovertarget")) {
+                  btn.setAttribute("popovertarget", "aa");
+                }
+              },
             }
-            // var dateStr = prompt("YYYY-MM-DD 형식으로 입력하세요.");
-            // var date = new Date(inputData + "T00:00:00");
-            // if (!isNaN(date.valueOf())) {
-            //   calendar.addEvent({
-            //     title: "일정 삽입",
-            //     start: date,
-            //     allDay: true,
-            //   });
-            //   alert("Update DB...");
-            // }
-          },
-        },
+          : "",
+      },
+      eventClick: function (info) {
+        const viewPop = document.querySelector("#read");
+        viewPop.showPopover();
+        const { title, start, end, backgroundColor, textColor, _def, extendedProps, member } = info.event;
+
+        const startDate = new Date(start);
+        const startyear = startDate.getFullYear();
+        const startmonth = startDate.getMonth() + 1;
+        const startday = startDate.getDate();
+        const endDate = new Date(end);
+        const endyear = endDate.getFullYear();
+        const endmonth = endDate.getMonth() + 1;
+        const endday = endDate.getDate();
+
+        const startDay = `${startyear}-${startmonth < 10 ? "0" + startmonth : startmonth}-${startday < 10 ? "0" + startday : startday}`;
+        const endDay = `${endyear}-${endmonth < 10 ? "0" + endmonth : endmonth}-${endday < 10 ? "0" + endday : endday}`;
+
+        const description = extendedProps.description;
+        const projectMembers = extendedProps.member;
+        const publicId = _def.publicId;
+
+        let isIng, isClass;
+
+        if (textColor === "#28c76f") {
+          isIng = "진행중";
+          isClass = "success";
+        } else if (textColor === "#7367f0") {
+          isIng = "대기중";
+          isClass = "primary";
+        } else if (textColor === "#ea5455") {
+          isIng = "완료";
+          isClass = "danger";
+        }
+        console.log(info.event);
+        setViewProject({ title, startDay, endDay, ingState: isIng, isClass, backgroundColor, textColor, description, projectMembers, publicId });
       },
     });
+
     calendar.render();
+
     return () => {
       calendar.destroy();
     };
-  }, [inputData]);
+  }, [isAdmin, allProjectInfo]);
+
+  // console.log(viewProject);
+
   return (
     <>
+      <Card className={"mb3 "} title={"Work Management"}>
+        <BadgeList>
+          <Badge $color="primary">대기중 프로젝트</Badge>
+          <Badge $color="success">진행중 프로젝트</Badge>
+          <Badge $color="danger">완료 프로젝트</Badge>
+        </BadgeList>
+      </Card>
       <CalendarWrap>
         <div ref={calendarRef} className="calendar"></div>
       </CalendarWrap>
-      <WorkWrite className="aa" id={"aa"} />
+      <WorkWrite id={"aa"} />
+      <WorkRead id={"read"} isData={viewProject} />
     </>
   );
 };

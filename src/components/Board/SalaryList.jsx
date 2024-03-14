@@ -3,11 +3,10 @@ import { Button, PagingItem, Table, TablePaging } from "../GlobalStyles";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import SalaryTd from "../salaryComponents/SalaryTd";
-import { v4 as uuidv4 } from 'uuid';
-
+import { v4 as uuidv4 } from "uuid";
 
 const SalaryList = ({ setShowDialog, ...props }) => {
-  const { allSalaryInfo } = useSelector((state) => state.salaryAdminSlice)
+  const { allSalaryInfo } = useSelector((state) => state.salaryAdminSlice);
   const navigate = useNavigate();
   const gotoWrite = () => {
     navigate("/salary/write");
@@ -34,19 +33,7 @@ const SalaryList = ({ setShowDialog, ...props }) => {
         </thead>
         <tbody>
           {allSalaryInfo?.map((item) => {
-            return (
-              <SalaryTd
-                key={uuidv4()}
-                name={item.name}
-                userImg={item.userImg}
-                position={item.position}
-                salary={item.salary}
-                type={item.type}
-                uid={item.uid}
-                tdId={uuidv4()}
-                setShowDialog={setShowDialog}
-              />
-            )
+            return <SalaryTd key={uuidv4()} name={item.name} userImg={item.userImg} position={item.position} salary={item.salary} type={item.type} uid={item.uid} tdId={uuidv4()} setShowDialog={setShowDialog} />;
           })}
         </tbody>
       </Table>

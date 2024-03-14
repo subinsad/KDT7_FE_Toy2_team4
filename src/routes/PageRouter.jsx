@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../layout/Layout";
 import Main from "../pages/Main";
@@ -14,14 +14,20 @@ import AttendanceWrite from "../components/Board/AttendanceWrite";
 import AttendanceRead from "../components/Board/AttendanceRead";
 import MypageEdit from "../pages/MypageEdit";
 import ProtectedRoute from "./ProtectedRoute";
+<<<<<<< HEAD
 import Chat from "../pages/Chat";
+=======
+import WorkRead from "../pages/WorkRead";
+>>>>>>> feature/work
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ProtectedRoute>
-      <Layout />
-    </ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "main",

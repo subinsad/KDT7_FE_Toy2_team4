@@ -8,6 +8,7 @@ import { clearUser } from "../store/user.slice";
 import { clearSalaryInfo } from "../store/salaryAdmin.slice";
 import { useSelector } from "react-redux";
 import { clearSalary } from "../store/salary.slice";
+import { clearProjectInfo } from "../store/project.slice";
 
 const NavBarWrap = styled.div`
   position: fixed;
@@ -148,16 +149,17 @@ const AvatarList = styled.div`
 `;
 
 function NavBar() {
-  const { userImg } = useSelector((state) => state.userSlice.userInfo)
-  const dispatch = useDispatch()
-  const navigate = useNavigation()
+  const { userImg } = useSelector((state) => state.userSlice.userInfo);
+  const dispatch = useDispatch();
+  const navigate = useNavigation();
   const logout = async () => {
     try {
       await auth.signOut();
-      dispatch(clearUser())
-      dispatch(clearSalaryInfo())
-      dispatch(clearSalary())
-      navigate('/login')
+      dispatch(clearUser());
+      dispatch(clearSalaryInfo());
+      dispatch(clearSalary());
+      dispatch(clearProjectInfo());
+      navigate("/login");
     } catch (error) {
       console.log("logout error : ", error);
     }
@@ -218,7 +220,7 @@ function NavBar() {
               </li>
             </ul>
           </AlramList>
-          <Avatar src={userImg} popovertarget="avatar" />
+          <Avatar src={userImg} popovertarget="avatar" as="button" />
           <AvatarList popover="auto" id="avatar">
             <ul>
               <li>
@@ -230,7 +232,6 @@ function NavBar() {
                 <a onClick={logout}>
                   <BoxArrowRight /> Log Out
                 </a>
-
               </li>
             </ul>
           </AvatarList>

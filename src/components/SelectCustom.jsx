@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Avatar from "./Avatar";
-import { Badge } from "./GlobalStyles";
 import Alert from "./Alert";
+import SelectUserItem from "./SelectUserItem";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser, clearUser } from "../store/projectUser.slice";
 
 const Label = styled.div`
   margin-bottom: 0.25rem;
@@ -39,7 +41,7 @@ const SelectDetailButton = styled.button`
 const List = styled.ul`
   position: absolute;
   z-index: 10;
-  top: 2.5rem 0 0;
+  top: 2.5rem;
   width: 100%;
   height: auto;
   list-style: none;
@@ -84,7 +86,7 @@ const List = styled.ul`
     }
   }
   &.user {
-    height: 20rem;
+    max-height: 20rem;
     overflow: auto;
     button {
       justify-content: flex-start;
@@ -102,6 +104,10 @@ const List = styled.ul`
       span {
         flex: 1;
       }
+      &.active {
+        color: var(--primary);
+        background-color: var(--white);
+      }
     }
   }
 `;
@@ -109,9 +115,14 @@ const SelectDetailWrap = styled.div`
   position: relative;
 `;
 const MemberTag = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 24rem;
   padding: 0.5rem 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(3rem, auto));
+  gap: 0.3rem 0.4rem;
+  &:empty {
+    padding: 0;
+  }
   .tag {
     display: inline-grid;
     white-space: nowrap;
@@ -120,31 +131,67 @@ const MemberTag = styled.div`
   }
 `;
 
-const SelectCustom = ({ option, labelText }) => {
+const SelectCustom = ({ option, labelText, onSelected, isMembers, onMemberTagChange }) => {
+  const memberRef = useRef(null);
   const [isList, setIsList] = useState(false);
-  const [isValue, setIsValue] = useState("SelectDetail");
-  const [isUser, setIsUser] = useState("멤버선택");
+  const [isValue, setIsValue] = useState("진행현황 선택");
+  const [isUser, setIsUser] = useState({});
+  const [tagVisible, setTagVisible] = useState([]);
+  const listRef = useRef(null);
+  const dispatch = useDispatch();
+  const { users } = useSelector((state) => state.projectUserSlice);
+
+  const { allUserInfo } = useSelector((state) => state.salaryAdminSlice);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (listRef.current && !listRef.current.contains(event.target)) {
+        setIsList(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleList = () => {
     setIsList(!isList);
   };
   const handleText = (e) => {
+    const isValue = e.target.value;
     setIsValue(e.target.textContent);
     setIsList(false);
+    onSelected(isValue);
   };
-  const handleUser = (e) => {
-    setIsValue(e.target.textContent);
+
+  const handleUserSelection = (team, name, uid, userImg) => {
+    const data = {
+      team,
+      name,
+      uid,
+      userImg,
+    };
+    dispatch(addUser(data));
     setIsList(false);
+
+    // const updatedTagVisible = [...tagVisible, { team, name, uid }];
+    // setIsUser(updatedTagVisible);
+  };
+
+  const handleOnClick = (uid) => {
+    dispatch(clearUser(uid));
   };
 
   return (
     <>
       <Label>{labelText}</Label>
       <SelectDetailWrap>
-        <SelectDetailButton onClick={handleList}>{option === "state" ? isValue : isUser}</SelectDetailButton>
+        <SelectDetailButton onClick={handleList}>멤버선택</SelectDetailButton>
         {isList &&
           (option === "state" ? (
-            <List cla>
+            <List ref={listRef}>
               <li>
                 <button value="pending" onClick={handleText}>
                   대기중
@@ -163,70 +210,21 @@ const SelectCustom = ({ option, labelText }) => {
             </List>
           ) : (
             <>
-              <MemberTag>
-                <Alert color="primary" close className="tag">
-                  아무개
-                </Alert>
-              </MemberTag>
-              <List className="user">
-                <li>
-                  <button value="pending" onClick={handleUser}>
-                    <Avatar size={"sm"} src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/7.png"} role="strong" />
-                    <span className="name">Ha</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="progress" onClick={handleUser}>
-                    <Avatar size={"sm"} role="strong" />
-                    <span className="name">Mr. So</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="completed" onClick={handleUser}>
-                    <Avatar size={"sm"} role="strong" />
-                    <span className="name">감무양</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="pending" onClick={handleUser}>
-                    <Avatar size={"sm"} src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/7.png"} role="strong" />
-                    <span className="name">Ha</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="progress" onClick={handleUser}>
-                    <Avatar size={"sm"} role="strong" />
-                    <span className="name">Mr. So</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="completed" onClick={handleUser}>
-                    <Avatar size={"sm"} role="strong" />
-                    <span className="name">감무양</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="pending" onClick={handleUser}>
-                    <Avatar size={"sm"} src={"https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/avatars/7.png"} role="strong" />
-                    <span className="name">Ha</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="progress" onClick={handleUser}>
-                    <Avatar size={"sm"} role="strong" />
-                    <span className="name">Mr. So</span>
-                  </button>
-                </li>
-                <li>
-                  <button value="completed" onClick={handleUser}>
-                    <Avatar size={"sm"} role="strong" />
-                    <span className="name">감무양</span>
-                  </button>
-                </li>
+              <List className="user" ref={listRef}>
+                {allUserInfo.map((user) => (
+                  <SelectUserItem key={user.uid} {...user} onChecked={handleUserSelection} />
+                ))}
               </List>
             </>
           ))}
       </SelectDetailWrap>
+      <MemberTag ref={memberRef}>
+        {users.map((item) => (
+          <Alert key={item.uid} color="primary" className="tag" onClick={() => handleOnClick(item.uid)}>
+            [{item.team}] {item.name}
+          </Alert>
+        ))}
+      </MemberTag>
     </>
   );
 };
