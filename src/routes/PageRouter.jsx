@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         element: <AttendanceWrite />,
       },
       {
-        path: "attendance/read",
+        path: 'attendance/read/:attendanceId',
         element: <AttendanceRead />,
       },
       {
