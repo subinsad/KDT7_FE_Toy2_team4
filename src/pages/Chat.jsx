@@ -23,11 +23,10 @@ const ChatWrapper = styled.div`
         overflow: auto;
         height: calc(100vh - 26rem);
         padding: 1rem;
-        display: grid;
-        grid-template-columns: 1fr;
-        align-items: flex-start;
+        display: flex;
+        align-items: stretch;
         gap: 1rem;
-        grid-template-rows: repeat(auto-fill, minmax(4.5rem, 10rem));
+        flex-direction: column;
         &::-webkit-scrollbar {
           width: 0.4rem;
 
@@ -45,7 +44,6 @@ const ChatWrapper = styled.div`
           background-color: var(--secondaryLabel);
           border-radius: 0.4rem;
           width: auto;
-          max-width: 50%;
           align-self: start;
           position: relative;
           &::after {
@@ -58,7 +56,7 @@ const ChatWrapper = styled.div`
             border-style: solid;
           }
           &:has(.me) {
-            justify-self: end;
+            align-self: flex-end;
             &::after {
               left: inherit;
               right: 0;
