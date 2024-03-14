@@ -1,4 +1,5 @@
 # KDT7_ToyProject_Team4
+
 - ```4UTeamIntranet``` : 4조가 하나로 ```통합```되어 함께 일한다라는 의미를 담고있는 인트라넷 페이지
 - 직원들을 위한 급여 및 업무 관리 플랫폼
 - 직원들의 근무 관리를 위한 여러 기능이 있습니다.
@@ -53,5 +54,26 @@
 ![toy2 (2)](https://github.com/subinsad/KDT7_FE_Toy2_team4/assets/92204014/a5cd968f-8462-4943-8f09-443e80edc9a3)
 
 ![image](https://github.com/subinsad/KDT7_FE_Toy2_team4/assets/92204014/6ca7b028-b8bc-421f-a756-e7a6dfbd8d24)
+
+## 기능설명
+
+![Wireframe - 5](https://github.com/subinsad/KDT7_FE_Toy2_team4/assets/92204014/deea9e61-8776-492f-966c-826318f3ea1c)
+
+![Wireframe - 6](https://github.com/subinsad/KDT7_FE_Toy2_team4/assets/92204014/7d1de526-526c-408c-8415-3d5471d5f747)
+
+![Wireframe - 7](https://github.com/subinsad/KDT7_FE_Toy2_team4/assets/92204014/c03508f0-b05a-4778-9e06-981aca7dd3cd)
+
+![Wireframe - 8](https://github.com/subinsad/KDT7_FE_Toy2_team4/assets/92204014/c20e09d6-4ed6-4997-8cc0-0b02c12d0fc9)
+
+![Wireframe - 9](https://github.com/subinsad/KDT7_FE_Toy2_team4/assets/92204014/bbb2931e-43e1-4cec-9e2f-856146f7f087)
+
+![Wireframe - 10](https://github.com/subinsad/KDT7_FE_Toy2_team4/assets/92204014/d1c93b5f-d558-4811-b0b6-73f43d6426aa)
+
+
+
+
+
+
+
 
 
