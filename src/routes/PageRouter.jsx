@@ -9,14 +9,16 @@ import Login from "../pages/Login";
 import CreateAccount from "../pages/CreateAccount";
 import Attendance from "../pages/Attendance";
 import About from "../pages/About";
-import Salary from "../pages/Salary";
 import NotFound from "../pages/NotFound";
-import SalaryWrite from "../components/Board/SalaryWrite";
 import AttendanceWrite from "../components/Board/AttendanceWrite";
 import AttendanceRead from "../components/Board/AttendanceRead";
 import MypageEdit from "../pages/MypageEdit";
 import ProtectedRoute from "./ProtectedRoute";
+<<<<<<< HEAD
 import WorkRead from "../pages/WorkRead";
+=======
+import Chat from "../pages/Chat";
+>>>>>>> 233423f59ebba0ca66e6bf4fe6db3324934afe5b
 
 const router = createBrowserRouter([
   {
@@ -63,6 +65,10 @@ const router = createBrowserRouter([
         path: "about",
         element: <About />,
       },
+      {
+        path: "chat",
+        element: <Chat />,
+      }
     ],
   },
   {

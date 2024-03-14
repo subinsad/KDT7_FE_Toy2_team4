@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Loading from "../components/Loading";
 import { auth, db, storage } from "../firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { editUserBg, editUserImg, editUserInfo } from "../store/user.slice";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -199,6 +199,26 @@ const MypageEdit = () => {
           }, { merge: true });
           dispatch(editUserBg(userBgUrl))
         }
+
+        //여기서부터 추가
+        const salaryDocRef = doc(db, "users", "0vY0bqw8nKT7lGbiSotVrcVzZWs1", "salary", "data");
+        const salaryDocSnapshot = await getDoc(salaryDocRef);
+        const allUserInfo = salaryDocSnapshot.data().allUserInfo;
+
+        // 특정 uid를 가진 사용자를 찾아서 정보 업데이트
+        const userIndex = allUserInfo.findIndex(info => info.uid === user.uid);
+        if (userIndex !== -1) {
+          allUserInfo[userIndex] = {
+            ...allUserInfo[userIndex],
+            phone: formData.phone,
+            position: formData.position,
+            shortInfo: formData.shortInfo,
+            team: formData.team,
+          };
+        }
+
+        await updateDoc(salaryDocRef, { allUserInfo });
+
         navigate('/mypage')
       }
       catch (error) {
