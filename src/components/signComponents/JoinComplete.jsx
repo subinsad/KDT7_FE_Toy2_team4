@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { clearUserInfo } from "../../store/signInfo.slice";
+import { fetchProject } from "../../store/project.slice";
 
 const rotate = keyframes`
   0% {
@@ -47,6 +48,7 @@ const JoinComplete = () => {
 
   useEffect(() => {
     dispatch(clearUserInfo());
+    dispatch(fetchProject())
   }, []);
 
   return (
