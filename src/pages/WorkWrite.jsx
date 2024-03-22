@@ -85,15 +85,7 @@ const WorkWrite = ({ id, getData, ...props }) => {
       setInfo({ ...info, end: e.target.value });
     }
   };
-  // const onSelect = (value) => {
-  //   if (value === "pending") {
-  //     setInfo({ ...info, color: "#eae8fd", textColor: "#7367f0", state: "대기중" });
-  //   } else if (value === "progress") {
-  //     setInfo({ ...info, color: "#dff7e9", textColor: "#28c76f", state: "진행중" });
-  //   } else if (value === "completed") {
-  //     setInfo({ ...info, color: "#fce5e6", textColor: "#ea5455", state: "완료" });
-  //   }
-  // };
+
   const onDetail = (e) => {
     setInfo({ ...info, description: e });
   };
@@ -115,8 +107,8 @@ const WorkWrite = ({ id, getData, ...props }) => {
     const end = info.end;
     // const state = info.state;
     const description = info.description;
-    const color = info.color;
-    const textColor = info.textColor;
+    const color = "#dff7e9";
+    const textColor = "#28c76f";
     const member = users;
 
     if (title === "" || start === "" || end === "" || description === "") {
@@ -130,8 +122,8 @@ const WorkWrite = ({ id, getData, ...props }) => {
         end,
         // state,
         description,
-        // color,
-        // textColor,
+        color,
+        textColor,
         member,
       });
       dispatch(fetchProject());
@@ -139,7 +131,6 @@ const WorkWrite = ({ id, getData, ...props }) => {
       const usersUid = users.map((item) => {
         return item.uid;
       });
-      // console.log(usersUid);
       usersUid.forEach(async (item) => {
         const userDocRef = doc(db, "users", item, "project", "data");
         await setDoc(
@@ -169,7 +160,6 @@ const WorkWrite = ({ id, getData, ...props }) => {
     dispatch(clearUser());
     setInfo({});
   };
-  console.log(info.title);
 
   return (
     <Popup popover="auto" id={id} {...props}>
@@ -193,9 +183,6 @@ const WorkWrite = ({ id, getData, ...props }) => {
         <div className="mb2">
           <SelectDetail options="user" label="project4" labelText="프로젝트 참여 멤버" />
         </div>
-        {/* <div className="mb2">
-          <SelectDetail option="state" labelText="프로젝트 현황" onSelected={onSelect} />
-        </div> */}
         <div>
           <Editor title="프로젝트 상세정보" onChange={onDetail}></Editor>
         </div>

@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { fetchUserInfo } from "../../store/user.slice";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import Loading from "../Loading";
 import { addUserBg, addUserImg, clearUserInfo } from "../../store/signInfo.slice";
 import { fetchProject } from "../../store/project.slice";

@@ -97,13 +97,14 @@ export const AvatarGroup = styled.div`
   }
 `;
 const onMouseOver = (e) => {
-  // const name = e.target.getAttribute("name");
+  const name = e.target.getAttribute("name");
   const span = document.createElement("span");
-  // span.innerText = "name";
+  span.innerText = name;
   e.target.after(span);
 };
 const onMouseOut = (e) => {
   const span = e.target.nextElementSibling;
+
   if (span) {
     span.remove();
   }

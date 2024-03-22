@@ -101,7 +101,7 @@ const makeStrike = () => {
   document.execCommand("strikethrough", false, null);
 };
 
-function Editor({ title, children, onChange, ...props }) {
+function Editor({ title, children, onChange, valueData, ...props }) {
   const editableRef = useRef(null);
   const fontSizeOptions = [1, 2, 3, 4, 5];
 
@@ -134,7 +134,7 @@ function Editor({ title, children, onChange, ...props }) {
           {/* <input type="color" className="color" value="A" />
           <input type="color" className="bg" value="A" /> */}
         </Toolbar>
-        <EditorTable ref={editableRef} contentEditable="true" onInput={handleOnChange} dangerouslySetInnerHTML={{ __html: children }} />
+        {valueData ? <EditorTable ref={editableRef} contentEditable="true" onInput={handleOnChange} dangerouslySetInnerHTML={{ __html: valueData }} /> : <EditorTable ref={editableRef} contentEditable="true" onInput={handleOnChange} dangerouslySetInnerHTML={{ __html: children }} />}
       </EditorWrap>
     </>
   );

@@ -41,6 +41,9 @@ const Label = styled.label`
   cursor: pointer;
   font-size: 0.9rem;
   white-space: nowrap;
+  + input {
+    margin-left: 1rem;
+  }
 `;
 export const RadioWrap = styled.div`
   input ~ input {

@@ -18,22 +18,30 @@ const ProjectList = ({ ...props }) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{myProjectInfo?.title}</td>
-            <td>
-              {myProjectInfo?.start} ~ {myProjectInfo?.end}
-            </td>
-            <td>
-              <Badge $color="success">{myProjectInfo?.state === "" ? "in Prograss" : ""}</Badge>
-            </td>
-            <td>
-              <AvatarGroup>
-                {myProjectInfo.member?.map((user) => {
-                  return <Avatar src={user.userImg} name={user.name} key={user.uid} />;
-                })}
-              </AvatarGroup>
-            </td>
-          </tr>
+          {myProjectInfo.title ? (
+            <tr>
+              <td>{myProjectInfo?.title}</td>
+              <td>
+                {myProjectInfo?.start} ~ {myProjectInfo?.end}
+              </td>
+              <td>
+                <Badge $color="success">{myProjectInfo?.state === "" ? "in Prograss" : ""}</Badge>
+              </td>
+              <td>
+                <AvatarGroup>
+                  {myProjectInfo.member?.map((user) => {
+                    return <Avatar src={user.userImg} name={user.name} key={user.uid} />;
+                  })}
+                </AvatarGroup>
+              </td>
+            </tr>
+          ) : (
+            <tr>
+              <td colSpan="4" style={{ textAlign: "center" }}>
+                배정된 프로젝트가 없습니다.
+              </td>
+            </tr>
+          )}
         </tbody>
       </Table>
       {/* <TablePaging>

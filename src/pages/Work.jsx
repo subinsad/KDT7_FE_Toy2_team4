@@ -3,13 +3,8 @@ import styled from "styled-components";
 import Card from "../components/Card";
 import { Calendar } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
-
-// import date from "../data/date";
 import WorkWrite from "./WorkWrite";
-import { collection, onSnapshot, query } from "firebase/firestore";
-import { auth, db } from "../firebase";
 import WorkRead from "./WorkRead";
-import { userIsAdmin } from "../store/user.slice";
 import { Badge } from "../components/GlobalStyles";
 import { useSelector } from "react-redux";
 
@@ -189,12 +184,11 @@ const Work = () => {
   const calendarRef = useRef(null);
   const [isprojects, setIsProjects] = useState([]);
   const [viewProject, setViewProject] = useState({});
-  const [isColor, setIsColor] = useState("");
+  const [ingState, setIsColor] = useState("");
   const { isAdmin } = useSelector((state) => state.userSlice);
   const { allProjectInfo } = useSelector((state) => state.projectSlice);
 
   // const { title, start, end, extendedProps, member } = allProjects;
-  console.log(allProjectInfo);
   useEffect(() => {
     const customButtons = {};
     const calendarEl = document.querySelector(".calendar");
@@ -227,47 +221,49 @@ const Work = () => {
       eventClick: function (info) {
         const viewPop = document.querySelector("#read");
         viewPop.showPopover();
-        const { title, start, end, textColor, id, extendedProps, member } = info.event;
+        const { title, start, end, backgroundColor, textColor, _def, extendedProps, member } = info.event;
+
+        const startDate = new Date(start);
+        const startyear = startDate.getFullYear();
+        const startmonth = startDate.getMonth() + 1;
+        const startday = startDate.getDate();
+        const endDate = new Date(end);
+        const endyear = endDate.getFullYear();
+        const endmonth = endDate.getMonth() + 1;
+        const endday = endDate.getDate();
+
+        const startDay = `${startyear}-${startmonth < 10 ? "0" + startmonth : startmonth}-${startday < 10 ? "0" + startday : startday}`;
+        const endDay = `${endyear}-${endmonth < 10 ? "0" + endmonth : endmonth}-${endday < 10 ? "0" + endday : endday}`;
+
+        const description = extendedProps.description;
+        const projectMembers = extendedProps.member;
+        const publicId = _def.publicId;
+
+        let isIng, isClass;
+
         if (textColor === "#28c76f") {
-          setIsColor("진행중");
+          isIng = "진행중";
+          isClass = "success";
         } else if (textColor === "#7367f0") {
-          setIsColor("대기중");
+          isIng = "대기중";
+          isClass = "primary";
         } else if (textColor === "#ea5455") {
-          setIsColor("완료");
+          isIng = "완료";
+          isClass = "danger";
         }
-        setViewProject({ title, start, end, isColor, id, extendedProps, member });
+        console.log(info.event);
+        setViewProject({ title, startDay, endDay, ingState: isIng, isClass, backgroundColor, textColor, description, projectMembers, publicId });
       },
     });
-    isprojects.forEach((project) => {
-      calendar.addEvent({
-        title: project.title,
-        start: project.start,
-        end: project.end,
-        color: "#dff7e9",
-        textColor: "#28c76f",
-        allDay: true,
-      });
-    });
 
-    // if (isAdmin) {
-    //   console.log("어드민");
-    //   // if (user) {
-    //   customButtons.addEventButton = {
-    //     text: "프로젝트 추가",
-    //     click: function (e) {
-    //       const btn = e.target;
-    //       if (!btn.hasAttribute("popovertarget")) {
-    //         btn.setAttribute("popovertarget", "aa");
-    //       }
-    //     },
-    //   };
-    // }
     calendar.render();
 
     return () => {
       calendar.destroy();
     };
   }, [isAdmin, allProjectInfo]);
+
+  // console.log(viewProject);
 
   return (
     <>

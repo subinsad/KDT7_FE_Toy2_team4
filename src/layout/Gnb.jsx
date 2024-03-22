@@ -112,6 +112,11 @@ function Gnb() {
               <PersonUp /> Attendance
             </Link>
           </NavItem>
+          <NavItem $active={location.pathname.includes("/chat")}>
+            <Link to="/chat">
+              <PersonUp /> Chat
+            </Link>
+          </NavItem>
 
           {isAdmin &&
             (<NavItem $active={location.pathname.includes("/salary")}>
